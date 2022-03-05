@@ -1,5 +1,5 @@
 ---
-title: "Leveraging agri-econ research with R programming."
+title: "Leveraging Agricultural Economics research with R programming."
 output:
   xaringan::moon_reader:
     css:
@@ -71,12 +71,235 @@ style_duo_accent(
   inverse_header_color = "#fff",
   
   # title_slide_background_color = "#073b4c",
-  title_slide_background_image = "img/background.jpg",
+  title_slide_background_image = "img/title_slide_background.jpg",
   title_slide_text_color = "#212529",
-  text_font_size = "1.1rem"
+  text_font_size = "1.2rem"
 )
 
 ```
+
+---
+
+## Outline
+
+- Motivational example
+
+- Brief history
+
+- Who are the R useRs?
+
+- Pros and Cons
+
+- How to be a useR?
+
+- Demo: production economics and efficiency analysis
+
+---
+
+## Motivational example
+
+```{r echo=FALSE}
+mpg_data <- mpg %>% 
+  mutate(drive = case_when(drv == "f" ~ "front-wheel drive",
+                           drv == "r" ~ "rear-wheel drive",
+                           drv == "4" ~ "4-wheel drive"),
+         transport = case_when(str_detect(trans, "auto") ~ "automatic trans.",
+                               str_detect(trans, "manual") ~ "manual trans."))
+```
+
+.leftcol60[
+
+**Data visualization**
+
+```{r}
+mpg_data
+```
+]
+---
+
+## Motivational example
+
+
+.leftcol40[
+
+**Data visualization**
+
+```{r eval=FALSE, fig.height=4, fig.width=6, fig.align='center'}
+ggplot(mpg_data, aes(x = displ, y = hwy))
+```
+]
+
+
+.rightcol60[
+```{r echo=FALSE, fig.height=4, fig.width=6, fig.align='center'}
+ggplot(mpg_data, aes(x = displ, y = hwy))
+```
+]
+
+
+---
+
+## Motivational example
+
+.leftcol40[
+
+**Data visualization**
+
+```{r eval=FALSE, fig.height=4, fig.width=6, fig.align='center'}
+ggplot(mpg_data, aes(x = displ, y = hwy)) +
+  geom_point() #<<
+```
+]
+
+.rightcol60[
+```{r echo=FALSE, fig.height=4, fig.width=6, fig.align='center'}
+ggplot(mpg_data, aes(x = displ, y = hwy)) +
+  geom_point()
+```
+]
+
+
+---
+
+## Motivational example
+
+
+.leftcol40[
+
+**Data visualization**
+
+```{r eval=FALSE, fig.height=4, fig.width=6, fig.align='center'}
+ggplot(mpg_data, aes(x = displ, y = hwy)) +
+  geom_point(size = 3, alpha = 0.5) #<<
+```
+]
+
+.rightcol60[
+```{r echo=FALSE, fig.height=4, fig.width=6, fig.align='center'}
+ggplot(mpg_data, aes(x = displ, y = hwy)) +
+  geom_point(size = 3, alpha = 0.5)
+```
+]
+
+
+---
+
+## Motivational example
+
+
+.leftcol40[
+
+**Data visualization**
+
+```{r eval=FALSE, fig.height=4, fig.width=6, fig.align='center'}
+ggplot(mpg_data, aes(x = displ, y = hwy)) +
+  geom_point(size = 3, alpha = 0.5) +
+  geom_smooth(method = "lm") #<<
+```
+]
+
+.rightcol60[
+```{r echo=FALSE, fig.height=4, fig.width=6, fig.align='center'}
+ggplot(mpg_data, aes(x = displ, y = hwy)) +
+  geom_point(size = 3, alpha = 0.5) +
+  geom_smooth(method = "lm")
+```
+]
+
+---
+
+## Motivational example
+
+
+.leftcol40[
+
+**Data visualization**
+
+```{r eval=FALSE, fig.height=4, fig.width=6, fig.align='center'}
+ggplot(mpg_data, aes(x = displ, y = hwy)) +
+  geom_point(size = 3, alpha = 0.5) +
+  geom_smooth(method = "lm") +
+  facet_grid(transport ~ drive) #<<
+```
+]
+
+.rightcol60[
+```{r echo=FALSE, fig.height=4, fig.width=6, fig.align='center'}
+ggplot(mpg_data, aes(x = displ, y = hwy)) +
+  geom_point(size = 3, alpha = 0.5) +
+  geom_smooth(method = "lm") +
+  facet_grid(transport ~ drive)
+  
+```
+]
+
+
+---
+
+## Motivational example
+
+
+.leftcol40[
+
+**Data visualization**
+
+```{r eval=FALSE, fig.height=4, fig.width=6, fig.align='center'}
+ggplot(mpg_data, aes(x = displ, y = hwy)) +
+  geom_point(size = 3, alpha = 0.5) +
+  geom_smooth(method = "lm") +
+  facet_grid(transport ~ drive) +
+  theme_bw() + #<<
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"), #<<
+        strip.text = element_text(face = "bold")) + #<<
+  labs(title = "Car fuel consumption", #<<
+       x  = "Engine displacement (volume in litres)", #<<
+       y = "Highway miles per gallon (mpg)") #<<
+```
+]
+
+.rightcol60[
+```{r echo=FALSE, fig.height=4, fig.width=6, fig.align='center'}
+ggplot(mpg_data, aes(x = displ, y = hwy)) +
+  geom_point(size = 3, alpha = 0.5) +
+  geom_smooth(method = "lm") +
+  facet_grid(transport ~ drive) +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"),
+        strip.text = element_text(face = "bold")) +
+  labs(title = "Car fuel consumption",
+       x  = "Engine displacement (volume in litres)",
+       y = "Highway miles per gallon (mpg)")
+  
+```
+]
+
+---
+
+## Motivational example
+
+**Some of my data viz work**
+
+```{r echo=FALSE, out.width="85%", fig.align='center'}
+knitr::include_graphics("img/data_viz_collage.png")
+```
+
+---
+
+## Brief history
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

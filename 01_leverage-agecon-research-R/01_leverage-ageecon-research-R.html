@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Leveraging agri-econ research with R programming.</title>
+    <title>Leveraging Agricultural Economics research with R programming.</title>
     <meta charset="utf-8" />
     <script src="01_leverage-ageecon-research-R_files/header-attrs/header-attrs.js"></script>
     <script src="01_leverage-ageecon-research-R_files/clipboard/clipboard.min.js"></script>
@@ -36,7 +36,7 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Leveraging agri-econ research with R programming.
+# Leveraging Agricultural Economics research with R programming.
 
 ---
 
@@ -60,6 +60,214 @@ layout: true
 --shareagain-pocket: none;
 --shareagain-reddit: none;
 }</style>
+
+---
+
+## Outline
+
+- Motivational example
+
+- Brief history
+
+- Who are the R useRs?
+
+- Pros and Cons
+
+- How to be a useR?
+
+- Demo: production economics and efficiency analysis
+
+---
+
+## Motivational example
+
+
+
+.leftcol60[
+
+**Data visualization**
+
+
+```r
+mpg_data
+```
+
+```
+# A tibble: 234 x 13
+   manufacturer model      displ  year   cyl trans      drv     cty   hwy fl    class   drive       transport
+   &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;       &lt;chr&gt;    
+ 1 audi         a4           1.8  1999     4 auto(l5)   f        18    29 p     compact front-whee~ automati~
+ 2 audi         a4           1.8  1999     4 manual(m5) f        21    29 p     compact front-whee~ manual t~
+ 3 audi         a4           2    2008     4 manual(m6) f        20    31 p     compact front-whee~ manual t~
+ 4 audi         a4           2    2008     4 auto(av)   f        21    30 p     compact front-whee~ automati~
+ 5 audi         a4           2.8  1999     6 auto(l5)   f        16    26 p     compact front-whee~ automati~
+ 6 audi         a4           2.8  1999     6 manual(m5) f        18    26 p     compact front-whee~ manual t~
+ 7 audi         a4           3.1  2008     6 auto(av)   f        18    27 p     compact front-whee~ automati~
+ 8 audi         a4 quattro   1.8  1999     4 manual(m5) 4        18    26 p     compact 4-wheel dr~ manual t~
+ 9 audi         a4 quattro   1.8  1999     4 auto(l5)   4        16    25 p     compact 4-wheel dr~ automati~
+10 audi         a4 quattro   2    2008     4 manual(m6) 4        20    28 p     compact 4-wheel dr~ manual t~
+# ... with 224 more rows
+```
+]
+---
+
+## Motivational example
+
+
+.leftcol40[
+
+**Data visualization**
+
+
+```r
+ggplot(mpg_data, aes(x = displ, y = hwy))
+```
+]
+
+
+.rightcol60[
+&lt;img src="01_leverage-ageecon-research-R_files/figure-html/unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+## Motivational example
+
+.leftcol40[
+
+**Data visualization**
+
+
+```r
+ggplot(mpg_data, aes(x = displ, y = hwy)) +
+* geom_point()
+```
+]
+
+.rightcol60[
+&lt;img src="01_leverage-ageecon-research-R_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+## Motivational example
+
+
+.leftcol40[
+
+**Data visualization**
+
+
+```r
+ggplot(mpg_data, aes(x = displ, y = hwy)) +
+* geom_point(size = 3, alpha = 0.5)
+```
+]
+
+.rightcol60[
+&lt;img src="01_leverage-ageecon-research-R_files/figure-html/unnamed-chunk-8-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+## Motivational example
+
+
+.leftcol40[
+
+**Data visualization**
+
+
+```r
+ggplot(mpg_data, aes(x = displ, y = hwy)) +
+  geom_point(size = 3, alpha = 0.5) +
+* geom_smooth(method = "lm")
+```
+]
+
+.rightcol60[
+&lt;img src="01_leverage-ageecon-research-R_files/figure-html/unnamed-chunk-10-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## Motivational example
+
+
+.leftcol40[
+
+**Data visualization**
+
+
+```r
+ggplot(mpg_data, aes(x = displ, y = hwy)) +
+  geom_point(size = 3, alpha = 0.5) +
+  geom_smooth(method = "lm") +
+* facet_grid(transport ~ drive)
+```
+]
+
+.rightcol60[
+&lt;img src="01_leverage-ageecon-research-R_files/figure-html/unnamed-chunk-12-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+## Motivational example
+
+
+.leftcol40[
+
+**Data visualization**
+
+
+```r
+ggplot(mpg_data, aes(x = displ, y = hwy)) +
+  geom_point(size = 3, alpha = 0.5) +
+  geom_smooth(method = "lm") +
+  facet_grid(transport ~ drive) +
+* theme_bw() +
+* theme(plot.title = element_text(hjust = 0.5, face = "bold"),
+*       strip.text = element_text(face = "bold")) +
+* labs(title = "Car fuel consumption",
+*      x  = "Engine displacement (volume in litres)",
+*      y = "Highway miles per gallon (mpg)")
+```
+]
+
+.rightcol60[
+&lt;img src="01_leverage-ageecon-research-R_files/figure-html/unnamed-chunk-14-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## Motivational example
+
+**Some of my data viz work**
+
+&lt;img src="img/data_viz_collage.png" width="85%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Brief history
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
