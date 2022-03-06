@@ -84,15 +84,13 @@ style_duo_accent(
 
 - Motivational example
 
-- Brief history
+- R features
 
-- Who are the R useRs?
+- Who are the useRs?
 
-- Pros and Cons
+- Demo: production economics concepts
 
-- How to be a useR?
-
-- Demo: production economics and efficiency analysis
+- Demo: production efficiency analysis
 
 ---
 
@@ -285,11 +283,92 @@ knitr::include_graphics("img/data_viz_collage.png")
 
 ---
 
-## Brief history
+## Features of R
+
+```{r echo=FALSE, out.width="80%", fig.align='center'}
+knitr::include_graphics("https://techvidvan.com/tutorials/wp-content/uploads/sites/2/2019/11/Features-of-R.jpg")
+```
+.font80[Source: [TechVidVan](https://techvidvan.com/tutorials/r-features/)]
 
 
+---
+
+## Features of R
+
+.leftcol[
+### Pros
+
+- Free and open source
+
+- Excellent for statistical computing and analysis
+
+- Powerful graphics
+
+- Cross-platform support
+
+- Large active and growing community users
+
+- New statistical method often available first in R
+
+]
 
 
+.rightcol[
+### Cons
+
+- Learning curve could be steep
+
+- May consume large amount of memory
+
+]
+
+
+---
+
+## Who are the userRs?
+
+```{r echo=FALSE, out.width="45%", fig.align='center'}
+knitr::include_graphics("https://www.guru99.com/images/r_programming/032918_1002_WhatisRProg1.png")
+```
+.font80[Source: [Johnson (2022)](https://www.guru99.com/r-programming-introduction-basics.html)]
+
+
+---
+
+## Who are the userRs?
+
+```{r echo=FALSE, out.width="65%", fig.align='center'}
+knitr::include_graphics("https://miro.medium.com/max/875/0*vAJhXpcNXcpT3aLP.png")
+```
+.font80[Source: [Hayes (2019)](https://towardsdatascience.com/team-r-or-team-python-2f8cf04310e6)]
+
+
+---
+
+class: middle center
+
+# Demonstration
+
+
+---
+
+class: middle center
+
+# Thank you!
+
+#### Slides created via the R packages:
+
+.leftcol[
+<img src="img/xaringan.png" style="display:inline-block; margin: 0" width=20%/> 
+
+### xaringan by Yihui
+]
+
+.rightcol[
+<img src="img/xaringanthemer.png" style="display:inline-block; margin: 0" width=25%/> 
+
+### xaringanthemer and xaringanExtra by Garrick
+]
 
 
 

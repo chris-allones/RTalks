@@ -67,15 +67,13 @@ layout: true
 
 - Motivational example
 
-- Brief history
+- R features
 
-- Who are the R useRs?
+- Who are the useRs?
 
-- Pros and Cons
+- Demo: production economics concepts
 
-- How to be a useR?
-
-- Demo: production economics and efficiency analysis
+- Demo: production efficiency analysis
 
 ---
 
@@ -94,18 +92,18 @@ mpg_data
 
 ```
 # A tibble: 234 x 13
-   manufacturer model      displ  year   cyl trans      drv     cty   hwy fl    class   drive       transport
-   &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;       &lt;chr&gt;    
- 1 audi         a4           1.8  1999     4 auto(l5)   f        18    29 p     compact front-whee~ automati~
- 2 audi         a4           1.8  1999     4 manual(m5) f        21    29 p     compact front-whee~ manual t~
- 3 audi         a4           2    2008     4 manual(m6) f        20    31 p     compact front-whee~ manual t~
- 4 audi         a4           2    2008     4 auto(av)   f        21    30 p     compact front-whee~ automati~
- 5 audi         a4           2.8  1999     6 auto(l5)   f        16    26 p     compact front-whee~ automati~
- 6 audi         a4           2.8  1999     6 manual(m5) f        18    26 p     compact front-whee~ manual t~
- 7 audi         a4           3.1  2008     6 auto(av)   f        18    27 p     compact front-whee~ automati~
- 8 audi         a4 quattro   1.8  1999     4 manual(m5) 4        18    26 p     compact 4-wheel dr~ manual t~
- 9 audi         a4 quattro   1.8  1999     4 auto(l5)   4        16    25 p     compact 4-wheel dr~ automati~
-10 audi         a4 quattro   2    2008     4 manual(m6) 4        20    28 p     compact 4-wheel dr~ manual t~
+   manufacturer model      displ  year   cyl trans      drv     cty   hwy fl    class   drive             transport   
+   &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;             &lt;chr&gt;       
+ 1 audi         a4           1.8  1999     4 auto(l5)   f        18    29 p     compact front-wheel drive automatic t~
+ 2 audi         a4           1.8  1999     4 manual(m5) f        21    29 p     compact front-wheel drive manual tran~
+ 3 audi         a4           2    2008     4 manual(m6) f        20    31 p     compact front-wheel drive manual tran~
+ 4 audi         a4           2    2008     4 auto(av)   f        21    30 p     compact front-wheel drive automatic t~
+ 5 audi         a4           2.8  1999     6 auto(l5)   f        16    26 p     compact front-wheel drive automatic t~
+ 6 audi         a4           2.8  1999     6 manual(m5) f        18    26 p     compact front-wheel drive manual tran~
+ 7 audi         a4           3.1  2008     6 auto(av)   f        18    27 p     compact front-wheel drive automatic t~
+ 8 audi         a4 quattro   1.8  1999     4 manual(m5) 4        18    26 p     compact 4-wheel drive     manual tran~
+ 9 audi         a4 quattro   1.8  1999     4 auto(l5)   4        16    25 p     compact 4-wheel drive     automatic t~
+10 audi         a4 quattro   2    2008     4 manual(m6) 4        20    28 p     compact 4-wheel drive     manual tran~
 # ... with 224 more rows
 ```
 ]
@@ -253,11 +251,86 @@ ggplot(mpg_data, aes(x = displ, y = hwy)) +
 
 ---
 
-## Brief history
+## Features of R
+
+&lt;img src="https://techvidvan.com/tutorials/wp-content/uploads/sites/2/2019/11/Features-of-R.jpg" width="80%" style="display: block; margin: auto;" /&gt;
+.font80[Source: [TechVidVan](https://techvidvan.com/tutorials/r-features/)]
 
 
+---
+
+## Features of R
+
+.leftcol[
+### Pros
+
+- Free and open source
+
+- Excellent for statistical computing and analysis
+
+- Powerful graphics
+
+- Cross-platform support
+
+- Large active and growing community users
+
+- New statistical method often available first in R
+
+]
 
 
+.rightcol[
+### Cons
+
+- Learning curve could be steep
+
+- May consume large amount of memory
+
+]
+
+
+---
+
+## Who are the userRs?
+
+&lt;img src="https://www.guru99.com/images/r_programming/032918_1002_WhatisRProg1.png" width="45%" style="display: block; margin: auto;" /&gt;
+.font80[Source: [Johnson (2022)](https://www.guru99.com/r-programming-introduction-basics.html)]
+
+
+---
+
+## Who are the userRs?
+
+&lt;img src="https://miro.medium.com/max/875/0*vAJhXpcNXcpT3aLP.png" width="65%" style="display: block; margin: auto;" /&gt;
+.font80[Source: [Hayes (2019)](https://towardsdatascience.com/team-r-or-team-python-2f8cf04310e6)]
+
+
+---
+
+class: middle center
+
+# Demonstration
+
+
+---
+
+class: middle center
+
+# Thank you!
+
+#### Slides created via the R packages:
+
+.leftcol[
+&lt;img src="img/xaringan.png" style="display:inline-block; margin: 0" width=20%/&gt; 
+
+### xaringan by Yihui
+]
+
+.rightcol[
+&lt;img src="img/xaringanthemer.png" style="display:inline-block; margin: 0" width=25%/&gt; 
+
+### xaringanthemer and xaringanExtra by Garrick
+]
 
 
 
