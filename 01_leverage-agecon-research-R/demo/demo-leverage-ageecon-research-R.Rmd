@@ -1,0 +1,187 @@
+---
+title: "Demo - production economics concept and efficiency analysis."
+subtitle: "Leveraing Agricultural Economic Research with R programming."
+author: "Christopher Llones"
+date: " Last edited: `r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    df_print: kable
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    fig_height: 5.5 
+    fig_width: 8
+    highlight: textmate
+    code_folding: show
+    
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, comment = "",
+                      message = FALSE, fig.align = 'center')
+
+# Libraries
+library(tidyverse)
+library(frontier)
+library(skimr)
+
+```
+
+
+# Production economics concepts
+
+## Getting to know our data
+
+Variables:
+
+- `vCap` = cost of capital (including land)
+- `vLab` = cost of labor (including remuneration of unpaid family labor)
+- `vMat` = cost of intermediate materials (e.g., seedlings, fertilizer, etc.)
+- `qOut` = quantity index of all outputs (apples and outputs)
+- `pCap` price index of capital goods
+- `pLab` price index of labor
+- `pMat` price index of materials
+- `pOut` price index of the aggregate output
+- `adv` use of advisory service
+
+```{r}
+data("appleProdFr86", package = "micEcon")
+dat <- appleProdFr86 %>% tibble()
+dat %>% head(11)
+```
+
+
+## Descriptive stats
+
+```{r}
+dat %>% skim()
+```
+
+
+## Calculating input quantities
+
+Our data set does not contain input quantities but prices and costs (volumes) of the inputs. Consider the formula below wherein $v_i$ is the volume of the ith input, $p_i$ is the price, and $x_i$ quantity.
+
+$$v_i = x_i \times p_i$$
+```{r}
+dat <- 
+dat %>% 
+  mutate(qCap = vCap / pCap,
+         qLab = vLab / pLab,
+         qMat = vMat / pMat)
+```
+
+```{r}
+par(mfrow = c(1, 3))
+hist(dat$qCap, main = "Capital", xlab = "Quantity")
+hist(dat$qLab, main = "Labor", xlab = "Quantity")
+hist(dat$qMat, main = "Materials", xlab = "Quantity")
+```
+
+
+## Calculating average products (AP)
+
+Recall the average product as output quantity over input quantity.
+
+$$AP = q / x_i$$
+
+```{r}
+dat <- 
+dat %>% 
+  mutate(apCap = qOut / qCap,
+         apLab = qOut / qLab,
+         apMat = qOut / qMat)
+```
+
+```{r}
+par(mfrow = c(1, 3))
+hist(dat$apCap)
+hist(dat$apLab)
+hist(dat$apMat)
+```
+
+```{r}
+par(mfrow = c(1, 3))
+plot(dat$qOut, dat$apCap)
+plot(dat$qOut, dat$apLab)
+plot(dat$qOut, dat$apMat)
+```
+
+```{r}
+par(mfrow = c(1, 3))
+plot(dat$qOut, dat$apCap, log = "x")
+plot(dat$qOut, dat$apLab, log = "x")
+plot(dat$qOut, dat$apMat, log = "x")
+```
+
+```{r}
+dat %>% 
+  ggplot(aes(qOut, apLab)) +
+  geom_point() +
+  scale_x_log10() +
+  geom_smooth(se = FALSE, span = 0.8) +
+  theme_light()
+```
+
+
+
+# Production efficiency analysis
+
+
+## Linear production function
+
+$$y = \beta_0 + \Sigma^N_{i=1} \beta_i x_i$$
+$$
+\operatorname{qOut} = \alpha + \beta_{1}(\operatorname{qCap}) + \beta_{2}(\operatorname{qLab}) + \beta_{3}(\operatorname{qMat}) + \epsilon
+$$
+
+```{r}
+prodLin <- lm( qOut ~ qCap + qLab + qMat, data = dat )
+prodLin %>% summary()
+```
+
+
+### Marginal products and output elasticities
+
+In a linear production function, the marginal product are equal to the coefficients of the corresponding quantities.
+
+$$MP_i = \frac{\partial y}{\partial x_i} = \alpha_i$$ 
+While the output elasticities (partial production elasticities) of our inputs are:
+
+$$\epsilon_i  = \frac{\partial y}{\partial x_i}  = MP_i \times \frac{x_i}{y} = \frac{MP_i}{AP_i}$$
+
+```{r}
+dat$eCap <- coef(prodLin)["qCap"] * dat$qCap / dat$qOut
+dat$eLab <- coef(prodLin)["qLab"] * dat$qLab / dat$qOut
+dat$eMat <- coef(prodLin)["qMat"] * dat$qMat / dat$qOut
+
+dat %>% select(starts_with("e")) %>% colMeans()
+```
+
+
+## Cobb-Douglas production function
+
+
+## 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
