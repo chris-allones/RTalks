@@ -13,6 +13,7 @@ output:
     fig_width: 8
     highlight: textmate
     code_folding: show
+    code_download: true
     
 ---
 
@@ -161,20 +162,57 @@ dat %>% select(starts_with("e")) %>% colMeans()
 
 ## Cobb-Douglas production function
 
+A Cobb-Douglas production function with N inputs is defined as:
 
-## 
+$$
+y = A \Pi_{i=1}^N x_i^{a_i}
+$$
+
+This function can be linearized by taking the natural logarithm on both sides.
+
+$$
+\ln y = \alpha_0 + \Sigma_{i=1}^N \alpha_i \ln x_i
+$$
+
+$$
+\operatorname{log(qOut)} = \alpha + \beta_{1}(\operatorname{\log(qCap)}) + \beta_{2}(\operatorname{\log(qLab)}) + \beta_{3}(\operatorname{\log(qMat)}) + \epsilon
+$$
+
+```{r}
+prodCD <- lm(log(qOut) ~ log(qCap) + log(qLab) + log(qMat), data = dat)
+summary(prodCD)
+```
 
 
+### Marginal products
 
 
+$$
+MP_i = \frac{\partial y}{\partial x_i} = \frac{\partial \ln y}{\partial \ln x_i} \times \frac{y}{x_i}
+$$
 
 
+```{r}
+dat$mpCapCD <- coef(prodCD)["log(qCap)"] * dat$qOut / dat$qCap
+dat$mpLabCD <- coef(prodCD)["log(qLab)"] * dat$qOut / dat$qLab
+dat$mpMatCD <- coef(prodCD)["log(qMat)"] * dat$qOut / dat$qMat
+```
 
+```{r}
+par(mfrow = c(1, 3))
+hist( dat$mpCapCD, main = "MP Capital")
+hist( dat$mpLabCD, main = "MP Labour")
+hist( dat$mpMatCD, main = "MP Materials")
+```
 
-
-
-
-
+```{r}
+dat %>% 
+  ggplot() +
+  geom_smooth(aes(qOut, mpLabCD), se = T, span = 1) +
+  geom_smooth(aes(qOut, apLab), se = T, span = 1, color = "red") +
+  theme_minimal()
+  
+```
 
 
 
