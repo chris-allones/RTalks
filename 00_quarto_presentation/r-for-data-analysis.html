@@ -495,6 +495,184 @@
 </center>
 </div>
 </div>
+</section>
+<section id="scatter-plot" class="slide level2 smaller">
+<h2>Scatter plot</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>mean_hwy_data <span class="ot">&lt;-</span> mpg <span class="sc">%&gt;%</span> </span>
+<span id="cb2-2"><a href="#cb2-2"></a>  <span class="fu">group_by</span>(class) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-3"><a href="#cb2-3"></a>  <span class="fu">summarise</span>(<span class="at">mean_hwy =</span> <span class="fu">mean</span>(hwy, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg,</span>
+<span id="cb2-5"><a href="#cb2-5"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> class, <span class="at">y =</span> hwy, <span class="at">color =</span> class)) <span class="sc">+</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="st">"jitter"</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> mean_hwy_data, <span class="fu">aes</span>(<span class="at">y =</span> mean_hwy), <span class="at">size =</span> <span class="dv">7</span>) <span class="sc">+</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Fuel consumption per class vehicle"</span>,</span>
+<span id="cb2-9"><a href="#cb2-9"></a>       <span class="at">x =</span> <span class="st">"Class of vehicle"</span>,</span>
+<span id="cb2-10"><a href="#cb2-10"></a>       <span class="at">y =</span> <span class="st">"Highway fuel consumption"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div><div class="column" style="width:60%;">
+<center>
+<img data-src="img/scatter_plot.jpeg">
+</center>
+</div>
+</div>
+</section>
+<section id="bubble-plot" class="slide level2 smaller">
+<h2>Bubble plot</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>gapminder_data <span class="ot">&lt;-</span> gapminder<span class="sc">::</span>gapminder</span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a>gapminder_data <span class="sc">%&gt;%</span> </span>
+<span id="cb3-4"><a href="#cb3-4"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2007</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-5"><a href="#cb3-5"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> gdpPercap, </span>
+<span id="cb3-6"><a href="#cb3-6"></a>             <span class="at">y =</span> lifeExp, </span>
+<span id="cb3-7"><a href="#cb3-7"></a>             <span class="at">color =</span> continent)) <span class="sc">+</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.8</span>, <span class="fu">aes</span>(<span class="at">size =</span> pop)) <span class="sc">+</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> country),</span>
+<span id="cb3-10"><a href="#cb3-10"></a>            <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>  <span class="fu">scale_x_log10</span>(<span class="at">label =</span> scales<span class="sc">::</span><span class="fu">dollar_format</span>()) <span class="sc">+</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="dv">20</span>)) <span class="sc">+</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Life expectancy vs GDP per capita, 2007"</span>,</span>
+<span id="cb3-14"><a href="#cb3-14"></a>       <span class="at">x =</span> <span class="st">"GDP per Capita"</span>,</span>
+<span id="cb3-15"><a href="#cb3-15"></a>       <span class="at">y =</span> <span class="st">"Life Expectancy (years)"</span>) <span class="sc">+</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a>  <span class="fu">theme</span>(<span class="at">plot.margin =</span> <span class="fu">unit</span>(<span class="fu">rep</span>(<span class="fl">0.5</span>, <span class="dv">4</span>), <span class="st">"cm"</span>),</span>
+<span id="cb3-17"><a href="#cb3-17"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>,</span>
+<span id="cb3-18"><a href="#cb3-18"></a>                                  <span class="at">face =</span> <span class="st">"bold"</span>,</span>
+<span id="cb3-19"><a href="#cb3-19"></a>                                  <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">b =</span> <span class="dv">20</span>)),</span>
+<span id="cb3-20"><a href="#cb3-20"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">15</span>)),</span>
+<span id="cb3-21"><a href="#cb3-21"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">r =</span> <span class="dv">15</span>)),</span>
+<span id="cb3-22"><a href="#cb3-22"></a>        <span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div><div class="column" style="width:60%;">
+<center>
+<img data-src="img/bubble_plot_gapminder.jpeg">
+</center>
+</div>
+</div>
+</section>
+<section id="word-cloud" class="slide level2 smaller">
+<h2>Word cloud</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> tidy_twitter, </span>
+<span id="cb4-2"><a href="#cb4-2"></a>       <span class="fu">aes</span>(<span class="at">label =</span> word, <span class="at">size =</span> n, <span class="at">color =</span> <span class="fu">as.character</span>(n))) <span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>  <span class="fu">geom_text_wordcloud</span>() <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>  <span class="fu">scale_size_area</span>(<span class="at">max_size =</span> <span class="dv">15</span>) <span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>  <span class="fu">scale_color_viridis_d</span>(<span class="at">option =</span> <span class="st">"B"</span>, <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div><div class="column" style="width:60%;">
+<center>
+<img data-src="img/word_cloud_twitter.jpeg">
+</center>
+</div>
+</div>
+</section>
+<section id="apa-line-plot" class="slide level2 smaller">
+<h2>APA: line plot</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>customer_dbase <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> ed, <span class="at">y =</span> mean_income)) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">geom_line</span>(<span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">26</span>),</span>
+<span id="cb5-5"><a href="#cb5-5"></a>                     <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">26</span>, <span class="dv">2</span>),</span>
+<span id="cb5-6"><a href="#cb5-6"></a>                     <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>),</span>
+<span id="cb5-8"><a href="#cb5-8"></a>                     <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">10</span>),</span>
+<span id="cb5-9"><a href="#cb5-9"></a>                     <span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">dollar_format</span>(),</span>
+<span id="cb5-10"><a href="#cb5-10"></a>                     <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Years of Education"</span>,</span>
+<span id="cb5-12"><a href="#cb5-12"></a>       <span class="at">y =</span> <span class="st">"Mean household income</span><span class="sc">\n</span><span class="st"> (in thousands)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div><div class="column" style="width:60%;">
+<center>
+<img data-src="img/apa_lineplot.jpeg">
+</center>
+</div>
+</div>
+</section>
+<section id="apa-boxplot" class="slide level2 smaller">
+<h2>APA: boxplot</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>work_prog <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> ed, <span class="at">y =</span> incaft, <span class="at">fill =</span> gender)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>  <span class="fu">stat_boxplot</span>(<span class="at">geom =</span> <span class="st">"errorbar"</span>, </span>
+<span id="cb6-4"><a href="#cb6-4"></a>               <span class="at">width =</span> <span class="fl">0.2</span>,</span>
+<span id="cb6-5"><a href="#cb6-5"></a>               <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width  =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> <span class="fl">0.3</span>, </span>
+<span id="cb6-7"><a href="#cb6-7"></a>               <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.5</span>),</span>
+<span id="cb6-8"><a href="#cb6-8"></a>               <span class="at">outlier.shape =</span> <span class="dv">1</span>,</span>
+<span id="cb6-9"><a href="#cb6-9"></a>               <span class="at">outlier.size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">40</span>, <span class="dv">2</span>), </span>
+<span id="cb6-11"><a href="#cb6-11"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">40</span>),</span>
+<span id="cb6-12"><a href="#cb6-12"></a>                     <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">name =</span> <span class="st">"Gender"</span>,</span>
+<span id="cb6-14"><a href="#cb6-14"></a>                  <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"grey40"</span>, <span class="st">"grey80"</span>)) <span class="sc">+</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Income after the program"</span>,</span>
+<span id="cb6-16"><a href="#cb6-16"></a>       <span class="at">x =</span> <span class="st">"Level of Education"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div><div class="column" style="width:60%;">
+<center>
+<img data-src="img/apa_boxplot.jpeg">
+</center>
+</div>
+</div>
+</section>
+<section id="apa-barplot" class="slide level2 smaller">
+<h2>APA: barplot</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>employee <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="#cb7-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> gender, <span class="at">y =</span> mean_salary, <span class="at">fill =</span> jobcat)) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.6</span>),</span>
+<span id="cb7-4"><a href="#cb7-4"></a>           <span class="at">width =</span> <span class="fl">0.5</span>,</span>
+<span id="cb7-5"><a href="#cb7-5"></a>           <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> mean_salary <span class="sc">-</span> sd_salary, <span class="at">ymax =</span> mean_salary <span class="sc">+</span> sd_salary),</span>
+<span id="cb7-7"><a href="#cb7-7"></a>                <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.6</span>),</span>
+<span id="cb7-8"><a href="#cb7-8"></a>                <span class="at">width =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="dv">0</span>),</span>
+<span id="cb7-10"><a href="#cb7-10"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100000</span>),</span>
+<span id="cb7-11"><a href="#cb7-11"></a>                     <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">100000</span>, <span class="dv">20000</span>),</span>
+<span id="cb7-12"><a href="#cb7-12"></a>                     <span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">dollar_format</span>()) <span class="sc">+</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#FAFAFA"</span>, <span class="st">"#D4D4D4"</span>, <span class="st">"#737373"</span>)) <span class="sc">+</span></span>
+<span id="cb7-14"><a href="#cb7-14"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Average annual salary"</span>,</span>
+<span id="cb7-15"><a href="#cb7-15"></a>       <span class="at">x =</span> <span class="st">"Gender"</span>,</span>
+<span id="cb7-16"><a href="#cb7-16"></a>       <span class="at">fill =</span> <span class="st">"Job category"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div><div class="column" style="width:60%;">
+<center>
+<img data-src="img/apa_bar_plot.jpeg">
+</center>
+</div>
+</div>
 <div class="footer footer-default">
 <p>R programming for Data Analysis &amp; Visualization</p>
 </div>

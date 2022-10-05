@@ -13,51 +13,50 @@ editor: visual
 ---
 
 ```{r include=FALSE}
+# Workng directory
+setwd("~/GitHub-repo/RTalks/00_quarto_presentation")
+
+# Libraries
 library(tidyverse)
+library(ggrepel)
 
 # Theme
 theme_set(theme_minimal())
-theme_update(plot.margin = margin(rep(20, 4)))
+theme_update(plot.margin = margin(rep(20, 4)),
+             plot.background = element_rect(fill = "white", color = "white"))
 ```
-
 
 ## Outline
 
-::: {.incremental}
-
-- Why R?
-- Data visualization
-- Data analysis
-
-::: 
+::: incremental
+-   Why R?
+-   Data visualization
+-   Data analysis
+:::
 
 # Why R? :smirk:
 
-
 ## The Pros and Cons {.smaller}
 
-:::: {.columns}
-
+::: columns
 ::: {.column width="60%"}
 **Pros**
 
-- free and open sources
-- excellent for statistical computing and analysis
-- powerful graphics
-- cross-platform support
-- large active and growing community users
-- new statistical method often available first in R
+-   free and open sources
+-   excellent for statistical computing and analysis
+-   powerful graphics
+-   cross-platform support
+-   large active and growing community users
+-   new statistical method often available first in R
 :::
 
 ::: {.column width="40%"}
 **Cons**
 
-- learning curve could be steep
-- may consumer large amount of memory
+-   learning curve could be steep
+-   may consumer large amount of memory
 :::
-
-::::
-
+:::
 
 ## Who are the R users? {.smaller}
 
@@ -78,7 +77,6 @@ ggplot(aes(pct, industry)) +
   theme(axis.text = element_text(size = 14),
         axis.title = element_blank())
 ```
-
 
 ## Who are the R users? {.smaller}
 
@@ -102,7 +100,6 @@ ggplot(aes(pct, lang)) +
   labs(title = "Top 10 data science programming language by percent of jod ads")
 ```
 
-
 # Data vizualisation in R
 
 ## 
@@ -115,9 +112,8 @@ knitr::include_graphics("img/data_viz_collage.png")
 
 ## Bar plot {.smaller}
 
-:::: {.columns}
+::: columns
 ::: {.column width="40%"}
-
 ```{r }
 #| eval: false
 #| echo: true
@@ -165,15 +161,204 @@ int_penetration %>%
 ```
 :::
 
-::: {.column width="60%" }
-<center>![](img/mobile_penetration.jpeg) </center>
+::: {.column width="60%"}
+<center>![](img/mobile_penetration.jpeg)</center>
+:::
+:::
+
+
+## Scatter plot {.smaller}
+
+:::: {.columns}
+::: {.column width="40%"}
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: show
+
+mean_hwy_data <- mpg %>% 
+  group_by(class) %>% 
+  summarise(mean_hwy = mean(hwy, na.rm = TRUE))
+ggplot(data = mpg,
+       mapping = aes(x = class, y = hwy, color = class)) +
+  geom_point(position = "jitter", size = 3, alpha = 0.5) +
+  geom_point(data = mean_hwy_data, aes(y = mean_hwy), size = 7) +
+  labs(title = "Fuel consumption per class vehicle",
+       x = "Class of vehicle",
+       y = "Highway fuel consumption")
+
+```
+:::
+::: {.column width="60%"}
+<center>![](img/scatter_plot.jpeg)</center>
 :::
 ::::
 
 
 
 
+## Bubble plot {.smaller}
 
+:::: {.columns}
+::: {.column width="40%"}
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: show
+
+gapminder_data <- gapminder::gapminder
+
+gapminder_data %>% 
+  filter(year == 2007) %>% 
+  ggplot(aes(x = gdpPercap, 
+             y = lifeExp, 
+             color = continent)) +
+  geom_point(alpha = 0.8, aes(size = pop)) +
+  geom_text_repel(aes(label = country),
+            size = 3) +
+  scale_x_log10(label = scales::dollar_format()) +
+  scale_size(range = c(0.1, 20)) +
+  labs(title = "Life expectancy vs GDP per capita, 2007",
+       x = "GDP per Capita",
+       y = "Life Expectancy (years)") +
+  theme(plot.margin = unit(rep(0.5, 4), "cm"),
+        plot.title = element_text(size = 16,
+                                  face = "bold",
+                                  margin = margin(b = 20)),
+        axis.title.x = element_text(margin = margin(t = 15)),
+        axis.title.y = element_text(margin = margin(r = 15)),
+        legend.position = "none")
+```
+:::
+
+::: {.column width="60%"}
+<center>![](img/bubble_plot_gapminder.jpeg)</center>
+:::
+::::
+
+
+## Word cloud {.smaller}
+
+:::: {.columns}
+::: {.column width="40%"}
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: show
+
+ggplot(data = tidy_twitter, 
+       aes(label = word, size = n, color = as.character(n))) +
+  geom_text_wordcloud() +
+  scale_size_area(max_size = 15) +
+  scale_color_viridis_d(option = "B", direction = -1) +
+  theme_void()
+
+```
+:::
+
+::: {.column width="60%"}
+<center>![](img/word_cloud_twitter.jpeg)</center>
+:::
+::::
+
+
+
+## APA: line plot {.smaller}
+
+:::: {.columns}
+::: {.column width="40%"}
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: show
+
+customer_dbase %>% 
+  ggplot(aes(x = ed, y = mean_income)) +
+  geom_line(size = 1) +
+  scale_x_continuous(limits = c(0, 26),
+                     breaks = seq(0, 26, 2),
+                     expand = expansion(0)) +
+  scale_y_continuous(limits = c(0, 100),
+                     breaks = seq(0, 100, 10),
+                     labels = scales::dollar_format(),
+                     expand = expansion(0)) +
+  labs(x = "Years of Education",
+       y = "Mean household income\n (in thousands)")
+
+```
+:::
+::: {.column width="60%"}
+<center>![](img/apa_lineplot.jpeg)</center>
+:::
+::::
+
+
+## APA: boxplot {.smaller}
+
+:::: {.columns}
+::: {.column width="40%"}
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: show
+
+work_prog %>% 
+  ggplot(aes(x = ed, y = incaft, fill = gender)) +
+  stat_boxplot(geom = "errorbar", 
+               width = 0.2,
+               position = position_dodge(width  = 0.5)) +
+  geom_boxplot(width = 0.3, 
+               position = position_dodge(width = 0.5),
+               outlier.shape = 1,
+               outlier.size = 3) +
+  scale_y_continuous(breaks = seq(0, 40, 2), 
+                     limits = c(0, 40),
+                     expand = expansion(0)) +
+  scale_fill_manual(name = "Gender",
+                  values = c("grey40", "grey80")) +
+  labs(y = "Income after the program",
+       x = "Level of Education")
+
+```
+:::
+::: {.column width="60%"}
+<center>![](img/apa_boxplot.jpeg)</center>
+:::
+::::
+
+
+## APA: barplot {.smaller}
+
+:::: {.columns}
+::: {.column width="40%"}
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: show
+
+employee %>% 
+  ggplot(aes(x = gender, y = mean_salary, fill = jobcat)) +
+  geom_col(position = position_dodge(width = 0.6),
+           width = 0.5,
+           color = "black") +
+  geom_errorbar(aes(ymin = mean_salary - sd_salary, ymax = mean_salary + sd_salary),
+                position = position_dodge(width = 0.6),
+                width = 0.1) +
+  scale_y_continuous(expand = expansion(0),
+                     limits = c(0, 100000),
+                     breaks = seq(0, 100000, 20000),
+                     labels = scales::dollar_format()) +
+  scale_fill_manual(values = c("#FAFAFA", "#D4D4D4", "#737373")) +
+  labs(y = "Average annual salary",
+       x = "Gender",
+       fill = "Job category")
+
+```
+:::
+::: {.column width="60%"}
+<center>![](img/apa_bar_plot.jpeg)</center>
+:::
+::::
 
 
 
