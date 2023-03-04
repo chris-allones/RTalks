@@ -22,6 +22,27 @@ h2 {
 
 .center-text {
   text-align: center;
+  
+}
+
+
+.source-text {
+  font-size: 0.75em;
+  font-style: italic;
+}
+
+.source-text-smaller {
+  text-align: left;
+  font-size: 0.50em;
+  font-style: italic;
+  color: #1d3557;
+}
+
+.source-text-smaller-center {
+  text-align: center;
+  font-size: 0.50em;
+  font-style: italic;
+  color: #1d3557;
 }
 
 .center-figure {

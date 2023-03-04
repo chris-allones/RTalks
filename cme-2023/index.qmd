@@ -4,11 +4,11 @@ subtitle: "Intro to Structural equation modelling (SEM) in R"
 format: 
   revealjs:
     theme: [simple, custom.scss]
-    preview-links: auto
+    preview-links: true
     code-fold: false
     chalkboard: true
     slide-number: true
-    footer: "R you ready? Intro to SEM in R"
+    footer: "R you ready? Intro to SEM in R | link: t.ly/G900 "
 engine: knitr
 from: markdown+emoji
 include-after-body: "collapseoutput.js"
@@ -30,7 +30,7 @@ setwd("~/GitHub-repo/RTalks/cme-2023")
 
 -   R for reproducibility and replicability in research
 
--   R for academinc teaching
+-   R for academic teaching
 
 ### Part II
 
@@ -58,8 +58,10 @@ setwd("~/GitHub-repo/RTalks/cme-2023")
 :::
 :::
 
-::: aside
-National Academies of Sciences, Engineering, and Medicine. 2019. Reproducibility and Replicability in Science. Washington, DC: The National Academy Press, https://doi.org/10.17226/25303
+<br>
+
+::: {.source-text-smaller .center-text}
+[Source: National Academies of Sciences, Engineering, and Medicine. 2019. Reproducibility and Replicability in Science. Washington, DC: The National Academy Press, https://doi.org/10.17226/25303](https://doi.org/10.17226/25303)
 :::
 
 ## What is reproducibility and replicability in research?
@@ -70,21 +72,74 @@ National Academies of Sciences, Engineering, and Medicine. 2019. Reproducibility
 ::: column
 ### Reproducibility {.center-text}
 
-- same procedues
+-   same procedues
 
-- same data
+-   same data
 
-- same code
+-   same code
 :::
 
 ::: column
 ### Replicability {.center-text}
 
-- same procedures
+-   same procedures
 
-- new data
+-   new data
 
-- new code
-
+-   new code
 :::
 :::
+
+## 
+
+![](img/reproduce-replicate-issue.png){fig-align="center" width="50%" height="50%"}
+
+::: {.source-text-smaller .center-text}
+[Source: Baker, M. (2016). 1,500 scientists lift the lid on reproducibility. Nature, 533(7604), Article 7604. https://doi.org/10.1038/533452a](https://doi.org/10.1038/533452a)
+:::
+
+## 
+
+![](img/rep-rep-bar.png){fig-align="center" width="105%" height="105%"}
+
+::: {.source-text-smaller .center-text}
+[Source: Baker, M. (2016). 1,500 scientists lift the lid on reproducibility. Nature, 533(7604), Article 7604. https://doi.org/10.1038/533452a](https://doi.org/10.1038/533452a)
+:::
+
+## R for reproducibility and replicability in research
+
+<br>
+
+| Tips                                                           | Example                                                                                                                                                                                                                          |
+|-------------------|-----------------------------------------------------|
+| Presenting supplementary information in a reproducible manner. | [Social capital and production risks: examining the association using the case of irrigated rice farms in Northern Thailand.](https://chris-allones.github.io/article-writing/icist_2022/20220808-icist-2022-data-analysis.html) |
+| Version control (e.g., GitHub)                                 | [GitHub repositories](https://github.com/chris-allones)                                                                                                                                                                          |
+
+# R for academic teaching
+
+## 
+
+![](https://www.guru99.com/images/r_programming/032918_1002_WhatisRProg1.png){fig-align="center" width="50%" height="50%"}
+
+::: source-text-smaller-center
+Based on visits to Stack Overflow questions from the US/UK.
+:::
+
+## 
+
+![](https://jelvix.com/wp-content/uploads/2020/01/data-scientist-skills-statistics.jpg){fig-align="center" width="60%" height="60%"}
+
+::: source-text-smaller-center
+Source: CV compiler
+:::
+
+## What R features supports teaching?
+
+<br>
+
+| Tips                    | Example                                                                                                                       |
+|-------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| Creating course website | [Personal teaching website](https://www.andrewheiss.com/)                                                                     |
+| Class presentation      | [CFA-CB SEM presentation](https://chris-allones.github.io/sem-2023-materials/sem_presentations/03-cfa-cb-sem/cfa-cb-sem.html) |
+| Training site           | [SEM training site](https://chris-allones.github.io/sem-2023/)                                                                |
+| Books                   | [R books](https://www.bigbookofr.com/)                                                                                        |
