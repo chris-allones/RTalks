@@ -1,0 +1,23 @@
+R you ready? SEM and the power of R programming
+
+
+Outline
+
+Power of R
+
+- R for reproducibility and replicability in research
+
+- R for teaching
+
+SEM
+
+- Limitation of using single indicator
+
+- Why SEM
+
+- What tools are being using for SEM
+
+- R for SEM
+
+- Demo
+

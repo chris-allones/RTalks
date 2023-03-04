@@ -1,0 +1,90 @@
+---
+title: "R you ready?"
+subtitle: "Intro to Structural equation modelling (SEM) in R"
+format: 
+  revealjs:
+    theme: [simple, custom.scss]
+    preview-links: auto
+    code-fold: false
+    chalkboard: true
+    slide-number: true
+    footer: "R you ready? Intro to SEM in R"
+engine: knitr
+from: markdown+emoji
+include-after-body: "collapseoutput.js"
+editor: visual
+---
+
+```{r}
+#| echo: false
+#| include: false
+knitr::opts_chunk$set(comment = "", collapse = TRUE)
+## working directory
+setwd("~/GitHub-repo/RTalks/cme-2023")
+
+```
+
+## Outline
+
+### Part I
+
+-   R for reproducibility and replicability in research
+
+-   R for academinc teaching
+
+### Part II
+
+-   Intro to SEM
+
+-   SEM demo
+
+# R for reproducibility and replicability in research
+
+## What is reproducibility and replicability in research?
+
+<br>
+
+::: columns
+::: column
+### Reproducibility {.center-text}
+
+-   Obtaining computational results using the same input data, computational steps, methods, code and conditions of analysis.
+:::
+
+::: column
+### Replicability {.center-text}
+
+-   Obtaining consistent results across studies aimed at answering the same scientific question, each of which has obtained its own data.
+:::
+:::
+
+::: aside
+National Academies of Sciences, Engineering, and Medicine. 2019. Reproducibility and Replicability in Science. Washington, DC: The National Academy Press, https://doi.org/10.17226/25303
+:::
+
+## What is reproducibility and replicability in research?
+
+<br>
+
+::: columns
+::: column
+### Reproducibility {.center-text}
+
+- same procedues
+
+- same data
+
+- same code
+:::
+
+::: column
+### Replicability {.center-text}
+
+- same procedures
+
+- new data
+
+- new code
+
+:::
+:::
