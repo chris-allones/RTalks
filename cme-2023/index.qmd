@@ -5,7 +5,8 @@ format:
   revealjs:
     theme: [simple, custom.scss]
     preview-links: true
-    code-fold: false
+    code-fold: true
+    code-summary: "Show the code"
     chalkboard: true
     slide-number: true
     footer: "R you ready? Intro to SEM in R | link: t.ly/G900 "
@@ -21,6 +22,10 @@ editor: visual
 knitr::opts_chunk$set(comment = "", collapse = TRUE)
 ## working directory
 setwd("~/GitHub-repo/RTalks/cme-2023")
+
+## Libraries
+library(tidyverse)
+library(readxl)
 
 ```
 
@@ -110,10 +115,13 @@ setwd("~/GitHub-repo/RTalks/cme-2023")
 
 <br>
 
++----------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Tips                                                           | Example                                                                                                                                                                                                                          |
-|-------------------|-----------------------------------------------------|
++================================================================+==================================================================================================================================================================================================================================+
 | Presenting supplementary information in a reproducible manner. | [Social capital and production risks: examining the association using the case of irrigated rice farms in Northern Thailand.](https://chris-allones.github.io/article-writing/icist_2022/20220808-icist-2022-data-analysis.html) |
++----------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Version control (e.g., GitHub)                                 | [GitHub repositories](https://github.com/chris-allones)                                                                                                                                                                          |
++----------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 # R for academic teaching
 
@@ -137,9 +145,177 @@ Source: CV compiler
 
 <br>
 
++-------------------------+-------------------------------------------------------------------------------------------------------------------------------+
 | Tips                    | Example                                                                                                                       |
-|-------------------------|-------------------------------------------------------------------------------------------------------------------------------|
++=========================+===============================================================================================================================+
 | Creating course website | [Personal teaching website](https://www.andrewheiss.com/)                                                                     |
++-------------------------+-------------------------------------------------------------------------------------------------------------------------------+
 | Class presentation      | [CFA-CB SEM presentation](https://chris-allones.github.io/sem-2023-materials/sem_presentations/03-cfa-cb-sem/cfa-cb-sem.html) |
++-------------------------+-------------------------------------------------------------------------------------------------------------------------------+
 | Training site           | [SEM training site](https://chris-allones.github.io/sem-2023/)                                                                |
++-------------------------+-------------------------------------------------------------------------------------------------------------------------------+
 | Books                   | [R books](https://www.bigbookofr.com/)                                                                                        |
++-------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+
+# Any questions?
+
+# Introduction to Structural Equation Modelling (SEM)
+
+## Why do an SEM?
+
+::: columns
+::: column
+<br>
+
+#### Principal reasons
+
+-   Estimation of latent (unobserved) variables
+
+-   Explicit assessment of measurement error
+
+-   Testing statistical models that more closely align with theory
+:::
+
+::: column
+![](img/measurement_part.jpg){fig-align="center"}
+:::
+:::
+
+## Applications of SEM
+
+```{r}
+#| echo: false
+#| eval: false
+read_excel("data/sem_articles.xlsx", sheet = 1) %>% 
+  mutate(subject_area = fct_reorder(subject_area, count)) %>% 
+  ggplot(aes(count, subject_area)) + 
+  geom_col(fill = "#1d3557") +
+  geom_text(aes(label = count), hjust = -0.5, size = 3) +
+  scale_x_continuous(expand = c(0, 0), limits = c(0, 3e4)) +
+  theme_minimal() +
+  theme(plot.margin = margin(rep(20, 4)),
+        plot.title = element_text(face = "bold"),
+        axis.title.x = element_text(margin = margin(t=20))) +
+  labs(title = "SEM related journal articles",
+       subtitle = str_wrap("A total of 83,863 articles covering the period 1978-2023 found in the Scopus database", 70),
+       x = "Number of articles indexed in the Scopus database",
+       y = element_blank())
+
+ggsave("img/sem_subject_area.jpeg", dpi = 300, width = 8, height = 7)
+```
+
+::: columns
+::: {.column width="70%"}
+![](img/sem_subject_area.jpeg){fig-align="left"}
+:::
+
+::: {.column width="30%"}
+<br>
+
+<br>
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+
+## Plotting count of SEM articles 
+read_excel("data/sem_articles.xlsx", sheet = 1) %>% 
+  mutate(subject_area = fct_reorder(subject_area, count)) %>% 
+  ggplot(aes(count, subject_area)) + 
+  geom_col() +
+  geom_text(aes(label = count), hjust = -0.5, size = 3) +
+  scale_x_continuous(expand = c(0, 0), limits = c(0, 3e4)) +
+  theme_minimal() +
+  theme(plot.margin = margin(rep(20, 4))) +
+  labs(title = "SEM related journal articles",
+       subtitle = str_wrap("A total of 83,863 articles covering the period 1978-2023 found in the Scopus database", 70),
+       x = "Number of articles indexed in the Scopus database",
+       y = element_blank())
+```
+:::
+:::
+
+## Applications of SEM
+
+```{r}
+#| echo: false
+#| eval: false
+
+read_excel("data/sem_articles.xlsx", sheet = 2) %>% 
+  filter(year < 2023) %>% 
+  ggplot(aes(year, count)) + 
+  geom_line(linewidth= 1) +
+  geom_text(data = . %>% filter(year > 2010),
+            aes(label = count), hjust = -0.5, size = 3) +
+  scale_x_continuous(expand = c(0, 0), limits = c(1975, 2030), 
+                     breaks = c(seq(1975, 2020, 10), 2022)) +
+  scale_y_continuous(limits = c(0, 15e3), breaks = seq(0, 15e3, 2500)) +
+  theme_minimal() +
+  theme(plot.margin = margin(rep(20, 4)),
+        plot.title = element_text(face = "bold"),
+        axis.title.y = element_text(margin = margin(r=20))) +
+  labs(title = "Growth of SEM related journal articles",
+       subtitle = str_wrap("A total of 83,863 articles covering the period 1978-2023 found in the Scopus database", 75),
+       y = "Number of articles indexed in the Scopus database",
+       x = element_blank())
+
+ggsave("img/sem_time.jpeg", dpi = 300, width = 7, height = 5)
+```
+
+::: columns
+::: {.column width="70%"}
+![](img/sem_time.jpeg){fig-align="left"}
+:::
+
+::: {.column width="30%"}
+<br>
+
+<br>
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+
+## Plotting count of SEM articles across time
+read_excel("data/sem_articles.xlsx", sheet = 2) %>% 
+  filter(year < 2023) %>% 
+  ggplot(aes(year, count)) + 
+  geom_line(linewidth= 1) +
+  geom_text(data = . %>% filter(year > 2010),
+            aes(label = count), hjust = -0.5, size = 3) +
+  scale_x_continuous(expand = c(0, 0), limits = c(1975, 2030), 
+                     breaks = c(seq(1975, 2020, 10), 2022)) +
+  scale_y_continuous(limits = c(0, 15e3), breaks = seq(0, 15e3, 2500)) +
+  theme_minimal() +
+  theme(plot.margin = margin(rep(20, 4)),
+        plot.title = element_text(face = "bold"),
+        axis.title.y = element_text(margin = margin(r=20))) +
+  labs(title = "Growth of SEM related journal articles",
+       subtitle = str_wrap("A total of 83,863 articles covering the period 1978-2023 found in the Scopus database", 75),
+       y = "Number of articles indexed in the Scopus database",
+       x = element_blank())
+```
+:::
+:::
+
+## Available statistical software for SEM
+
+<br>
+
++--------------------------+--------------------------------------------------------------------------------------+-----------------------------+
+| SEM type                 | Statistical software                                                                 | Subscription fee            |
++==========================+======================================================================================+=============================+
+| Covariance based SEM     | 1.  [AMOS](https://www.ibm.com/products/structural-equation-modeling-sem)            | 1.  \~3500 pesos annually   |
+|                          | 2.  [Lavaan package in R](https://lavaan.ugent.be/)                                  | 2.  free                    |
++--------------------------+--------------------------------------------------------------------------------------+-----------------------------+
+| Partial least-square SEM | 1.  [SmartPLS](https://www.smartpls.com/)                                            | 1.  \~ 14000 pesos annually |
+|                          | 2.  [seminR package in R](https://cran.r-project.org/web/packages/seminr/index.html) | 2.  free                    |
++--------------------------+--------------------------------------------------------------------------------------+-----------------------------+
+|                          |                                                                                      |                             |
++--------------------------+--------------------------------------------------------------------------------------+-----------------------------+
+
+## Why use R for SEM?
+
+## Steps in doing SEM

@@ -21,3 +21,27 @@ SEM
 
 - Demo
 
+
+
+Why use an SEM
+
+1 Assessment of the measurement error
+
+-  can specify relationship among constructs that are purged of measurement error so that we can get an unbiased estimates of our predictors and outcome variables.
+
+2. Testing the fit of teh model to the data
+
+- test the structure of our model by evaluating its fits to the patterns of association pn our observed data
+
+3. Testing statistical models that more closely align with theory
+
+- can specify complex theoretical structures that are consistent with or conform with to the kind of complicated hypotheses that we often specify.
+
+
+
+
+-- 
+
+1 explicit assessment of measurement error
+2 estimation of latent (unobserved) variables via observed variables;
+3 modeling testing where a structure can be imposed and assessed as to fit of the data
