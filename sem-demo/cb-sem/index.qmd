@@ -1,0 +1,173 @@
+---
+title: "CB-SEM demo: Young people's perceived service quality and environmental performance of hybrid electric bus."
+subtitle: "R you ready? Intro to SEM in R."
+date: "`r Sys.Date()`"
+format: 
+  html:
+    self-contained: true
+    fontsize: 1.1em
+    linestretch: 1.5
+    toc: true
+    toc-location: left
+    number-sections: true
+    code-fold: false
+    theme:
+      light: cosmo
+      dark: darkly
+execute:
+  message: false
+  warning: false
+  fig-align: center
+editor: visual
+---
+
+```{r }
+#| label: setup
+#| include: false
+
+# Setting working directory
+setwd("~/GitHub-repo/RTalks/sem-demo/cb-sem")
+
+```
+
+# Sample study
+
+-   Journal article: [Young people's perceived service quality and environmental performance of hybrid electric bus.](https://doi.org/10.1016/j.tbs.2020.03.003)
+-   Author: Zial Haque and Tehjeeb Noor
+-   Article link: [DOI link](https://doi.org/10.1016/j.tbs.2020.03.003)
+-   Download the dataset [here](https://ars.els-cdn.com/content/image/1-s2.0-S2214367X19302492-mmc1.xlsx).
+
+![](img/sample_study.png){fig-align="center"}
+
+# Libraries
+
+```{r}
+# Loading required packges
+library(tidyverse)
+library(janitor)
+library(EFAtools)
+library(lavaan)
+library(psych)
+library(MVN)
+library(lavaanPlot)
+```
+
+# Sample dataset
+
+```{r}
+data_sem <- 
+  read_csv("data/e_bus_customer_satisfaction.csv") %>% 
+  clean_names()
+
+sem_data_items <- data_sem %>%
+ select(bt1:bt7, bd1:bd4, emp1:emp5, cs1:cs3, ep1:ep4, ls1:ls5)
+
+DT::datatable(sem_data_items)
+```
+
+# Exploratory Factor Analysis (EFA)
+
+## Determining appropriateness of EFA
+
+### Bartlett test
+
+```{r}
+BARTLETT(sem_data_items)
+```
+
+### Kaiser-Meyen-Olkin (KMO) test
+
+```{r}
+KMO(sem_data_items)
+```
+
+## Screeplot
+
+```{r}
+fa.parallel(x = sem_data_items, fa = "fa")
+```
+
+## Factor extraction
+
+```{r}
+## factor extraction
+bus_fa <- fa(r = sem_data_items,
+             nfactors = 6,
+             rotate = "varimax")
+
+## print factor laodings
+print(bus_fa$loadings, sort = TRUE, cutoff = 0.4)
+
+```
+
+# Confirmatory Factor Analysis
+
+## Multivariate normality test
+
+```{r}
+mvn(data = sem_data_items, mvnTest = "mardia", desc = F)
+```
+
+```{r}
+## Specifying CFA model
+cfa_model <- "tangible =~ bt1 + bt2 + bt4 + bt5 + bt6 + bt7
+              drivers_quality =~ bd1 + bd2 + bd3 + bd4
+              empathy =~ emp1 + emp2 + emp3 + emp4 + emp5
+              env_perf =~ ep1 + ep2 + ep3 + ep4
+              customer_sat =~ cs1 + cs2 + cs3
+              life_sat =~ ls1 + ls2 + ls3 + ls4 + ls5"
+
+```
+
+## Fitting the CFA model
+
+```{r}
+## Fitting CFA model
+cfa_fit <- cfa(model = cfa_model, 
+               data = sem_data_items, 
+               estimator = "MLR")
+## Summary results
+cfa_fit %>% summary(standardized = TRUE,
+                     fit.measures = TRUE)
+```
+
+```{r}
+## plotting cfa model
+lavaanPlot(model = cfa_fit, coefs = TRUE, covs = TRUE)
+```
+
+# Full SEM
+
+## Specifying the structural model
+
+```{r}
+## Specifying structural model
+ebus_model <- "tangible =~ bt1 + bt2 + bt4 + bt5 + bt6 + bt7
+              drivers_quality =~ bd1 + bd2 + bd3 + bd4
+              empathy =~ emp1 + emp2 + emp3 + emp4 + emp5
+              env_perf =~ ep1 + ep2 + ep3 + ep4
+              customer_sat =~ cs1 + cs2 + cs3
+              life_sat =~ ls1 + ls2 + ls3 + ls4 + ls5
+              
+              # structural model
+              customer_sat ~ tangible + drivers_quality + empathy + env_perf
+              life_sat ~ customer_sat"
+```
+
+## Fitting the structural model
+
+```{r}
+## Fitting structural model
+ebus_fit <- sem(model = ebus_model,
+                data = sem_data_items,
+                estimator = "MLR")
+## Summary results
+ebus_fit %>% summary(standardized = TRUE,
+                     fit.measures = TRUE,
+                     rsq = TRUE)
+```
+
+```{r}
+## plotting sem model using LavaanPlot package
+lavaanPlot(model = ebus_fit, coefs = TRUE, covs = TRUE, stars = TRUE, digits = 2)
+```

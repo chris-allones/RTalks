@@ -1,0 +1,234 @@
+---
+title: "PLS-SEM demo: Understanding why people share their travel experience on social media"
+subtitle: "R you ready? Intro to SEM in R."
+date: "`r Sys.Date()`"
+format: 
+  html:
+    self-contained: true
+    fontsize: 1.1em
+    linestretch: 1.5
+    toc: true
+    toc-location: left
+    number-sections: true
+    code-fold: true
+    theme:
+      light: cosmo
+      dark: darkly
+execute:
+  message: false
+  warning: false
+  fig-align: center
+editor: visual
+---
+
+```{r }
+#| label: setup
+#| include: false
+
+# Setting working directory
+setwd("~/GitHub-repo/RTalks/sem-demo/cb-sem")
+
+```
+
+
+# Sample study
+
+
+# Libraries
+
+```{r}
+# Loading required packges
+library(tidyverse)
+library(janitor)
+library(EFAtools)
+library(lavaan)
+library(psych)
+library(MVN)
+library(lavaanPlot)
+```
+
+
+# Sample dataset
+
+
+
+```{r}
+data_sem <- 
+  read_csv("data/mmc1.csv") %>% 
+  clean_names()
+
+DT::datatable(data_sem)
+```
+
+
+# Exploratory Factor Analysis (EFA)
+
+## Determining appropriateness of EFA
+
+### Bartlett test
+
+```{r}
+BARTLETT(data_sem)
+```
+
+### Kaiser-Meyen-Olkin (KMO) test
+
+```{r}
+KMO(data_sem)
+```
+
+
+## Screeplot
+
+```{r}
+fa.parallel(x = data_sem, fa = "fa")
+```
+
+
+## Factor extraction
+
+### Initial factor extraction
+
+```{r}
+fa_soc_med <- fa(r = data_sem, nfactors = 11, rotate = "varimax", fm = "ml")
+print(fa_soc_med$loadings, sort = TRUE, cutoff = 0.4)
+
+```
+
+### Factor extraction based from the sample study
+
+```{r}
+data_sem_selected <- 
+  data_sem %>% 
+  select(ident1, ident2, ident3,
+         inter1, inter2, inter3,
+         comp1, comp2, comp3,
+         pjoy1, pjoy2, pjoy3,
+         as1, as2, as3, as4,
+         am1, am2, am3,
+         pf1, pf2, pf3,
+         er2, er3,
+         pr1, pr3, pr4,
+         rr2, rr3,
+         sr1, sr2, sr3
+         )
+```
+
+```{r}
+fa_soc_med_2 <- fa(r = data_sem_selected, nfactors = 11, rotate = "varimax", fm = "ml")
+print(fa_soc_med_2$loadings, sort = TRUE, cutoff = 0.5)
+```
+
+
+
+# Confirmatory Factor Analysis
+
+## Multivariate normality test
+
+```{r}
+mvn(data = data_sem_selected, mvnTest = "mardia", desc = FALSE)
+```
+
+## Specifying the measurement model
+
+Data file items:
+
+ - Identification (Iden): ident1, ident2, ident3
+ - Internalization (Inter): inter1, inter2, inter3
+ - Compliance (Comp): comp1, comp2, comp3
+ - Perceived enjoyment (Pjoy): pjoy1, pjoy2, pjoy3
+ - Actual travel experience sharing (AS): as1, as2, as3, as4
+ - Altruistic motivations (AM): am1, am2, am3
+ - Personal fulfillment and self-actualization (PF): pf1, pf2, pf3
+ - Environmental reasons (ER): er2, er3
+ - Personal reasons (PR): pr1, pr3, pr4
+ - Relationship reasons (RR): rr2, rr3
+ - Security and privacy reasons (SR): sr1, sr2, sr3
+
+```{r}
+## specifying cfa model
+cfa_model <- "Ident =~ ident1 + ident2 + ident3
+              Inter =~ inter1 + inter2 + inter3
+              Comp =~ comp1 + comp2 + comp3
+              Pjoy =~ pjoy1 + pjoy2 + pjoy3
+              AS =~ as1 + as2 + as3 + as4
+              AM =~ am1 + am2 + am3
+              PF =~ pf1 + pf2 + pf3
+              ER =~ er2 + er3
+              PR =~ pr1 + pr3 + pr4
+              SR =~ sr1 + sr2 + sr3"
+
+
+
+```
+
+
+## Fitting the CFA model
+
+```{r}
+## fitting cfa model
+cfa_fit <- cfa(model = cfa_model,
+               data = data_sem_selected,
+               estimator = "MLR")
+
+## summary results
+cfa_fit %>% 
+  summary(standardized = TRUE,
+          fit.measures = TRUE)
+```
+
+
+```{r}
+## plotting cfa model
+lavaanPlot(model = cfa_fit, coefs = TRUE, covs = TRUE)
+```
+
+
+
+
+# Full SEM
+
+## Specifying the structural model
+
+```{r}
+## specifying cfa model
+sem_model <- "Ident =~ ident1 + ident2 + ident3
+              Inter =~ inter1 + inter2 + inter3
+              Comp =~ comp1 + comp2 + comp3
+              Pjoy =~ pjoy1 + pjoy2 + pjoy3
+              AS =~ as1 + as2 + as3 + as4
+              AM =~ am1 + am2 + am3
+              PF =~ pf1 + pf2 + pf3
+              ER =~ er2 + er3
+              PR =~ pr1 + pr3 + pr4
+              SR =~ sr1 + sr2 + sr3
+            
+              
+              # structural model
+              Pjoy ~ Ident + Inter + Comp
+              AS ~ Pjoy + AM + PF + ER + PR +SR"
+```
+
+
+## Fitting the structural model
+
+
+```{r}
+## fitting structural model
+sem_fit <- 
+    sem(model = sem_model,
+    data = data_sem_selected,
+    )
+
+## summary results
+sem_fit %>% 
+  summary(standardized = TRUE,
+          fit.measures = TRUE)
+
+```
+
+
+
+
+
+
