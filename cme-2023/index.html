@@ -442,7 +442,7 @@
 <div class="column">
 <h3 class="center-text" id="reproducibility-1">Reproducibility</h3>
 <ul>
-<li><p>same procedues</p></li>
+<li><p>same procedures</p></li>
 <li><p>same data</p></li>
 <li><p>same code</p></li>
 </ul>
@@ -507,24 +507,24 @@
 </section>
 <section id="section-2" class="slide level2">
 <h2></h2>
+<div class="cell">
+
+</div>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="https://www.guru99.com/images/r_programming/032918_1002_WhatisRProg1.png" style="width:50.0%;height:50.0%"></p>
+<p><img data-src="img/r_industry_visit.jpeg" style="width:60.0%;height:60.0%"></p>
 </figure>
-</div>
-<div class="source-text-smaller-center">
-<p>Based on visits to Stack Overflow questions from the US/UK.</p>
 </div>
 </section>
 <section id="section-3" class="slide level2">
 <h2></h2>
+<div class="cell">
+
+</div>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="https://jelvix.com/wp-content/uploads/2020/01/data-scientist-skills-statistics.jpg" style="width:60.0%;height:60.0%"></p>
+<p><img data-src="img/r_data_science.jpeg" style="width:60.0%;height:60.0%"></p>
 </figure>
-</div>
-<div class="source-text-smaller-center">
-<p>Source: CV compiler</p>
 </div>
 </section>
 <section id="what-r-features-supports-teaching" class="slide level2">
@@ -556,12 +556,22 @@
 </tr>
 </tbody>
 </table>
-</section></section>
+</section>
+<section id="section-4" class="slide level2">
+<h2></h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="img/any_question.gif"></p>
 <section id="any-questions" class="title-slide slide level1 center">
 <h1>Any questions?</h1>
 
 </section>
 
+</div><div class="column">
+
+</div>
+</div>
+</section></section>
 <section>
 <section id="introduction-to-structural-equation-modelling-sem" class="title-slide slide level1 center">
 <h1>Introduction to Structural Equation Modelling (SEM)</h1>
@@ -587,24 +597,24 @@
 </div>
 </div>
 </section>
-<section id="applications-of-sem" class="slide level2">
-<h2>Applications of SEM</h2>
+<section id="section-5" class="slide level2">
+<h2></h2>
 <div class="cell">
 
 </div>
 <div class="columns">
-<div class="column" style="width:70%;">
+<div class="column" style="width:80%;">
 <div class="quarto-figure quarto-figure-left">
 <figure>
 <p><img data-src="img/sem_subject_area.jpeg"></p>
 </figure>
 </div>
-</div><div class="column" style="width:30%;">
+</div><div class="column" style="width:20%;">
 <p><br></p>
 <p><br></p>
 <div class="cell">
 <details>
-<summary>Show the code</summary>
+<summary>code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="do">## Plotting count of SEM articles </span></span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="fu">read_excel</span>(<span class="st">"data/sem_articles.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb1-3"><a href="#cb1-3"></a>  <span class="fu">mutate</span>(<span class="at">subject_area =</span> <span class="fu">fct_reorder</span>(subject_area, count)) <span class="sc">%&gt;%</span> </span>
@@ -623,24 +633,24 @@
 </div>
 </div>
 </section>
-<section id="applications-of-sem-1" class="slide level2">
-<h2>Applications of SEM</h2>
+<section id="section-6" class="slide level2">
+<h2></h2>
 <div class="cell">
 
 </div>
 <div class="columns">
-<div class="column" style="width:70%;">
+<div class="column" style="width:80%;">
 <div class="quarto-figure quarto-figure-left">
 <figure>
 <p><img data-src="img/sem_time.jpeg"></p>
 </figure>
 </div>
-</div><div class="column" style="width:30%;">
+</div><div class="column" style="width:20%;">
 <p><br></p>
 <p><br></p>
 <div class="cell">
 <details>
-<summary>Show the code</summary>
+<summary>code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="do">## Plotting count of SEM articles across time</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a><span class="fu">read_excel</span>(<span class="st">"data/sem_articles.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb2-3"><a href="#cb2-3"></a>  <span class="fu">filter</span>(year <span class="sc">&lt;</span> <span class="dv">2023</span>) <span class="sc">%&gt;%</span> </span>
@@ -706,11 +716,62 @@
 </tbody>
 </table>
 </section>
-<section id="why-use-r-for-sem" class="slide level2">
-<h2>Why use R for SEM?</h2>
-</section>
-<section id="steps-in-doing-sem" class="slide level2">
+<section id="steps-in-doing-sem" class="slide level2 center-text">
 <h2>Steps in doing SEM</h2>
+
+<img data-src="img/overview_factor.jpg" class="r-stretch quarto-figure-center"></section>
+<section id="approaches-in-sem" class="slide level2 center-text">
+<h2>Approaches in SEM</h2>
+<p><br></p>
+<div class="columns">
+<div class="column">
+<h4 id="covariance-based-sem">Covariance based SEM</h4>
+<ul>
+<li>based on covariance</li>
+<li>theory testing and confirmation</li>
+</ul>
+</div><div class="column">
+<h3 id="partial-least-square-sem">Partial least-square SEM</h3>
+<ul>
+<li>variance based (partial least-square)</li>
+<li>prediction and theory development</li>
+</ul>
+</div>
+</div>
+<p><br></p>
+<div class="center-text">
+<p><em>“Choice of the method originates from the goal of research. If the existing theory needs to be tested and confirmed, CB-SEM is the chosen one. Nevertheless, for theory development as well as prediction purposes, PLS-SEM is better.”</em> - <a href="https://doi.org/10.1016/j.techfore.2021.121092">Dash and Paul (2021)</a></p>
+<p><br></p>
+<p><em>“… both methods are complementary, not competitive”</em> - <a href="https://www.inderscienceonline.com/doi/epdf/10.1504/IJMDA.2017.087624">Hair (2017)</a></p>
+</div>
+</section>
+<section id="cb-sem-or-pls-sem" class="slide level2 center-text">
+<h2>CB-SEM or PLS-SEM</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/cb_pls.png" style="width:50.0%;height:50.0%"></p>
+</figure>
+</div>
+<div class="source-text">
+<p>H., Hair Jr, F., J., Matthews, L.M., Matthews, R.L., Sarstedt, M., 2017. PLS-SEM or CBSEM: updated guidelines on which method to use. Int. J. Multivar. Data Anal. 1 (2), 107–123. https://doi.org/10.1504/IJMDA.2017.087624.</p>
+</div>
+</section>
+<section id="section-7" class="slide level2">
+<h2></h2>
+<div class="columns">
+<div class="column center-text" style="width:40%;">
+<p><br></p>
+<h3 id="its-better-to-show-the-power-of-sem-in-action">It’s better to show the power of SEM in ACTION!</h3>
+<h3 id="lets-go">LET’S GO!</h3>
+</div><div class="column" style="width:60%;">
+<p><img data-src="img/typing_cat.gif"></p>
+</div>
+</div>
+</section>
+<section id="section-8" class="slide level2 center-text">
+<h2></h2>
+<p>Click the <a href="">CB-SEM</a> and <a href="">PLS-SEM</a> to access the demo.</p>
+<p><img data-src="img/bravocado.gif" style="width:70.0%;height:70.0%"></p>
 <div class="footer footer-default">
 <p>R you ready? Intro to SEM in R | link: t.ly/G900</p>
 </div>

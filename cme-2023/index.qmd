@@ -6,7 +6,7 @@ format:
     theme: [simple, custom.scss]
     preview-links: true
     code-fold: true
-    code-summary: "Show the code"
+    code-summary: "code"
     chalkboard: true
     slide-number: true
     footer: "R you ready? Intro to SEM in R | link: t.ly/G900 "
@@ -77,7 +77,7 @@ library(readxl)
 ::: column
 ### Reproducibility {.center-text}
 
--   same procedues
+-   same procedures
 
 -   same data
 
@@ -127,19 +127,75 @@ library(readxl)
 
 ## 
 
-![](https://www.guru99.com/images/r_programming/032918_1002_WhatisRProg1.png){fig-align="center" width="50%" height="50%"}
 
-::: source-text-smaller-center
-Based on visits to Stack Overflow questions from the US/UK.
-:::
+```{r}
+#| echo: false
+#| eval: false
+
+tibble(
+  area = c("Academic", "Healthcare", "Government", "Consulting", "Insurance", "Energy",
+           "Finance", "Retail", "Media", "Manufacturing", "Tech", "Electronics"),
+  pct_traffic = c(7.5, 6.8, 3.4, 3.2, 2.4, 1.9, 1.8, 1.6, 1.4, 1.2, 1, 0.8)
+) %>% 
+  mutate(pct_traffic = pct_traffic / 100) %>% 
+  mutate(area = fct_reorder(area, pct_traffic)) %>% 
+  ggplot(aes(pct_traffic, area)) +
+  geom_col(fill = "#1d3557", width = 0.7) +
+  scale_x_continuous(expand = c(0, 0), limits = c(0, 0.08), breaks = seq(0, 0.08, 0.02),
+                     labels = scales::percent_format()) +
+  theme_minimal() +
+  theme(plot.margin = margin(rep(20, 4)),
+        plot.title = element_text(face = "bold"),
+        axis.title.x = element_text(size = 12, margin = margin(t=15))
+        ) +
+  labs(title = "Visits to R by industry",
+       subtitle = "Based on visits to Stack Overflow questions from US/UK.\nThe denominator in each is the total traffic from that industry.",
+       x = "% of industry's traffic going to R",
+       y = element_blank())
+
+ggsave("img/r_industry_visit.jpeg", dpi = 300, width = 6.5, height = 7)
+  
+```
+
+
+![](img/r_industry_visit.jpeg){fig-align="center" width="60%" height="60%"}
+
 
 ## 
 
-![](https://jelvix.com/wp-content/uploads/2020/01/data-scientist-skills-statistics.jpg){fig-align="center" width="60%" height="60%"}
 
-::: source-text-smaller-center
-Source: CV compiler
-:::
+```{r}
+#| echo: false
+#| eval: false
+
+tibble(
+  program = c("Python", "R", "SQL", "Big Data", "Apache Spark", "Hadoop",
+              "Java", "Scala", "NLP", "ETL", "Deep Learning", "Tensor Flow",
+              "MATLAB", "Pandas", "scikit-learn", "Keras", "Computer Vision",
+              "PyTorch"),
+  count = c(287, 245, 231, 221, 177, 164, 125, 104, 83, 81, 74, 38, 30, 29, 
+            27, 17, 11, 6)
+) %>% 
+  mutate(program = fct_reorder(program, count)) %>% 
+  ggplot(aes(count, program)) +
+  geom_col(fill = "#1d3557", width = 0.7) +
+  scale_x_continuous(expand = c(0, 0), breaks = seq(0, 300, 50), limits = c(0, 300)) +
+  theme_minimal() +
+  theme(plot.margin = margin(rep(20, 4)),
+        plot.title = element_text(face = "bold"),
+        axis.title.x = element_text(size = 12, margin = margin(t=15))
+        ) +
+  labs(title = "The skills data scienties need today",
+       subtitle = "Based on 300 job listing from tech companies in June 2022",
+       x = "% of industry's traffic going to R",
+       y = element_blank())
+
+ggsave("img/r_data_science.jpeg", dpi = 300, width = 6.5, height = 7)
+```
+
+
+![](img/r_data_science.jpeg){fig-align="center" width="60%" height="60%"}
+
 
 ## What R features supports teaching?
 
@@ -157,7 +213,18 @@ Source: CV compiler
 | Books                   | [R books](https://www.bigbookofr.com/)                                                                                        |
 +-------------------------+-------------------------------------------------------------------------------------------------------------------------------+
 
+## 
+
+::: columns
+::: column
+![](img/any_question.gif)
+
 # Any questions?
+:::
+
+::: column
+:::
+:::
 
 # Introduction to Structural Equation Modelling (SEM)
 
@@ -181,7 +248,7 @@ Source: CV compiler
 :::
 :::
 
-## Applications of SEM
+## 
 
 ```{r}
 #| echo: false
@@ -205,11 +272,11 @@ ggsave("img/sem_subject_area.jpeg", dpi = 300, width = 8, height = 7)
 ```
 
 ::: columns
-::: {.column width="70%"}
+::: {.column width="80%"}
 ![](img/sem_subject_area.jpeg){fig-align="left"}
 :::
 
-::: {.column width="30%"}
+::: {.column width="20%"}
 <br>
 
 <br>
@@ -236,7 +303,7 @@ read_excel("data/sem_articles.xlsx", sheet = 1) %>%
 :::
 :::
 
-## Applications of SEM
+## 
 
 ```{r}
 #| echo: false
@@ -264,11 +331,11 @@ ggsave("img/sem_time.jpeg", dpi = 300, width = 7, height = 5)
 ```
 
 ::: columns
-::: {.column width="70%"}
+::: {.column width="80%"}
 ![](img/sem_time.jpeg){fig-align="left"}
 :::
 
-::: {.column width="30%"}
+::: {.column width="20%"}
 <br>
 
 <br>
@@ -316,6 +383,79 @@ read_excel("data/sem_articles.xlsx", sheet = 2) %>%
 |                          |                                                                                      |                             |
 +--------------------------+--------------------------------------------------------------------------------------+-----------------------------+
 
-## Why use R for SEM?
+## Steps in doing SEM {.center-text}
 
-## Steps in doing SEM
+![](img/overview_factor.jpg){fig-align="center"}
+
+## Approaches in SEM {.center-text}
+
+<br>
+
+::: columns
+::: column
+#### Covariance based SEM
+
+-   based on covariance
+-   theory testing and confirmation
+:::
+
+::: column
+### Partial least-square SEM
+
+-   variance based (partial least-square)
+-   prediction and theory development
+:::
+:::
+
+<br>
+
+::: center-text
+*"Choice of the method originates from the goal of research. If the existing theory needs to be tested and confirmed, CB-SEM is the chosen one. Nevertheless, for theory development as well as prediction purposes, PLS-SEM is better."* - [Dash and Paul (2021)](https://doi.org/10.1016/j.techfore.2021.121092)
+
+<br>
+
+*"... both methods are complementary, not competitive"* - [Hair (2017)](https://www.inderscienceonline.com/doi/epdf/10.1504/IJMDA.2017.087624)
+:::
+
+## CB-SEM or PLS-SEM {.center-text}
+
+![](img/cb_pls.png){fig-align="center" width="50%" height="50%"}
+
+::: source-text
+H., Hair Jr, F., J., Matthews, L.M., Matthews, R.L., Sarstedt, M., 2017. PLS-SEM or CBSEM: updated guidelines on which method to use. Int. J. Multivar. Data Anal. 1 (2), 107--123. https://doi.org/10.1504/IJMDA.2017.087624.
+:::
+
+## 
+
+::: columns
+::: {.column .center-text width="40%"}
+<br>
+
+### It's better to show the power of SEM in ACTION!
+
+### LET'S GO!
+:::
+
+::: {.column width="60%"}
+![](img/typing_cat.gif)
+:::
+:::
+
+
+
+## {.center-text}
+
+Click the [CB-SEM]() and [PLS-SEM]() to access the demo.
+
+![](img/bravocado.gif){width=70% height=70%}
+
+
+
+
+
+
+
+
+
+
+
