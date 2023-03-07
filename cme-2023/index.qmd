@@ -1,6 +1,8 @@
 ---
-title: "R you ready?"
-subtitle: "Intro to Structural equation modelling (SEM) in R"
+title: "."
+title-slide-attributes: 
+  data-background-image: "/img/sem_2023_background.gif"
+  data-background-size: cover
 format: 
   revealjs:
     theme: [simple, custom.scss]
@@ -9,7 +11,7 @@ format:
     code-summary: "code"
     chalkboard: true
     slide-number: true
-    footer: "R you ready? Intro to SEM in R | link: t.ly/G900 "
+    footer: "R you ready? Intro to SEM in R | link: t.ly/G900"
 engine: knitr
 from: markdown+emoji
 include-after-body: "collapseoutput.js"
@@ -127,7 +129,6 @@ library(readxl)
 
 ## 
 
-
 ```{r}
 #| echo: false
 #| eval: false
@@ -157,12 +158,9 @@ ggsave("img/r_industry_visit.jpeg", dpi = 300, width = 6.5, height = 7)
   
 ```
 
-
 ![](img/r_industry_visit.jpeg){fig-align="center" width="60%" height="60%"}
 
-
 ## 
-
 
 ```{r}
 #| echo: false
@@ -193,9 +191,7 @@ tibble(
 ggsave("img/r_data_science.jpeg", dpi = 300, width = 6.5, height = 7)
 ```
 
-
 ![](img/r_data_science.jpeg){fig-align="center" width="60%" height="60%"}
-
 
 ## What R features supports teaching?
 
@@ -441,21 +437,8 @@ H., Hair Jr, F., J., Matthews, L.M., Matthews, R.L., Sarstedt, M., 2017. PLS-SEM
 :::
 :::
 
-
-
-## {.center-text}
+##  {.center-text}
 
 Click the [CB-SEM]() and [PLS-SEM]() to access the demo.
 
-![](img/bravocado.gif){width=70% height=70%}
-
-
-
-
-
-
-
-
-
-
-
+![](img/bravocado.gif){width="70%" height="70%"}
