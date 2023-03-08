@@ -143,7 +143,7 @@ boot_pls_model_ebus <- bootstrap_model(seminr_model = pls_model_ebus,
 
 ## summary results
 summary_boot_pls_model_ebus <- summary(boot_pls_model_ebus, alpha = 0.10)
-summary_boot_pls_model_ebus
+summary_boot_pls_model_ebus$bootstrapped_paths
 ```
 
 ### Factor loadings
@@ -168,11 +168,6 @@ summary_pls_model_ebus$reliability
 summary_pls_model_ebus$validity$fl_criteria
 ```
 
-#### Heterotrait-Monotrait ratio
-
-```{r}
-summary_pls_model_ebus$validity$htmt
-```
 
 #### VIF
 
