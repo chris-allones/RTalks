@@ -171,3 +171,5 @@ ebus_fit %>% summary(standardized = TRUE,
 ## plotting sem model using LavaanPlot package
 lavaanPlot(model = ebus_fit, coefs = TRUE, covs = TRUE, stars = TRUE, digits = 2)
 ```
+
+
