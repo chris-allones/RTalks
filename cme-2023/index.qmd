@@ -7,7 +7,7 @@ format:
   revealjs:
     theme: [simple, custom.scss]
     preview-links: true
-    code-fold: true
+    code-fold: false
     code-summary: "code"
     chalkboard: true
     slide-number: true
@@ -28,6 +28,9 @@ setwd("~/GitHub-repo/RTalks/cme-2023")
 ## Libraries
 library(tidyverse)
 library(readxl)
+library(seminr)
+library(janitor)
+library(haven)
 
 ```
 
@@ -224,25 +227,52 @@ ggsave("img/r_data_science.jpeg", dpi = 300, width = 6.5, height = 7)
 
 # Introduction to Structural Equation Modelling (SEM)
 
-## Why do an SEM?
+##
+
+![](img/sample_sem_study.png){fig-align="center" width=80% height=80%}
+
+:::{.source-text}
+Munim, Z. H., & Noor, T. (2020). Young people’s perceived service quality and environmental performance of hybrid electric bus service. Travel Behaviour and Society, 20, 133–143. https://doi.org/10.1016/j.tbs.2020.03.003
+:::
+
+
+## What is SEM?
 
 ::: columns
 ::: column
-<br>
+#### Measurement model
 
-#### Principal reasons
+-   measurement part of a a full SEM model
 
--   Estimation of latent (unobserved) variables
-
--   Explicit assessment of measurement error
-
--   Testing statistical models that more closely align with theory
+-   confirmatory factor analysis
 :::
 
 ::: column
-![](img/measurement_part.jpg){fig-align="center"}
+![](img/measurement_part_2.jpg){fig-align="center"}
 :::
 :::
+
+## What is SEM?
+
+::: columns
+::: column
+#### Measurement model
+
+-   measurement part of a full SEM model
+
+
+#### Structural model
+
+-   relationship between constructs
+
+-   full SEM model is combination of measurement and structural component
+:::
+
+::: column
+![](img/structural_part_2.jpg){fig-align="center"}
+:::
+:::
+
 
 ## 
 
@@ -421,6 +451,185 @@ read_excel("data/sem_articles.xlsx", sheet = 2) %>%
 H., Hair Jr, F., J., Matthews, L.M., Matthews, R.L., Sarstedt, M., 2017. PLS-SEM or CBSEM: updated guidelines on which method to use. Int. J. Multivar. Data Anal. 1 (2), 107--123. https://doi.org/10.1504/IJMDA.2017.087624.
 :::
 
+
+# SEM with Lavaan R package
+
+## What is Lavaan?
+
+::: columns
+::: {.column width="40%"}
+-   *"developed to provide useRs, researchers, and teachers a free open-source, but commercial quality"*, Yves Rosseel (2012)
+
+-   Check-out this [lavaan tutorial](https://lavaan.ugent.be/tutorial/index.html)
+:::
+
+::: {.column width="60%"}
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+install.packages("lavaan")
+library(lavaan)
+example(cfa)
+```
+
+```{r}
+#| echo: true
+#| class-output: "remark-code"
+library(lavaan)
+example(cfa)
+```
+:::
+:::
+
+## Major operators of lavaan syntax
+
+<br>
+
+![](img/lavaan_syntax.jpg){fig-align="center" width="90%" height="90%"}
+
+## Major operators of lavaan syntax
+
+::: columns
+::: column
+#### Defining a reflective latent variable
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+model <- "F1 =~ x1 + x2 + x3 + x4"
+```
+
+<br>
+
+![](img/sample_syntax1.png){fig-align="center" width="45%" height="45%"}
+:::
+
+::: column
+#### Estimate factor covariance
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+model <- "F1 =~ x1 + x2 + x3 + x4
+          F2 =~ x5 + X6 + x6 + x8
+          F1 ~~ F2"
+```
+
+<br>
+
+![](img/sample_syntax2.png){fig-align="center" width="90%" height="90%"}
+:::
+:::
+
+## Major operators of lavaan syntax
+
+::: columns
+::: column
+#### Estimate regression
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+model <- "F1 =~ x1 + x2 + x3 + x4
+          F2 =~ x5 + X6 + x7 + x8
+          F3 =~ x9 + X10 + x11 + x12
+          F1 ~~ F2
+          F3 ~ F1 + F2"
+```
+:::
+
+::: column
+![](img/sample_syntax3.png){fig-align="center" width="80%" height="80%"}
+:::
+:::
+
+## Major operators of lavaan syntax
+
+::: columns
+::: column
+#### Insert a comment in the syntax
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+model <- "F1 =~ x1 + x2 + x3 + x4
+          F2 =~ x5 + X6 + x7 + x8
+          F3 =~ x9 + X10 + x11 + x12
+          
+          # covariance
+          F1 ~~ F2
+          
+          # F3 is regressed on F1 and F2
+          F3 ~ F1 + F2"
+```
+:::
+
+::: column
+![](img/sample_syntax3.png){fig-align="center" width="80%" height="80%"}
+:::
+:::
+
+## Major operators of lavaan syntax
+
+::: columns
+::: column
+#### Label a parameter
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+model <- "F1 =~ x1 + x2 + x3 + x4
+          F2 =~ x5 + X6 + x7 + x8
+          F3 =~ x9 + X10 + x11 + x12
+          
+          # covariance
+          F1 ~~ F2
+          
+          # F3 is regressed on F1 and F2
+          F3 ~ b1*F1 + b2*F2"
+```
+:::
+
+::: column
+![](img/sample_syntax4.png){fig-align="center" width="80%" height="80%"}
+:::
+:::
+
+## Major operators of lavaan syntax
+
+::: columns
+::: column
+#### Create a new parameter
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+model <- "F1 =~ x1 + x2 + x3 + x4
+          F2 =~ x5 + X6 + x7 + x8
+          F3 =~ x9 + X10 + x11 + x12
+          
+          # regression
+          F3 ~ b1*F1 + b2*F2
+          F2 ~ b3*F1
+          # F1 indirect effect
+          ie := b3*b2
+          # F1 total effect
+          te := b3*b2 + b1"
+```
+:::
+
+::: column
+![](img/sample_syntax5.png){fig-align="center" width="80%" height="80%"}
+:::
+:::
+
 ## 
 
 ::: columns
@@ -442,3 +651,205 @@ H., Hair Jr, F., J., Matthews, L.M., Matthews, R.L., Sarstedt, M., 2017. PLS-SEM
 Click the [CB-SEM]() and [PLS-SEM]() to access the demo.
 
 ![](img/bravocado.gif){width="70%" height="70%"}
+
+# SEM with SEMinR package
+
+## 
+
+::: columns
+::: {.column width="60%"}
+
+![](img/seminr_0.png){fig-align="left" width="40%" height="40%"}
+
+
+-   *"SEMinR brings a friendly syntax to creating and estimating SEM. It uses its own PLS-SEM engine and integrates with the Lavaan package for CB-SEM/CFA estimation.* - Soumya Ray & Nicholas Danks (2020)
+
+-   Check-out this [SEMinR vignette](https://cran.r-project.org/web/packages/seminr/vignettes/SEMinR.html)
+
+- Download the [PLS-SEM book using R](https://link.springer.com/content/pdf/10.1007/978-3-030-80519-7.pdf)
+:::
+
+::: {.column width="40%"}
+![](img/seminr_00.png){fig-align="center" width="70%" height="70%"}
+:::
+:::
+
+
+## What is SEMinR?
+
+
+::: columns
+::: {.column width="60%"}
+#### Three main steps in using SEMinR
+
+1. Describe measurement model for each constructs and its items
+
+2. Describe the structural model of causal relationships between constructs
+
+3. Estimate the model using PLS, CB-SEM, or CFA
+:::
+
+::: {.column width="40%"}
+
+:::
+:::
+
+
+## Major operators of SEMinR syntax
+
+
+
+::: columns
+::: column
+
+#### 1. Describe measurement model for each constructs and its items
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+
+model <- constructs(
+  composite(construct_name = "F1", item_names = multi_items("x", 1:4)))
+
+plot(model)
+```
+
+<br>
+
+![](img/seminr_1.png){fig-align="center" width="45%" height="45%"}
+
+:::
+
+::: column
+
+![](img/sample_syntax1.png){fig-align="center" width="45%" height="45%"}
+
+:::
+:::
+
+
+## Major operators of SEMinR syntax
+
+::: columns
+::: column
+#### 2. Describe the structural model of causal relationships between constructs
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+
+## specifying measurement model
+mm <- constructs(
+  composite(construct_name = "F1", item_names = multi_items("x", 1:4)),
+  composite("F2", multi_items("x", 5:8)),
+  composite("F3", multi_items("x", 9:12)))
+
+## specifying structural model
+sm <- relationships(
+  paths(from = "F1", to = "F2"),
+  paths(from = c("F1", "F2"), to = "F3"))
+
+plot(sm)
+
+```
+
+<br>
+
+![](img/seminr_2.png){fig-align="center" width="45%" height="45%"}
+
+:::
+
+::: column
+![](img/sample_syntax5.png){fig-align="center" width="80%" height="80%"}
+:::
+:::
+
+
+
+## Major operators of SEMinR syntax
+
+::: columns
+::: column
+#### 3. Estimate the model using PLS, CB-SEM, or CFA
+
+```{r}
+#| echo: false
+#| eval: false
+#| class-output: "remark-code"
+
+# Data
+hbat_data <- read_sav("data/HBAT_SEM_NOMISSING.sav") %>% 
+ clean_names() %>% 
+ select(js1:si4) %>%
+ mutate_all(as.numeric) %>% 
+ rename("x1" = "ac1",
+        "x2" = "ac2",
+        "x3" = "ac3",
+        "x4" = "ac4",
+        "x5" = "ep1",
+        "x6" = "ep2",
+        "x7" = "ep3",
+        "x8" = "ep4",
+        "x9" = "js1",
+        "x10" = "js2",
+        "x11" = "js3",
+        "x12" = "js4"
+        )
+
+## specifying measurement model
+mm <- constructs(
+  composite(construct_name = "F1", item_names = multi_items("x", 1:4)),
+  composite("F2", multi_items("x", 5:8)),
+  composite("F3", multi_items("x", 9:12)))
+
+## specifying structural model
+sm <- relationships(
+  paths(from = "F1", to = "F2"),
+  paths(from = c("F1", "F2"), to = "F3"))
+
+
+
+```
+
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+
+## specifying measurement model
+pls_sem_estimate <- 
+  estimate_pls(data = my_data,
+             measurement_model = mm,
+             structural_model = sm)
+
+## plotting pls-sem model
+plot(pls_sem_estimate)
+
+```
+
+
+![](img/seminr_3.png){fig-align="center" width="90%" height="90%"}
+
+:::
+
+::: column
+![](img/sample_syntax5.png){fig-align="center" width="80%" height="80%"}
+:::
+:::
+
+
+
+## Well done! {.center-text}
+
+![](img/proud_of_you.gif)
+
+
+
+
+
+
+
+

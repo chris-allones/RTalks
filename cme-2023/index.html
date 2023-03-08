@@ -576,27 +576,58 @@
 <h1>Introduction to Structural Equation Modelling (SEM)</h1>
 
 </section>
-<section id="why-do-an-sem" class="slide level2">
-<h2>Why do an SEM?</h2>
+<section id="section-5" class="slide level2">
+<h2></h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/sample_sem_study.png" style="width:80.0%;height:80.0%"></p>
+</figure>
+</div>
+<div class="source-text">
+<p>Munim, Z. H., &amp; Noor, T. (2020). Young people’s perceived service quality and environmental performance of hybrid electric bus service. Travel Behaviour and Society, 20, 133–143. https://doi.org/10.1016/j.tbs.2020.03.003</p>
+</div>
+</section>
+<section id="what-is-sem" class="slide level2">
+<h2>What is SEM?</h2>
 <div class="columns">
 <div class="column">
-<p><br></p>
-<h4 id="principal-reasons">Principal reasons</h4>
+<h4 id="measurement-model">Measurement model</h4>
 <ul>
-<li><p>Estimation of latent (unobserved) variables</p></li>
-<li><p>Explicit assessment of measurement error</p></li>
-<li><p>Testing statistical models that more closely align with theory</p></li>
+<li><p>measurement part of a a full SEM model</p></li>
+<li><p>confirmatory factor analysis</p></li>
 </ul>
 </div><div class="column">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="img/measurement_part.jpg"></p>
+<p><img data-src="img/measurement_part_2.jpg"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="section-5" class="slide level2">
+<section id="what-is-sem-1" class="slide level2">
+<h2>What is SEM?</h2>
+<div class="columns">
+<div class="column">
+<h4 id="measurement-model-1">Measurement model</h4>
+<ul>
+<li>measurement part of a full SEM model</li>
+</ul>
+<h4 id="structural-model">Structural model</h4>
+<ul>
+<li><p>relationship between constructs</p></li>
+<li><p>full SEM model is combination of measurement and structural component</p></li>
+</ul>
+</div><div class="column">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/structural_part_2.jpg"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="section-6" class="slide level2">
 <h2></h2>
 <div class="cell">
 
@@ -612,8 +643,6 @@
 <p><br></p>
 <p><br></p>
 <div class="cell">
-<details>
-<summary>code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="do">## Plotting count of SEM articles </span></span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="fu">read_excel</span>(<span class="st">"data/sem_articles.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb1-3"><a href="#cb1-3"></a>  <span class="fu">mutate</span>(<span class="at">subject_area =</span> <span class="fu">fct_reorder</span>(subject_area, count)) <span class="sc">%&gt;%</span> </span>
@@ -627,12 +656,11 @@
 <span id="cb1-11"><a href="#cb1-11"></a>       <span class="at">subtitle =</span> <span class="fu">str_wrap</span>(<span class="st">"A total of 83,863 articles covering the period 1978-2023 found in the Scopus database"</span>, <span class="dv">70</span>),</span>
 <span id="cb1-12"><a href="#cb1-12"></a>       <span class="at">x =</span> <span class="st">"Number of articles indexed in the Scopus database"</span>,</span>
 <span id="cb1-13"><a href="#cb1-13"></a>       <span class="at">y =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
 </div>
 </div>
 </section>
-<section id="section-6" class="slide level2">
+<section id="section-7" class="slide level2">
 <h2></h2>
 <div class="cell">
 
@@ -648,8 +676,6 @@
 <p><br></p>
 <p><br></p>
 <div class="cell">
-<details>
-<summary>code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="do">## Plotting count of SEM articles across time</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a><span class="fu">read_excel</span>(<span class="st">"data/sem_articles.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb2-3"><a href="#cb2-3"></a>  <span class="fu">filter</span>(year <span class="sc">&lt;</span> <span class="dv">2023</span>) <span class="sc">%&gt;%</span> </span>
@@ -668,7 +694,6 @@
 <span id="cb2-16"><a href="#cb2-16"></a>       <span class="at">subtitle =</span> <span class="fu">str_wrap</span>(<span class="st">"A total of 83,863 articles covering the period 1978-2023 found in the Scopus database"</span>, <span class="dv">75</span>),</span>
 <span id="cb2-17"><a href="#cb2-17"></a>       <span class="at">y =</span> <span class="st">"Number of articles indexed in the Scopus database"</span>,</span>
 <span id="cb2-18"><a href="#cb2-18"></a>       <span class="at">x =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
 </div>
 </div>
@@ -754,8 +779,269 @@
 <div class="source-text">
 <p>H., Hair Jr, F., J., Matthews, L.M., Matthews, R.L., Sarstedt, M., 2017. PLS-SEM or CBSEM: updated guidelines on which method to use. Int. J. Multivar. Data Anal. 1 (2), 107–123. https://doi.org/10.1504/IJMDA.2017.087624.</p>
 </div>
+</section></section>
+<section>
+<section id="sem-with-lavaan-r-package" class="title-slide slide level1 center">
+<h1>SEM with Lavaan R package</h1>
+
 </section>
-<section id="section-7" class="slide level2">
+<section id="what-is-lavaan" class="slide level2">
+<h2>What is Lavaan?</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ul>
+<li><p><em>“developed to provide useRs, researchers, and teachers a free open-source, but commercial quality”</em>, Yves Rosseel (2012)</p></li>
+<li><p>Check-out this <a href="https://lavaan.ugent.be/tutorial/index.html">lavaan tutorial</a></p></li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">install.packages</span>(<span class="st">"lavaan"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">library</span>(lavaan)</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">example</span>(cfa)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">library</span>(lavaan)</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">example</span>(cfa)</span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a>cfa<span class="sc">&gt;</span> <span class="do">## The famous Holzinger and Swineford (1939) example</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>cfa<span class="sc">&gt;</span> HS.model <span class="ot">&lt;-</span> <span class="st">' visual  =~ x1 + x2 + x3</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="st">cfa+               textual =~ x4 + x5 + x6</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="st">cfa+               speed   =~ x7 + x8 + x9 '</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a></span>
+<span id="cb4-9"><a href="#cb4-9"></a>cfa<span class="sc">&gt;</span> fit <span class="ot">&lt;-</span> <span class="fu">cfa</span>(HS.model, <span class="at">data =</span> HolzingerSwineford1939)</span>
+<span id="cb4-10"><a href="#cb4-10"></a></span>
+<span id="cb4-11"><a href="#cb4-11"></a>cfa<span class="sc">&gt;</span> <span class="fu">summary</span>(fit, <span class="at">fit.measures =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-12"><a href="#cb4-12"></a>lavaan <span class="dv">0</span>.<span class="fl">6.13</span> ended normally after <span class="dv">35</span> iterations</span>
+<span id="cb4-13"><a href="#cb4-13"></a></span>
+<span id="cb4-14"><a href="#cb4-14"></a>  Estimator                                         ML</span>
+<span id="cb4-15"><a href="#cb4-15"></a>  Optimization method                           NLMINB</span>
+<span id="cb4-16"><a href="#cb4-16"></a>  Number of model parameters                        <span class="dv">21</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a></span>
+<span id="cb4-18"><a href="#cb4-18"></a>  Number of observations                           <span class="dv">301</span></span>
+<span id="cb4-19"><a href="#cb4-19"></a></span>
+<span id="cb4-20"><a href="#cb4-20"></a>Model Test User Model<span class="sc">:</span></span>
+<span id="cb4-21"><a href="#cb4-21"></a>                                                      </span>
+<span id="cb4-22"><a href="#cb4-22"></a>  Test statistic                                <span class="fl">85.306</span></span>
+<span id="cb4-23"><a href="#cb4-23"></a>  Degrees of freedom                                <span class="dv">24</span></span>
+<span id="cb4-24"><a href="#cb4-24"></a>  P<span class="sc">-</span><span class="fu">value</span> (Chi<span class="sc">-</span>square)                           <span class="fl">0.000</span></span>
+<span id="cb4-25"><a href="#cb4-25"></a></span>
+<span id="cb4-26"><a href="#cb4-26"></a>Model Test Baseline Model<span class="sc">:</span></span>
+<span id="cb4-27"><a href="#cb4-27"></a></span>
+<span id="cb4-28"><a href="#cb4-28"></a>  Test statistic                               <span class="fl">918.852</span></span>
+<span id="cb4-29"><a href="#cb4-29"></a>  Degrees of freedom                                <span class="dv">36</span></span>
+<span id="cb4-30"><a href="#cb4-30"></a>  P<span class="sc">-</span>value                                        <span class="fl">0.000</span></span>
+<span id="cb4-31"><a href="#cb4-31"></a></span>
+<span id="cb4-32"><a href="#cb4-32"></a>User Model versus Baseline Model<span class="sc">:</span></span>
+<span id="cb4-33"><a href="#cb4-33"></a></span>
+<span id="cb4-34"><a href="#cb4-34"></a>  Comparative Fit <span class="fu">Index</span> (CFI)                    <span class="fl">0.931</span></span>
+<span id="cb4-35"><a href="#cb4-35"></a>  Tucker<span class="sc">-</span>Lewis <span class="fu">Index</span> (TLI)                       <span class="fl">0.896</span></span>
+<span id="cb4-36"><a href="#cb4-36"></a></span>
+<span id="cb4-37"><a href="#cb4-37"></a>Loglikelihood and Information Criteria<span class="sc">:</span></span>
+<span id="cb4-38"><a href="#cb4-38"></a></span>
+<span id="cb4-39"><a href="#cb4-39"></a>  Loglikelihood user <span class="fu">model</span> (H0)              <span class="sc">-</span><span class="fl">3737.745</span></span>
+<span id="cb4-40"><a href="#cb4-40"></a>  Loglikelihood unrestricted <span class="fu">model</span> (H1)      <span class="sc">-</span><span class="fl">3695.092</span></span>
+<span id="cb4-41"><a href="#cb4-41"></a>                                                      </span>
+<span id="cb4-42"><a href="#cb4-42"></a>  <span class="fu">Akaike</span> (AIC)                                <span class="fl">7517.490</span></span>
+<span id="cb4-43"><a href="#cb4-43"></a>  <span class="fu">Bayesian</span> (BIC)                              <span class="fl">7595.339</span></span>
+<span id="cb4-44"><a href="#cb4-44"></a>  Sample<span class="sc">-</span>size adjusted <span class="fu">Bayesian</span> (SABIC)       <span class="fl">7528.739</span></span>
+<span id="cb4-45"><a href="#cb4-45"></a></span>
+<span id="cb4-46"><a href="#cb4-46"></a>Root Mean Square Error of Approximation<span class="sc">:</span></span>
+<span id="cb4-47"><a href="#cb4-47"></a></span>
+<span id="cb4-48"><a href="#cb4-48"></a>  RMSEA                                          <span class="fl">0.092</span></span>
+<span id="cb4-49"><a href="#cb4-49"></a>  <span class="dv">90</span> Percent confidence interval <span class="sc">-</span> lower         <span class="fl">0.071</span></span>
+<span id="cb4-50"><a href="#cb4-50"></a>  <span class="dv">90</span> Percent confidence interval <span class="sc">-</span> upper         <span class="fl">0.114</span></span>
+<span id="cb4-51"><a href="#cb4-51"></a>  P<span class="sc">-</span>value H_0<span class="sc">:</span> RMSEA <span class="sc">&lt;=</span> <span class="fl">0.050</span>                    <span class="fl">0.001</span></span>
+<span id="cb4-52"><a href="#cb4-52"></a>  P<span class="sc">-</span>value H_0<span class="sc">:</span> RMSEA <span class="sc">&gt;=</span> <span class="fl">0.080</span>                    <span class="fl">0.840</span></span>
+<span id="cb4-53"><a href="#cb4-53"></a></span>
+<span id="cb4-54"><a href="#cb4-54"></a>Standardized Root Mean Square Residual<span class="sc">:</span></span>
+<span id="cb4-55"><a href="#cb4-55"></a></span>
+<span id="cb4-56"><a href="#cb4-56"></a>  SRMR                                           <span class="fl">0.065</span></span>
+<span id="cb4-57"><a href="#cb4-57"></a></span>
+<span id="cb4-58"><a href="#cb4-58"></a>Parameter Estimates<span class="sc">:</span></span>
+<span id="cb4-59"><a href="#cb4-59"></a></span>
+<span id="cb4-60"><a href="#cb4-60"></a>  Standard errors                             Standard</span>
+<span id="cb4-61"><a href="#cb4-61"></a>  Information                                 Expected</span>
+<span id="cb4-62"><a href="#cb4-62"></a>  Information <span class="fu">saturated</span> (h1) model          Structured</span>
+<span id="cb4-63"><a href="#cb4-63"></a></span>
+<span id="cb4-64"><a href="#cb4-64"></a>Latent Variables<span class="sc">:</span></span>
+<span id="cb4-65"><a href="#cb4-65"></a>                   Estimate  Std.Err  z<span class="sc">-</span>value  <span class="fu">P</span>(<span class="sc">&gt;</span><span class="er">|</span>z<span class="sc">|</span>)</span>
+<span id="cb4-66"><a href="#cb4-66"></a>  visual <span class="ot">=</span><span class="er">~</span>                                           </span>
+<span id="cb4-67"><a href="#cb4-67"></a>    x1                <span class="fl">1.000</span>                           </span>
+<span id="cb4-68"><a href="#cb4-68"></a>    x2                <span class="fl">0.554</span>    <span class="fl">0.100</span>    <span class="fl">5.554</span>    <span class="fl">0.000</span></span>
+<span id="cb4-69"><a href="#cb4-69"></a>    x3                <span class="fl">0.729</span>    <span class="fl">0.109</span>    <span class="fl">6.685</span>    <span class="fl">0.000</span></span>
+<span id="cb4-70"><a href="#cb4-70"></a>  textual <span class="ot">=</span><span class="er">~</span>                                          </span>
+<span id="cb4-71"><a href="#cb4-71"></a>    x4                <span class="fl">1.000</span>                           </span>
+<span id="cb4-72"><a href="#cb4-72"></a>    x5                <span class="fl">1.113</span>    <span class="fl">0.065</span>   <span class="fl">17.014</span>    <span class="fl">0.000</span></span>
+<span id="cb4-73"><a href="#cb4-73"></a>    x6                <span class="fl">0.926</span>    <span class="fl">0.055</span>   <span class="fl">16.703</span>    <span class="fl">0.000</span></span>
+<span id="cb4-74"><a href="#cb4-74"></a>  speed <span class="ot">=</span><span class="er">~</span>                                            </span>
+<span id="cb4-75"><a href="#cb4-75"></a>    x7                <span class="fl">1.000</span>                           </span>
+<span id="cb4-76"><a href="#cb4-76"></a>    x8                <span class="fl">1.180</span>    <span class="fl">0.165</span>    <span class="fl">7.152</span>    <span class="fl">0.000</span></span>
+<span id="cb4-77"><a href="#cb4-77"></a>    x9                <span class="fl">1.082</span>    <span class="fl">0.151</span>    <span class="fl">7.155</span>    <span class="fl">0.000</span></span>
+<span id="cb4-78"><a href="#cb4-78"></a></span>
+<span id="cb4-79"><a href="#cb4-79"></a>Covariances<span class="sc">:</span></span>
+<span id="cb4-80"><a href="#cb4-80"></a>                   Estimate  Std.Err  z<span class="sc">-</span>value  <span class="fu">P</span>(<span class="sc">&gt;</span><span class="er">|</span>z<span class="sc">|</span>)</span>
+<span id="cb4-81"><a href="#cb4-81"></a>  visual <span class="sc">~</span><span class="er">~</span>                                           </span>
+<span id="cb4-82"><a href="#cb4-82"></a>    textual           <span class="fl">0.408</span>    <span class="fl">0.074</span>    <span class="fl">5.552</span>    <span class="fl">0.000</span></span>
+<span id="cb4-83"><a href="#cb4-83"></a>    speed             <span class="fl">0.262</span>    <span class="fl">0.056</span>    <span class="fl">4.660</span>    <span class="fl">0.000</span></span>
+<span id="cb4-84"><a href="#cb4-84"></a>  textual <span class="sc">~</span><span class="er">~</span>                                          </span>
+<span id="cb4-85"><a href="#cb4-85"></a>    speed             <span class="fl">0.173</span>    <span class="fl">0.049</span>    <span class="fl">3.518</span>    <span class="fl">0.000</span></span>
+<span id="cb4-86"><a href="#cb4-86"></a></span>
+<span id="cb4-87"><a href="#cb4-87"></a>Variances<span class="sc">:</span></span>
+<span id="cb4-88"><a href="#cb4-88"></a>                   Estimate  Std.Err  z<span class="sc">-</span>value  <span class="fu">P</span>(<span class="sc">&gt;</span><span class="er">|</span>z<span class="sc">|</span>)</span>
+<span id="cb4-89"><a href="#cb4-89"></a>   .x1                <span class="fl">0.549</span>    <span class="fl">0.114</span>    <span class="fl">4.833</span>    <span class="fl">0.000</span></span>
+<span id="cb4-90"><a href="#cb4-90"></a>   .x2                <span class="fl">1.134</span>    <span class="fl">0.102</span>   <span class="fl">11.146</span>    <span class="fl">0.000</span></span>
+<span id="cb4-91"><a href="#cb4-91"></a>   .x3                <span class="fl">0.844</span>    <span class="fl">0.091</span>    <span class="fl">9.317</span>    <span class="fl">0.000</span></span>
+<span id="cb4-92"><a href="#cb4-92"></a>   .x4                <span class="fl">0.371</span>    <span class="fl">0.048</span>    <span class="fl">7.779</span>    <span class="fl">0.000</span></span>
+<span id="cb4-93"><a href="#cb4-93"></a>   .x5                <span class="fl">0.446</span>    <span class="fl">0.058</span>    <span class="fl">7.642</span>    <span class="fl">0.000</span></span>
+<span id="cb4-94"><a href="#cb4-94"></a>   .x6                <span class="fl">0.356</span>    <span class="fl">0.043</span>    <span class="fl">8.277</span>    <span class="fl">0.000</span></span>
+<span id="cb4-95"><a href="#cb4-95"></a>   .x7                <span class="fl">0.799</span>    <span class="fl">0.081</span>    <span class="fl">9.823</span>    <span class="fl">0.000</span></span>
+<span id="cb4-96"><a href="#cb4-96"></a>   .x8                <span class="fl">0.488</span>    <span class="fl">0.074</span>    <span class="fl">6.573</span>    <span class="fl">0.000</span></span>
+<span id="cb4-97"><a href="#cb4-97"></a>   .x9                <span class="fl">0.566</span>    <span class="fl">0.071</span>    <span class="fl">8.003</span>    <span class="fl">0.000</span></span>
+<span id="cb4-98"><a href="#cb4-98"></a>    visual            <span class="fl">0.809</span>    <span class="fl">0.145</span>    <span class="fl">5.564</span>    <span class="fl">0.000</span></span>
+<span id="cb4-99"><a href="#cb4-99"></a>    textual           <span class="fl">0.979</span>    <span class="fl">0.112</span>    <span class="fl">8.737</span>    <span class="fl">0.000</span></span>
+<span id="cb4-100"><a href="#cb4-100"></a>    speed             <span class="fl">0.384</span>    <span class="fl">0.086</span>    <span class="fl">4.451</span>    <span class="fl">0.000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="major-operators-of-lavaan-syntax" class="slide level2">
+<h2>Major operators of lavaan syntax</h2>
+<p><br></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/lavaan_syntax.jpg" style="width:90.0%;height:90.0%"></p>
+</figure>
+</div>
+</section>
+<section id="major-operators-of-lavaan-syntax-1" class="slide level2">
+<h2>Major operators of lavaan syntax</h2>
+<div class="columns">
+<div class="column">
+<h4 id="defining-a-reflective-latent-variable">Defining a reflective latent variable</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>model <span class="ot">&lt;-</span> <span class="st">"F1 =~ x1 + x2 + x3 + x4"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/sample_syntax1.png" style="width:45.0%;height:45.0%"></p>
+</figure>
+</div>
+</div><div class="column">
+<h4 id="estimate-factor-covariance">Estimate factor covariance</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>model <span class="ot">&lt;-</span> <span class="st">"F1 =~ x1 + x2 + x3 + x4</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="st">          F2 =~ x5 + X6 + x6 + x8</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="st">          F1 ~~ F2"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/sample_syntax2.png" style="width:90.0%;height:90.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="major-operators-of-lavaan-syntax-2" class="slide level2">
+<h2>Major operators of lavaan syntax</h2>
+<div class="columns">
+<div class="column">
+<h4 id="estimate-regression">Estimate regression</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>model <span class="ot">&lt;-</span> <span class="st">"F1 =~ x1 + x2 + x3 + x4</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="st">          F2 =~ x5 + X6 + x7 + x8</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="st">          F3 =~ x9 + X10 + x11 + x12</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="st">          F1 ~~ F2</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="st">          F3 ~ F1 + F2"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/sample_syntax3.png" style="width:80.0%;height:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="major-operators-of-lavaan-syntax-3" class="slide level2">
+<h2>Major operators of lavaan syntax</h2>
+<div class="columns">
+<div class="column">
+<h4 id="insert-a-comment-in-the-syntax">Insert a comment in the syntax</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>model <span class="ot">&lt;-</span> <span class="st">"F1 =~ x1 + x2 + x3 + x4</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="st">          F2 =~ x5 + X6 + x7 + x8</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="st">          F3 =~ x9 + X10 + x11 + x12</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="st">          </span></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="st">          # covariance</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="st">          F1 ~~ F2</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="st">          </span></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="st">          # F3 is regressed on F1 and F2</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="st">          F3 ~ F1 + F2"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/sample_syntax3.png" style="width:80.0%;height:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="major-operators-of-lavaan-syntax-4" class="slide level2">
+<h2>Major operators of lavaan syntax</h2>
+<div class="columns">
+<div class="column">
+<h4 id="label-a-parameter">Label a parameter</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>model <span class="ot">&lt;-</span> <span class="st">"F1 =~ x1 + x2 + x3 + x4</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="st">          F2 =~ x5 + X6 + x7 + x8</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="st">          F3 =~ x9 + X10 + x11 + x12</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="st">          </span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="st">          # covariance</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="st">          F1 ~~ F2</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="st">          </span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="st">          # F3 is regressed on F1 and F2</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="st">          F3 ~ b1*F1 + b2*F2"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/sample_syntax4.png" style="width:80.0%;height:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="major-operators-of-lavaan-syntax-5" class="slide level2">
+<h2>Major operators of lavaan syntax</h2>
+<div class="columns">
+<div class="column">
+<h4 id="create-a-new-parameter">Create a new parameter</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>model <span class="ot">&lt;-</span> <span class="st">"F1 =~ x1 + x2 + x3 + x4</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="st">          F2 =~ x5 + X6 + x7 + x8</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="st">          F3 =~ x9 + X10 + x11 + x12</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="st">          </span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="st">          # regression</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="st">          F3 ~ b1*F1 + b2*F2</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="st">          F2 ~ b3*F1</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="st">          # F1 indirect effect</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="st">          ie := b3*b2</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="st">          # F1 total effect</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="st">          te := b3*b2 + b1"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/sample_syntax5.png" style="width:80.0%;height:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="section-8" class="slide level2">
 <h2></h2>
 <div class="columns">
 <div class="column center-text" style="width:40%;">
@@ -767,11 +1053,150 @@
 </div>
 </div>
 </section>
-<section id="section-8" class="slide level2 center-text">
+<section id="section-9" class="slide level2 center-text">
 <h2></h2>
 <p>Click the <a href="">CB-SEM</a> and <a href="">PLS-SEM</a> to access the demo.</p>
 <p><img data-src="img/bravocado.gif" style="width:70.0%;height:70.0%"></p>
-<div class="footer footer-default">
+</section></section>
+<section>
+<section id="sem-with-seminr-package" class="title-slide slide level1 center">
+<h1>SEM with SEMinR package</h1>
+
+</section>
+<section id="section-10" class="slide level2">
+<h2></h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-left">
+<figure>
+<p><img data-src="img/seminr_0.png" style="width:40.0%;height:40.0%"></p>
+</figure>
+</div>
+<ul>
+<li><p><em>“SEMinR brings a friendly syntax to creating and estimating SEM. It uses its own PLS-SEM engine and integrates with the Lavaan package for CB-SEM/CFA estimation.</em> - Soumya Ray &amp; Nicholas Danks (2020)</p></li>
+<li><p>Check-out this <a href="https://cran.r-project.org/web/packages/seminr/vignettes/SEMinR.html">SEMinR vignette</a></p></li>
+<li><p>Download the <a href="https://link.springer.com/content/pdf/10.1007/978-3-030-80519-7.pdf">PLS-SEM book using R</a></p></li>
+</ul>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/seminr_00.png" style="width:70.0%;height:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="what-is-seminr" class="slide level2">
+<h2>What is SEMinR?</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<h4 id="three-main-steps-in-using-seminr">Three main steps in using SEMinR</h4>
+<ol type="1">
+<li><p>Describe measurement model for each constructs and its items</p></li>
+<li><p>Describe the structural model of causal relationships between constructs</p></li>
+<li><p>Estimate the model using PLS, CB-SEM, or CFA</p></li>
+</ol>
+</div><div class="column" style="width:40%;">
+
+</div>
+</div>
+</section>
+<section id="major-operators-of-seminr-syntax" class="slide level2">
+<h2>Major operators of SEMinR syntax</h2>
+<div class="columns">
+<div class="column">
+<h4 id="describe-measurement-model-for-each-constructs-and-its-items">1. Describe measurement model for each constructs and its items</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>model <span class="ot">&lt;-</span> <span class="fu">constructs</span>(</span>
+<span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">composite</span>(<span class="at">construct_name =</span> <span class="st">"F1"</span>, <span class="at">item_names =</span> <span class="fu">multi_items</span>(<span class="st">"x"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)))</span>
+<span id="cb11-3"><a href="#cb11-3"></a></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="fu">plot</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/seminr_1.png" style="width:45.0%;height:45.0%"></p>
+</figure>
+</div>
+</div><div class="column">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/sample_syntax1.png" style="width:45.0%;height:45.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="major-operators-of-seminr-syntax-1" class="slide level2">
+<h2>Major operators of SEMinR syntax</h2>
+<div class="columns">
+<div class="column">
+<h4 id="describe-the-structural-model-of-causal-relationships-between-constructs">2. Describe the structural model of causal relationships between constructs</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="do">## specifying measurement model</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>mm <span class="ot">&lt;-</span> <span class="fu">constructs</span>(</span>
+<span id="cb12-3"><a href="#cb12-3"></a>  <span class="fu">composite</span>(<span class="at">construct_name =</span> <span class="st">"F1"</span>, <span class="at">item_names =</span> <span class="fu">multi_items</span>(<span class="st">"x"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)),</span>
+<span id="cb12-4"><a href="#cb12-4"></a>  <span class="fu">composite</span>(<span class="st">"F2"</span>, <span class="fu">multi_items</span>(<span class="st">"x"</span>, <span class="dv">5</span><span class="sc">:</span><span class="dv">8</span>)),</span>
+<span id="cb12-5"><a href="#cb12-5"></a>  <span class="fu">composite</span>(<span class="st">"F3"</span>, <span class="fu">multi_items</span>(<span class="st">"x"</span>, <span class="dv">9</span><span class="sc">:</span><span class="dv">12</span>)))</span>
+<span id="cb12-6"><a href="#cb12-6"></a></span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="do">## specifying structural model</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a>sm <span class="ot">&lt;-</span> <span class="fu">relationships</span>(</span>
+<span id="cb12-9"><a href="#cb12-9"></a>  <span class="fu">paths</span>(<span class="at">from =</span> <span class="st">"F1"</span>, <span class="at">to =</span> <span class="st">"F2"</span>),</span>
+<span id="cb12-10"><a href="#cb12-10"></a>  <span class="fu">paths</span>(<span class="at">from =</span> <span class="fu">c</span>(<span class="st">"F1"</span>, <span class="st">"F2"</span>), <span class="at">to =</span> <span class="st">"F3"</span>))</span>
+<span id="cb12-11"><a href="#cb12-11"></a></span>
+<span id="cb12-12"><a href="#cb12-12"></a><span class="fu">plot</span>(sm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/seminr_2.png" style="width:45.0%;height:45.0%"></p>
+</figure>
+</div>
+</div><div class="column">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/sample_syntax5.png" style="width:80.0%;height:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="major-operators-of-seminr-syntax-2" class="slide level2">
+<h2>Major operators of SEMinR syntax</h2>
+<div class="columns">
+<div class="column">
+<h4 id="estimate-the-model-using-pls-cb-sem-or-cfa">3. Estimate the model using PLS, CB-SEM, or CFA</h4>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="do">## specifying measurement model</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>pls_sem_estimate <span class="ot">&lt;-</span> </span>
+<span id="cb13-3"><a href="#cb13-3"></a>  <span class="fu">estimate_pls</span>(<span class="at">data =</span> my_data,</span>
+<span id="cb13-4"><a href="#cb13-4"></a>             <span class="at">measurement_model =</span> mm,</span>
+<span id="cb13-5"><a href="#cb13-5"></a>             <span class="at">structural_model =</span> sm)</span>
+<span id="cb13-6"><a href="#cb13-6"></a></span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="do">## plotting pls-sem model</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a><span class="fu">plot</span>(pls_sem_estimate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/seminr_3.png" style="width:90.0%;height:90.0%"></p>
+</figure>
+</div>
+</div><div class="column">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/sample_syntax5.png" style="width:80.0%;height:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="well-done" class="slide level2 center-text">
+<h2>Well done!</h2>
+
+<img data-src="img/proud_of_you.gif" class="r-stretch"><div class="footer footer-default">
 <p>R you ready? Intro to SEM in R | link: t.ly/G900</p>
 </div>
 </section></section>

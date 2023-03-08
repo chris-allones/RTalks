@@ -37,11 +37,62 @@ Why use an SEM
 
 - can specify complex theoretical structures that are consistent with or conform with to the kind of complicated hypotheses that we often specify.
 
-
-
-
 -- 
 
 1 explicit assessment of measurement error
 2 estimation of latent (unobserved) variables via observed variables;
 3 modeling testing where a structure can be imposed and assessed as to fit of the data
+
+
+
+
+
+
+
+
+=====================================================================================
+08 March 2023
+
+- syntax for seminR
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
