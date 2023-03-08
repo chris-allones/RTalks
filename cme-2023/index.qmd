@@ -227,14 +227,13 @@ ggsave("img/r_data_science.jpeg", dpi = 300, width = 6.5, height = 7)
 
 # Introduction to Structural Equation Modelling (SEM)
 
-##
+## 
 
-![](img/sample_sem_study.png){fig-align="center" width=80% height=80%}
+![](img/sample_sem_study.png){fig-align="center" width="80%" height="80%"}
 
-:::{.source-text}
-Munim, Z. H., & Noor, T. (2020). Young people’s perceived service quality and environmental performance of hybrid electric bus service. Travel Behaviour and Society, 20, 133–143. https://doi.org/10.1016/j.tbs.2020.03.003
+::: source-text
+Munim, Z. H., & Noor, T. (2020). Young people's perceived service quality and environmental performance of hybrid electric bus service. Travel Behaviour and Society, 20, 133--143. https://doi.org/10.1016/j.tbs.2020.03.003
 :::
-
 
 ## What is SEM?
 
@@ -260,7 +259,6 @@ Munim, Z. H., & Noor, T. (2020). Young people’s perceived service quality and 
 
 -   measurement part of a full SEM model
 
-
 #### Structural model
 
 -   relationship between constructs
@@ -272,7 +270,6 @@ Munim, Z. H., & Noor, T. (2020). Young people’s perceived service quality and 
 ![](img/structural_part_2.jpg){fig-align="center"}
 :::
 :::
-
 
 ## 
 
@@ -450,7 +447,6 @@ read_excel("data/sem_articles.xlsx", sheet = 2) %>%
 ::: source-text
 H., Hair Jr, F., J., Matthews, L.M., Matthews, R.L., Sarstedt, M., 2017. PLS-SEM or CBSEM: updated guidelines on which method to use. Int. J. Multivar. Data Anal. 1 (2), 107--123. https://doi.org/10.1504/IJMDA.2017.087624.
 :::
-
 
 # SEM with Lavaan R package
 
@@ -648,7 +644,7 @@ model <- "F1 =~ x1 + x2 + x3 + x4
 
 ##  {.center-text}
 
-Click the [CB-SEM]() and [PLS-SEM]() to access the demo.
+Click the [CB-SEM](https://chris-allones.github.io/RTalks/sem-demo/cb-sem) and [PLS-SEM](https://chris-allones.github.io/RTalks/sem-demo/pls-sem) to access the demo.
 
 ![](img/bravocado.gif){width="70%" height="70%"}
 
@@ -658,15 +654,13 @@ Click the [CB-SEM]() and [PLS-SEM]() to access the demo.
 
 ::: columns
 ::: {.column width="60%"}
-
 ![](img/seminr_0.png){fig-align="left" width="40%" height="40%"}
-
 
 -   *"SEMinR brings a friendly syntax to creating and estimating SEM. It uses its own PLS-SEM engine and integrates with the Lavaan package for CB-SEM/CFA estimation.* - Soumya Ray & Nicholas Danks (2020)
 
 -   Check-out this [SEMinR vignette](https://cran.r-project.org/web/packages/seminr/vignettes/SEMinR.html)
 
-- Download the [PLS-SEM book using R](https://link.springer.com/content/pdf/10.1007/978-3-030-80519-7.pdf)
+-   Download the [PLS-SEM book using R](https://link.springer.com/content/pdf/10.1007/978-3-030-80519-7.pdf)
 :::
 
 ::: {.column width="40%"}
@@ -674,34 +668,27 @@ Click the [CB-SEM]() and [PLS-SEM]() to access the demo.
 :::
 :::
 
-
 ## What is SEMinR?
-
 
 ::: columns
 ::: {.column width="60%"}
 #### Three main steps in using SEMinR
 
-1. Describe measurement model for each constructs and its items
+1.  Describe measurement model for each constructs and its items
 
-2. Describe the structural model of causal relationships between constructs
+2.  Describe the structural model of causal relationships between constructs
 
-3. Estimate the model using PLS, CB-SEM, or CFA
+3.  Estimate the model using PLS, CB-SEM, or CFA
 :::
 
 ::: {.column width="40%"}
-
 :::
 :::
-
 
 ## Major operators of SEMinR syntax
 
-
-
 ::: columns
 ::: column
-
 #### 1. Describe measurement model for each constructs and its items
 
 ```{r}
@@ -718,16 +705,12 @@ plot(model)
 <br>
 
 ![](img/seminr_1.png){fig-align="center" width="45%" height="45%"}
-
 :::
 
 ::: column
-
 ![](img/sample_syntax1.png){fig-align="center" width="45%" height="45%"}
-
 :::
 :::
-
 
 ## Major operators of SEMinR syntax
 
@@ -758,15 +741,12 @@ plot(sm)
 <br>
 
 ![](img/seminr_2.png){fig-align="center" width="45%" height="45%"}
-
 :::
 
 ::: column
 ![](img/sample_syntax5.png){fig-align="center" width="80%" height="80%"}
 :::
 :::
-
-
 
 ## Major operators of SEMinR syntax
 
@@ -813,7 +793,6 @@ sm <- relationships(
 
 ```
 
-
 ```{r}
 #| echo: true
 #| eval: false
@@ -830,9 +809,7 @@ plot(pls_sem_estimate)
 
 ```
 
-
 ![](img/seminr_3.png){fig-align="center" width="90%" height="90%"}
-
 :::
 
 ::: column
@@ -840,16 +817,6 @@ plot(pls_sem_estimate)
 :::
 :::
 
-
-
 ## Well done! {.center-text}
 
 ![](img/proud_of_you.gif)
-
-
-
-
-
-
-
-
