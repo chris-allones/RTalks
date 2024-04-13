@@ -1,7 +1,7 @@
 ---
-title: "."
+title: " `"
 title-slide-attributes:
-  data-background-image: "img/bg_sem.jpg"
+  data-background-image: "https://chris-allones.github.io/RTalks/dbm-special-lecture-2024/img/bg_sem.jpg"
   data-background-size: "cover"
 format: 
   revealjs:
@@ -11,7 +11,7 @@ format:
     code-summary: "code"
     chalkboard: true
     slide-number: true
-    footer: "SEM: fundamentals and applications | link: t.ly/G900"
+    footer: "SEM: fundamentals and applications | link: t.ly/sAqiw"
 engine: knitr
 from: markdown+emoji
 editor: visual
