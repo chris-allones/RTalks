@@ -7,8 +7,6 @@ $code-block-border-left: #1d3557;
 $link-color: #1d3557;
 
 
-
-
 /*-- scss:rules --*/
 
 
@@ -34,7 +32,6 @@ h2 {
 }
 
 
-
 .source-text {
   font-size: 0.75em;
   font-style: italic;
@@ -56,6 +53,13 @@ h2 {
 
 .center-figure {
   justify-content: center;
+}
+
+.vertical-align {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90%;
 }
 
 

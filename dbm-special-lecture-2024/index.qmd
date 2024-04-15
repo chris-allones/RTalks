@@ -11,7 +11,7 @@ format:
     code-summary: "code"
     chalkboard: true
     slide-number: true
-    footer: "SEM: fundamentals and applications | link: t.ly/sAqiw"
+    footer: "SEM: fundamentals and applications | link: bit.ly/sem2024-dbm-lecture"
 engine: knitr
 from: markdown+emoji
 editor: visual
@@ -128,23 +128,50 @@ ggsave("img/sem_time.jpeg", dpi = 300, width = 7, height = 5)
 
 ## Steps in doing SEM {.center-text}
 
-- (revise the illustration, incorporating the PLS-SEM)
+<br>
 
-![](img/overview_factor.jpg){fig-align="center" width=40%}
+![](img/sem_steps.png){fig-align="center" width=45% .vertical-align}
 
 
-## Basics of SEM {.center-text}
 
-::: {.columns}
+## SEM: research goals & essentials {.center-text}
 
-::: {.column .center-text}
-### When to use SEM?
-:::
+<br>
 
-::: {.column .center-text}
-### Pre-requisites
 
-:::
+::: {.panel-tabset .left-text}
+### Common research goals in SEM
+
+- exploratory analysis
+
+- measurement assessment and validation
+
+- model testing and validation
+
+- investigating direct and indirect effects
+
+  - mediation analysis
+
+  - moderation analysis
+  
+
+### SEM essentials to consider
+
+- Research objectives
+
+- Theory and conceptual framework
+
+- Data availability and quality
+
+- Measurement model
+
+- Model identification
+
+- Sample size considerations
+
+- SEM assumptions
+
+- Model fit assessment
 
 :::
 
