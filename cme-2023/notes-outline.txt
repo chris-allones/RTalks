@@ -51,9 +51,18 @@ Why use an SEM
 
 
 =====================================================================================
-08 March 2023
 
-- syntax for seminR
+
+Steps in doing SEM
+
+- Reseach goal
+- defining constructs
+- hypotheses formulations
+- data collection and preprocessing
+- exploratory factor analysis
+- Model specification (measurement and structural model)
+- Estimationa and model assessment
+- Interpretation and reporting of results
 
 
 
