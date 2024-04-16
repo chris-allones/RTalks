@@ -125,6 +125,14 @@ ggsave("img/sem_time.jpeg", dpi = 300, width = 7, height = 5)
 
 ![](img/sem_time.jpeg){fig-align="center"}
 
+## 
+
+![](img/sample_sem_study.png){fig-align="center" width="80%" height="80%"}
+
+::: source-text
+Munim, Z. H., & Noor, T. (2020). Young people's perceived service quality and environmental performance of hybrid electric bus service. Travel Behaviour and Society, 20, 133--143. https://doi.org/10.1016/j.tbs.2020.03.003
+:::
+
 
 ## Steps in doing SEM {.center-text}
 
@@ -333,19 +341,15 @@ How many variables or items should be used per factor?
 
 ## 3 main steps in EFA {.center-text}
 
-::: {.columns}
-
-::: {.column width=33%}
-### Assessing data appropriateness {.left-text}
+::: {.panel-tabset .left-text}
+### 1. Assessing data appropriateness {.left-text}
 
 - Bartlett test
 
 - Kaiser-Meyer-Olkin test (KMO)
-:::
 
 
-::: {.column width=33%}
-### Deriving factors {.left-text}
+### 2. Deriving factors {.left-text}
 
 - Kaiser-Guttman criterion
 
@@ -353,11 +357,8 @@ How many variables or items should be used per factor?
 
 - Parallel test
 
-:::
 
-
-::: {.column width=33%}
-### Factor interpretation {.left-text}
+### 3. Factor interpretation {.left-text}
 
 - Factor extraction
 
@@ -367,16 +368,15 @@ How many variables or items should be used per factor?
 
 :::
 
-:::
 
 
-## Assessing data appropriateness
+## 1. Assessing data appropriateness
 
 <br>
 
 ::: columns
 ::: {.column width="40%"}
-#### 1. Bartlett Test
+#### Bartlett Test
 
 -   Examines the entire correlation matrix
 -   Test the hypothesis that correlation matrix is an identity matrix.
@@ -407,9 +407,9 @@ BARTLETT(data, N= nrow(data))
 :::
 :::
 
-## Assessing data appropriateness
+## 1. Assessing data appropriateness
 
-#### 2. Kaiser-Meyen-Olkin (KMO Test)
+#### Kaiser-Meyen-Olkin (KMO Test)
 
 -   Measure of sampling adequacy
 -   Indicate the proportion of variance explained by the underlying factor.
@@ -421,9 +421,9 @@ BARTLETT(data, N= nrow(data))
     -   $\ge 0.50$ - miserable
     -   $< 0.50$ - unacceptable
 
-## Assessing data appropriateness
+## 1. Assessing data appropriateness
 
-#### 2. Kaiser-Meyen-Olkin (KMO Test)
+#### Kaiser-Meyen-Olkin (KMO Test)
 
 ```{r}
 #| echo: true
@@ -444,9 +444,9 @@ library(psych)
 KMO(data)
 ```
 
-## Assessing data appropriateness
+## 1. Assessing data appropriateness
 
-#### 2. Kaiser-Meyen-Olkin (KMO Test)
+#### Kaiser-Meyen-Olkin (KMO Test)
 
 -   When overall MSA is less than 0.50
     -   Identify variables with lowest MSA subject for deletion.
@@ -455,11 +455,11 @@ KMO(data)
 -   Deletion of variables with MSA under 0.50 means variable's correlation with <br>other variables are poorly representing the extracted factor.
 
 
-## Deriving factors
+## 2. Deriving factors
 
 ::: columns
 ::: {.column width="40%"}
-#### 1. Kaiser-Guttman Criterion
+#### Kaiser-Guttman Criterion
 
 -   Only consider factors whose eigenvalues is greater than 1.
 
@@ -478,11 +478,11 @@ KGC(data, eigen_type = "EFA")
 :::
 :::
 
-## Exploring possible factors
+## 2. Deriving factors
 
 ::: columns
 ::: {.column width="40%"}
-#### 2. Scree test
+#### Scree test
 
 -   Identify the optimum number of factors that can be extracted before the amount of unique variance begins to dominate the common variance.
 
@@ -502,11 +502,11 @@ scree(data)
 :::
 :::
 
-## Exploring possible factors
+## 2. Deriving factors
 
 ::: columns
 ::: {.column width="40%"}
-#### 3. Parallel Test
+#### Parallel Test
 
 -   Generates a large number of simulated dataset.
 -   Each simulated dataset is factor analyzed.
@@ -529,18 +529,9 @@ fa.parallel(data, fa = "fa")
 :::
 
 
-## Factor interpretation {.left-text}
+## 3. Factor interpretation {.left-text}
 
-### Three process of factor intepretation
-
-#### 1. Factor extraction
-
-#### 2. Factor rotation
-
-#### 3. Factor interpretation and re-specification
-
-
-## 1. Factor extraction
+### Factor extraction
 
 ::: columns
 ::: {.column width="60%"}
@@ -573,7 +564,9 @@ print(fa_unrotated$loadings)
 :::
 
 
-## 1. Factor extraction
+## 3. Factor interpretation {.left-text}
+
+### Factor extraction
 
 ::: columns
 ::: {.column width="60%"}
@@ -616,10 +609,13 @@ print(fa_unrotated$loadings)
 :::
 
 
-## 2. Factor rotation
+## 3. Factor interpretation {.left-text}
+
+### Factor rotation
 
 ::: columns
 ::: column
+
 #### Why do factor rotation?
 
 -   To simplify the complexity of factor loadings.
@@ -634,7 +630,10 @@ print(fa_unrotated$loadings)
 :::
 :::
 
-## Factor rotation
+
+## 3. Factor interpretation {.left-text}
+
+### Factor rotation
 
 ::: columns
 ::: column
@@ -727,7 +726,9 @@ plot(fa_rotated$loadings[,1],
 :::
 :::
 
-## Factor rotation
+## 3. Factor interpretation {.left-text}
+
+### Factor rotation
 
 ::: columns
 ::: column
@@ -751,11 +752,14 @@ plot(fa_rotated$loadings[,1],
 :::
 
 ::: column
-![](image/orthogonal.png){fig-align="center" width="100%"}
+![](img/orthogonal.png){fig-align="center" width="100%"}
 :::
 :::
 
-## Factor rotation
+
+## 3. Factor interpretation {.left-text}
+
+### Factor rotation
 
 #### Orthogonal rotation
 
@@ -933,7 +937,10 @@ plot(fa_equamax$loadings[,1],
 :::
 :::
 
-## Factor rotation
+
+## 3. Factor interpretation {.left-text}
+
+### Factor rotation
 
 ::: columns
 ::: column
@@ -951,11 +958,14 @@ plot(fa_equamax$loadings[,1],
 :::
 
 ::: column
-![](image/oblique.png){fig-align="center" width="90%"}
+![](img/oblique.png){fig-align="center" width="90%"}
 :::
 :::
 
-## Factor rotation
+
+## 3. Factor interpretation {.left-text}
+
+### Factor rotation
 
 #### Oblique rotation
 
@@ -1088,7 +1098,11 @@ plot(fa_oblimin$loadings[,1],
 :::
 :::
 
-## Factor interpretation and respecification
+
+
+## 3. Factor interpretation {.left-text}
+
+### Factor interpretation and respecification
 
 ::: columns
 ::: column
@@ -1118,7 +1132,10 @@ print(fa_varimax$loadings, sort = TRUE)
 :::
 :::
 
-## Factor interpretation and respecification
+
+## 3. Factor interpretation {.left-text}
+
+### Factor interpretation and respecification
 
 ::: columns
 ::: column
@@ -1148,7 +1165,10 @@ print(fa_varimax$loadings, sort = TRUE, cutoff = 0.4)
 :::
 :::
 
-## Factor interpretation and respecification
+
+## 3. Factor interpretation {.left-text}
+
+### Factor interpretation and respecification
 
 ::: columns
 ::: column
@@ -1189,7 +1209,10 @@ print(fa_varimax$loadings, sort = TRUE, cutoff = 0.4)
 :::
 :::
 
-## Factor interpretation and respecification
+
+## 3. Factor interpretation {.left-text}
+
+### Factor interpretation and respecification
 
 #### Naming of factors
 
@@ -1231,7 +1254,10 @@ print(fa_varimax$loadings, sort = TRUE, cutoff = 0.4)
 
 ------------------------------------------------------------------------
 
-## Factor interpretation and respecification
+
+## 3. Factor interpretation {.left-text}
+
+### Factor interpretation and respecification
 
 #### Extracting factor scores
 
@@ -1267,43 +1293,7 @@ fa_varimax$scores %>% round(4) %>% data.frame() %>% tibble()
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## {background-image="img/sem_steps_model_specs.png" data-background-size="80%" data-background-position="center" data-background-repeat="no-repeat"}
 
 
 ## What is SEM?
@@ -1381,35 +1371,6 @@ rmarkdown::paged_table(hbat_data)
 :::
 :::
 
-## 1. Defining Constructs
-
--   Based on literature and preliminary interviews, a study was designed focusing on five key constructs.
-
-    -   **Job satisfaction (JS)** : reactions resulting from an appraisal of one's job situation.
-
-    -   **Organizational commitment (OC)**: extent to which an employees indentifies and feels part of HBAT.
-
-    -   **Staying intention (SI)**: extent to which an employee intends to continue working for HBAT.
-
-    -   **Environmental perceptions (EP)**: beliefs an employee has about day-to-day, physical working conditions.
-
-    -   **Attitudes towards cowrokers (AC)**: attitudes an employee has toward the coworkers he/she interacts with on a regular basis.
-
-## 1. Defining Constructs
-
-::: columns
-::: column
-![](img/scale.png){fig-align="left"}
-:::
-
-::: column
-![](img/scale2.png){fig-align="right"}
-:::
-:::
-
-::: aside
-Source: JF Hair et al. (2019) : Multivariate data analysis
-:::
 
 ## 2. Developing overall measurement model
 
@@ -1459,19 +1420,421 @@ Source: JF Hair et al. (2019): Multivariate data analysis
 ![](img/structural_model.png){fig-align="center" width="80%" height="80%"}
 
 
-#
+
+## {background-image="img/sem_steps_estimation.png" data-background-size="80%" data-background-position="center" data-background-repeat="no-repeat"}
 
 
-### Excited to do SEM? {.center-text}
+## Approaches in SEM {.center-text}
 
-### Hold up! We need to do some exploratory first! {.center-text}
+<br>
 
-![](img/wait_what.gif){fig-align="center"}
+::: columns
+::: column
+### Covariance-based SEM (CB-SEM)
 
-# Exploratory Factor Analysis (EFA) {.center-text}
+-   based on covariance
+-   theory testing and confirmation
+:::
+
+::: column
+### Partial least-square SEM (PLS-SEM)
+
+-   variance based (partial least-square)
+-   prediction and theory development
+:::
+:::
+
+<br>
+
+::: center-text
+*"Choice of the method originates from the goal of research. If the existing theory needs to be tested and confirmed, CB-SEM is the chosen one. Nevertheless, for theory development as well as prediction purposes, PLS-SEM is better."* - [Dash and Paul (2021)](https://doi.org/10.1016/j.techfore.2021.121092)
+
+<br>
+
+*"... both methods are complementary, not competitive"* - [Hair (2017)](https://www.inderscienceonline.com/doi/epdf/10.1504/IJMDA.2017.087624)
+:::
+
+## CB-SEM or PLS-SEM {.center-text}
+
+![](img/cb_pls.png){fig-align="center" width="50%" height="50%"}
+
+::: source-text
+H., Hair Jr, F., J., Matthews, L.M., Matthews, R.L., Sarstedt, M., 2017. PLS-SEM or CBSEM: updated guidelines on which method to use. Int. J. Multivar. Data Anal. 1 (2), 107--123. https://doi.org/10.1504/IJMDA.2017.087624.
+:::
 
 
-# Let's practice!
+# SEM with Lavaan R package
+
+## What is Lavaan?
+
+::: columns
+::: {.column width="40%"}
+-   *"developed to provide useRs, researchers, and teachers a free open-source, but commercial quality"*, Yves Rosseel (2012)
+
+-   Check-out this [lavaan tutorial](https://lavaan.ugent.be/tutorial/index.html)
+:::
+
+::: {.column width="60%"}
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+install.packages("lavaan")
+library(lavaan)
+example(cfa)
+```
+
+```{r}
+#| echo: true
+#| class-output: "remark-code"
+library(lavaan)
+example(cfa)
+```
+:::
+:::
+
+## Major operators of lavaan syntax
+
+<br>
+
+![](img/lavaan_syntax.jpg){fig-align="center" width="90%" height="90%"}
+
+## Major operators of lavaan syntax
+
+::: columns
+::: column
+#### Defining a reflective latent variable
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+model <- "F1 =~ x1 + x2 + x3 + x4"
+```
+
+<br>
+
+![](img/sample_syntax1.png){fig-align="center" width="45%" height="45%"}
+:::
+
+::: column
+#### Estimate factor covariance
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+model <- "F1 =~ x1 + x2 + x3 + x4
+          F2 =~ x5 + X6 + x6 + x8
+          F1 ~~ F2"
+```
+
+<br>
+
+![](img/sample_syntax2.png){fig-align="center" width="90%" height="90%"}
+:::
+:::
+
+## Major operators of lavaan syntax
+
+::: columns
+::: column
+#### Estimate regression
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+model <- "F1 =~ x1 + x2 + x3 + x4
+          F2 =~ x5 + X6 + x7 + x8
+          F3 =~ x9 + X10 + x11 + x12
+          F1 ~~ F2
+          F3 ~ F1 + F2"
+```
+:::
+
+::: column
+![](img/sample_syntax3.png){fig-align="center" width="80%" height="80%"}
+:::
+:::
+
+## Major operators of lavaan syntax
+
+::: columns
+::: column
+#### Insert a comment in the syntax
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+model <- "F1 =~ x1 + x2 + x3 + x4
+          F2 =~ x5 + X6 + x7 + x8
+          F3 =~ x9 + X10 + x11 + x12
+          
+          # covariance
+          F1 ~~ F2
+          
+          # F3 is regressed on F1 and F2
+          F3 ~ F1 + F2"
+```
+:::
+
+::: column
+![](img/sample_syntax3.png){fig-align="center" width="80%" height="80%"}
+:::
+:::
+
+## Major operators of lavaan syntax
+
+::: columns
+::: column
+#### Label a parameter
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+model <- "F1 =~ x1 + x2 + x3 + x4
+          F2 =~ x5 + X6 + x7 + x8
+          F3 =~ x9 + X10 + x11 + x12
+          
+          # covariance
+          F1 ~~ F2
+          
+          # F3 is regressed on F1 and F2
+          F3 ~ b1*F1 + b2*F2"
+```
+:::
+
+::: column
+![](img/sample_syntax4.png){fig-align="center" width="80%" height="80%"}
+:::
+:::
+
+## Major operators of lavaan syntax
+
+::: columns
+::: column
+#### Create a new parameter
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+model <- "F1 =~ x1 + x2 + x3 + x4
+          F2 =~ x5 + X6 + x7 + x8
+          F3 =~ x9 + X10 + x11 + x12
+          
+          # regression
+          F3 ~ b1*F1 + b2*F2
+          F2 ~ b3*F1
+          # F1 indirect effect
+          ie := b3*b2
+          # F1 total effect
+          te := b3*b2 + b1"
+```
+:::
+
+::: column
+![](img/sample_syntax5.png){fig-align="center" width="80%" height="80%"}
+:::
+:::
+
+## 
+
+::: columns
+::: {.column .center-text width="40%"}
+<br>
+
+### It's better to show the power of SEM in ACTION!
+
+### LET'S GO!
+:::
+
+::: {.column width="60%"}
+![](img/typing_cat.gif)
+:::
+:::
+
+##  {.center-text}
+
+Click the [CB-SEM](https://chris-allones.github.io/RTalks/sem-demo/cb-sem) and [PLS-SEM](https://chris-allones.github.io/RTalks/sem-demo/pls-sem) to access the demo.
+
+![](img/bravocado.gif){width="70%" height="70%"}
+
+# SEM with SEMinR package
+
+## 
+
+::: columns
+::: {.column width="60%"}
+![](img/seminr_0.png){fig-align="left" width="40%" height="40%"}
+
+-   *"SEMinR brings a friendly syntax to creating and estimating SEM. It uses its own PLS-SEM engine and integrates with the Lavaan package for CB-SEM/CFA estimation.* - Soumya Ray & Nicholas Danks (2020)
+
+-   Check-out this [SEMinR vignette](https://cran.r-project.org/web/packages/seminr/vignettes/SEMinR.html)
+
+-   Download the [PLS-SEM book using R](https://link.springer.com/content/pdf/10.1007/978-3-030-80519-7.pdf)
+:::
+
+::: {.column width="40%"}
+![](img/seminr_00.png){fig-align="center" width="70%" height="70%"}
+:::
+:::
+
+## What is SEMinR?
+
+::: columns
+::: {.column width="60%"}
+#### Three main steps in using SEMinR
+
+1.  Describe measurement model for each constructs and its items
+
+2.  Describe the structural model of causal relationships between constructs
+
+3.  Estimate the model using PLS, CB-SEM, or CFA
+:::
+
+::: {.column width="40%"}
+:::
+:::
+
+## Major operators of SEMinR syntax
+
+::: columns
+::: column
+#### 1. Describe measurement model for each constructs and its items
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+
+model <- constructs(
+  composite(construct_name = "F1", item_names = multi_items("x", 1:4)))
+
+plot(model)
+```
+
+<br>
+
+![](img/seminr_1.png){fig-align="center" width="45%" height="45%"}
+:::
+
+::: column
+![](img/sample_syntax1.png){fig-align="center" width="45%" height="45%"}
+:::
+:::
+
+## Major operators of SEMinR syntax
+
+::: columns
+::: column
+#### 2. Describe the structural model of causal relationships between constructs
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+
+## specifying measurement model
+mm <- constructs(
+  composite(construct_name = "F1", item_names = multi_items("x", 1:4)),
+  composite("F2", multi_items("x", 5:8)),
+  composite("F3", multi_items("x", 9:12)))
+
+## specifying structural model
+sm <- relationships(
+  paths(from = "F1", to = "F2"),
+  paths(from = c("F1", "F2"), to = "F3"))
+
+plot(sm)
+
+```
+
+<br>
+
+![](img/seminr_2.png){fig-align="center" width="45%" height="45%"}
+:::
+
+::: column
+![](img/sample_syntax5.png){fig-align="center" width="80%" height="80%"}
+:::
+:::
+
+## Major operators of SEMinR syntax
+
+::: columns
+::: column
+#### 3. Estimate the model using PLS, CB-SEM, or CFA
+
+```{r}
+#| echo: false
+#| eval: false
+#| class-output: "remark-code"
+
+# Data
+hbat_data <- read_sav("data/HBAT_SEM_NOMISSING.sav") %>% 
+ clean_names() %>% 
+ select(js1:si4) %>%
+ mutate_all(as.numeric) %>% 
+ rename("x1" = "ac1",
+        "x2" = "ac2",
+        "x3" = "ac3",
+        "x4" = "ac4",
+        "x5" = "ep1",
+        "x6" = "ep2",
+        "x7" = "ep3",
+        "x8" = "ep4",
+        "x9" = "js1",
+        "x10" = "js2",
+        "x11" = "js3",
+        "x12" = "js4"
+        )
+
+## specifying measurement model
+mm <- constructs(
+  composite(construct_name = "F1", item_names = multi_items("x", 1:4)),
+  composite("F2", multi_items("x", 5:8)),
+  composite("F3", multi_items("x", 9:12)))
+
+## specifying structural model
+sm <- relationships(
+  paths(from = "F1", to = "F2"),
+  paths(from = c("F1", "F2"), to = "F3"))
+
+
+
+```
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+
+## specifying measurement model
+pls_sem_estimate <- 
+  estimate_pls(data = my_data,
+             measurement_model = mm,
+             structural_model = sm)
+
+## plotting pls-sem model
+plot(pls_sem_estimate)
+
+```
+
+![](img/seminr_3.png){fig-align="center" width="90%" height="90%"}
+:::
+
+::: column
+![](img/sample_syntax5.png){fig-align="center" width="80%" height="80%"}
+:::
+:::
+
+## Well done! {.center-text}
+
+![](img/proud_of_you.gif)
 
 
 
