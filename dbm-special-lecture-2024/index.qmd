@@ -1,7 +1,7 @@
 ---
 title: " `"
 title-slide-attributes:
-  data-background-image: "https://chris-allones.github.io/RTalks/dbm-special-lecture-2024/img/bg_sem.jpg"
+  data-background-image: "https://chris-allones.github.io/RTalks/dbm-special-lecture-2024/img/bg_sem_2.jpg"
   data-background-size: "cover"
 format: 
   revealjs:
@@ -1296,7 +1296,7 @@ fa_varimax$scores %>% round(4) %>% data.frame() %>% tibble()
 ## {background-image="img/sem_steps_model_specs.png" data-background-size="80%" data-background-position="center" data-background-repeat="no-repeat"}
 
 
-## What is SEM?
+## Basics of SEM
 
 ::: columns
 ::: column
@@ -1313,7 +1313,7 @@ fa_varimax$scores %>% round(4) %>% data.frame() %>% tibble()
 :::
 
 
-## What is SEM?
+## Basics of SEM
 
 ::: columns
 ::: column
@@ -1342,41 +1342,14 @@ fa_varimax$scores %>% round(4) %>% data.frame() %>% tibble()
 ![](img/sem_convention_2.jpg){fig-align="center" width="90%" height="90%"}
 
 
-## Main steps in SEM
 
-1.  Defining constructs
-
-2.  Developing the overall measurement model
-
-3.  Specifying the structural model
-
-
-## 1. Defining Constructs
-
-### Dataset
-
-::: columns
-::: {.column width="40%"}
--   HBAT company
-
--   HBAT is interested in understanding what affects employee's attitudes and behaviors that contributes to employee's retension.
-:::
-
-::: {.column width="60%"}
-```{r}
-#| echo: false
-#| class-output: "remark-code"
-rmarkdown::paged_table(hbat_data)
-```
-:::
-:::
-
-
-## 2. Developing overall measurement model
+## Developing overall measurement model
 
 ::: columns
 ::: column
--   Measurement theory model (CFA) for HBAT employees
+-   Measurement theory model
+
+-   Confirmatory factor analysis (CFA)
 
 -   Direction of the relationship between factors is not yet defined.
 
@@ -1397,25 +1370,8 @@ Source: JF Hair et al. (2019): Multivariate data analysis
 
 ![](img/cfa_sem.png){fig-align="center" width="70%" height="70%"}
 
-## 3. Defining structural model
 
-#### Hypotheses:
-
--   H1: Environmental perceptions are positively related to job satisfaction.
-
--   H2: Environmental perceptions are positively related to organizational commitment.
-
--   H3: Attitudes toward coworkers are positively related to job satisfaction.
-
--   H4: Attitudes toward coworkers are positively related to organizational commitment.
-
--   H5: Job satisfaction is related positively to organizational commitment.
-
--   H6: Job satisfaction is related positively to staying intentions.
-
--   H7: Organizational commitment is related positively to staying intention.
-
-## 3. Defining structural model {.center-text}
+## Defining structural model {.center-text}
 
 ![](img/structural_model.png){fig-align="center" width="80%" height="80%"}
 
@@ -1463,7 +1419,7 @@ H., Hair Jr, F., J., Matthews, L.M., Matthews, R.L., Sarstedt, M., 2017. PLS-SEM
 :::
 
 
-# SEM with Lavaan R package
+# CB-SEM with Lavaan R package
 
 ## What is Lavaan?
 
@@ -1641,29 +1597,267 @@ model <- "F1 =~ x1 + x2 + x3 + x4
 :::
 :::
 
-## 
+## Measurement model: CFA model and estimation
 
 ::: columns
-::: {.column .center-text width="40%"}
-<br>
 
-### It's better to show the power of SEM in ACTION!
+::: {.column width="40%"}
 
-### LET'S GO!
+```{r}
+#| echo: true
+#| class-output: "remark-code"
+
+cfa_model <- "SI =~ SI1 + SI2 + SI3 + SI4
+              JS =~ JS1 + JS2 + JS3 + JS4 + JS5
+              AC =~ AC1 + AC2 + AC3 + AC4
+              EP =~ EP1 + EP2 + EP3 + EP4
+              OC =~ OC1 + OC2 + OC3 + OC4"
+
+```
+
 :::
 
 ::: {.column width="60%"}
-![](img/typing_cat.gif)
+```{r}
+#| echo: true
+#| class-output: "remark-code"
+
+cfa_fit <- cfa(cfa_model, data = hbat_data)
+summary(cfa_fit)
+```
 :::
 :::
 
-##  {.center-text}
 
-Click the [CB-SEM](https://chris-allones.github.io/RTalks/sem-demo/cb-sem) and [PLS-SEM](https://chris-allones.github.io/RTalks/sem-demo/pls-sem) to access the demo.
 
-![](img/bravocado.gif){width="70%" height="70%"}
+## Fit indices
 
-# SEM with SEMinR package
+::: columns
+::: {.column width="40%"}
+#### Goodness of fit indices
+
+-   Goodness-of-fit index (GFI)
+-   Adjusted goodness-fit-index (AGFI)
+-   Comparative fit index (CFI)
+-   Normed fit index (NFI)
+-   Non-normed fit index (NNF)
+
+#### Badness of fit indices
+
+-   Standard root mean square of the residuals (SRMR)
+-   Root mean square error of approximation (RMSEA)
+:::
+
+::: {.column width="60%"}
+![](img/sample_gof.png)
+:::
+:::
+
+::: aside
+Sample GOF results from W. Shiau & M. Luo (2013). Continuance intention of blog users: The impact of perceived enjoyment, habit, user involvement and blogging time.
+:::
+
+
+## Fit indices
+
+::: columns
+::: column
+#### Goodness of fit indices
+
+-   Goodness-of-fit index (GFI)
+
+-   Adjusted goodness-fit-index (AGFI)
+
+-   Comparative fit index (CFI)
+
+-   Normed fit index (NFI)
+
+-   Non-normed fit index (NNF)
+:::
+
+::: column
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+
+fitMeasures(cfa_fit,  fit.measures = c("gfi", "agfi", "cfi", "nfi", "nnfi"))
+```
+
+<br>
+
+```{r}
+#| echo: true
+#| class-output: "remark-code"
+
+fitMeasures(cfa_fit,  fit.measures = c("gfi", "agfi", "cfi", "nfi", "nnfi"))
+```
+:::
+:::
+
+## Fit indices
+
+::: columns
+::: column
+#### Badness of fit indices
+
+-   Standard root mean squrare residual (SRMR)
+
+-   Root mean square error of approximation (RMSEA)
+:::
+
+::: column
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+
+fitMeasures(cfa_fit,  fit.measures = c("srmr", "rmsea"))
+```
+
+<br>
+
+```{r}
+#| echo: true
+#| class-output: "remark-code"
+
+fitMeasures(cfa_fit,  fit.measures = c("srmr", "rmsea"))
+```
+:::
+:::
+
+## Reliability and validity test
+
+::: columns
+::: {.column width="40%"}
+#### Reliability test
+
+-   Composite reliability
+
+#### Validity test
+
+-   Convergent validity
+
+-   Discriminant validity
+:::
+
+::: {.column width="60%"}
+![](img/reliability_validity.png){fig-align="center"}
+
+::: aside
+Source: A. Hou, W. Shiau, & R. Shang (2019). The involvement paradox. The role of cognitive absorption in mobile instant messaging user satisfaction.
+:::
+:::
+:::
+
+## Reliability and validity test
+
+::: columns
+::: column
+-   Composite reliability: `alpha` \> `0.70`
+
+-   Convergent validity: AVE (`avevar`) \> `0.50`
+
+-   Discriminant validity: `omega` \> `0.7`
+:::
+
+::: column
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+
+library(semTools)
+reliability(cfa_fit) %>% round(3)
+```
+
+<br>
+
+```{r}
+#| echo: true
+#| class-output: "remark-code"
+
+semTools::reliability(cfa_fit) %>% round(3)
+```
+:::
+:::
+
+
+
+## Structural model: estimation
+
+::: columns
+::: {.column width="40%"}
+```{r}
+#| echo: true
+#| class-output: "remark-code"
+
+sem_model <- "SI =~ SI1 + SI2 + SI3 + SI4
+              JS =~ JS1 + JS2 + JS3 + JS4 + JS5
+              AC =~ AC1 + AC2 + AC3 + AC4
+              EP =~ EP1 + EP2 + EP3 + EP4
+              OC =~ OC1 + OC2 + OC3 + OC4
+              EP ~~ AC
+              JS ~ H1*EP + H3*AC
+              OC ~ H2*EP + H4*AC + H5*JS
+              SI ~ H6*JS + H7*OC"
+```
+
+
+:::
+
+::: {.column width="60%"}
+```{r}
+#| echo: true
+#| eval: true
+#| class-output: "remark-code-short"
+
+sem_fit <- sem(model = sem_model, data = hbat_data)
+summary(sem_fit, standardized = TRUE)
+
+```
+:::
+:::
+
+
+## GOF measures between structural and CFA model
+
+::: columns
+::: {.column width="40%"}
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+
+gof_indices <- c('chisq', 'df','pvalue', "gfi", 
+                 'rmsea', 'rmr', 'srmr', 'nfi', 
+                 'nnfi', 'cfi', 'agfi')
+fitmeasures(sem_fit, fit.measures = gof_indices)
+fitmeasures(cfa_fit, fit.measures = gof_indices)
+```
+
+<br>
+
+```{r}
+#| echo: true
+#| class-output: "remark-code"
+
+gof_indices <- c('chisq', 'df','pvalue', "gfi", 
+                 'rmsea', 'rmr', 'srmr', 'nfi', 
+                 'nnfi', 'cfi', 'agfi')
+fitmeasures(sem_fit, fit.measures = gof_indices)
+fitmeasures(cfa_fit, fit.measures = gof_indices)
+```
+:::
+
+::: {.column width="60%"}
+![](img/fit_indices.png){fig-align="right"}
+:::
+:::
+
+
+
+# PLS-SEM with SEMinR package
 
 ## 
 
