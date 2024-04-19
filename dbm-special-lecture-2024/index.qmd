@@ -312,8 +312,6 @@ How many variables or items should be used per factor?
 
 - It is the responsibility of the researcher to ensure that observed patterns are conceptually valid and appropriate.
 
-### Major assumptions
-
 :::
 
 #
@@ -558,39 +556,8 @@ print(fa_unrotated$loadings)
 #### Loadings
 
 -   Correlation of each variable and the factor.
+
 -   Indicate the degree of correspondence between variable and factor.
--   Higher loadings making the variable representative of the factor.
-:::
-:::
-
-
-## 3. Factor interpretation {.left-text}
-
-### Factor extraction
-
-::: columns
-::: {.column width="60%"}
-```{r}
-#| echo: true
-#| eval: false
-
-fa_unrotated <- fa(r = data, nfactors = 4,rotate = "none")
-print(fa_unrotated$loadings)
-```
-
-<br>
-
-```{r}
-#| echo: true
-#| class-output: "remark-code"
-
-fa_unrotated <- fa(r = data, nfactors = 4,rotate = "none")
-print(fa_unrotated$loadings)
-```
-:::
-
-::: {.column width="40%"}
-#### Loadings
 
 -   $\le \pm 0.10 \approx$ zero
 
@@ -599,14 +566,10 @@ print(fa_unrotated$loadings)
 -   $\ge \pm 0.50$ practically significant
 
 -   $\ge \pm 0.70 \approx$ well-defined structure
-
-#### SS loadings
-
--   Eigenvalues - column sum of squared factor loadings.
-
--   Relative importance of each factor in accounting for the variance associated with the set of variables.
 :::
 :::
+
+
 
 
 ## 3. Factor interpretation {.left-text}
@@ -632,8 +595,6 @@ print(fa_unrotated$loadings)
 
 
 ## 3. Factor interpretation {.left-text}
-
-### Factor rotation
 
 ::: columns
 ::: column
@@ -758,8 +719,6 @@ plot(fa_rotated$loadings[,1],
 
 
 ## 3. Factor interpretation {.left-text}
-
-### Factor rotation
 
 #### Orthogonal rotation
 
@@ -964,8 +923,6 @@ plot(fa_equamax$loadings[,1],
 
 
 ## 3. Factor interpretation {.left-text}
-
-### Factor rotation
 
 #### Oblique rotation
 
@@ -1961,7 +1918,7 @@ plot(sm)
 
 ::: columns
 ::: column
-#### 3. Estimate the model using PLS, CB-SEM, or CFA
+#### 3. Estimate the model
 
 ```{r}
 #| echo: false
@@ -2026,11 +1983,111 @@ plot(pls_sem_estimate)
 :::
 :::
 
+
+## Estimating measurement model
+
+```{r}
+#| echo: true
+#| eval: true
+#| class-output: "remark-code"
+
+## specifying measurement model
+mm <- constructs(
+  composite(construct_name = "F1", item_names = multi_items("x", 1:4)),
+  composite("F2", multi_items("x", 5:8)),
+  composite("F3", multi_items("x", 9:12)))
+
+plot(mm)
+```
+
+
+## Estimating structural model
+
+```{r}
+#| echo: false
+#| eval: true
+#| class-output: "remark-code"
+
+# Data
+hbat_data <- read_sav("data/HBAT_SEM_NOMISSING.sav") %>% 
+ clean_names() %>% 
+ select(js1:si4) %>%
+ mutate_all(as.numeric) %>% 
+ rename("x1" = "ac1",
+        "x2" = "ac2",
+        "x3" = "ac3",
+        "x4" = "ac4",
+        "x5" = "ep1",
+        "x6" = "ep2",
+        "x7" = "ep3",
+        "x8" = "ep4",
+        "x9" = "js1",
+        "x10" = "js2",
+        "x11" = "js3",
+        "x12" = "js4"
+        )
+
+```
+
+
+```{r}
+#| echo: true
+#| eval: true
+#| class-output: "remark-code"
+
+## specifying structural model
+sm <- relationships(
+  paths(from = "F1", to = "F2"),
+  paths(from = c("F1", "F2"), to = "F3"))
+
+plot(sm)
+
+```
+
+
+
+## Estimating the pls-sem model
+
+```{r}
+#| echo: true
+#| eval: true
+#| class-output: "remark-code"
+
+## estimate pls-sem model
+pls_sem_estimate <- 
+  estimate_pls(data = hbat_data |> as.data.frame(),
+             measurement_model = mm,
+             structural_model = sm)
+
+plot(pls_sem_estimate)
+
+```
+
+
 ## Well done! {.center-text}
 
 ![](img/proud_of_you.gif)
 
 
+## Sample analysis {.center-text}
+
+::: columns
+::: {.column width="50%" .center-text}
+![](img/qr-cb-sem.png){fig-align="center" width="45%" height="45%"}
+
+[CB-SEM](https://chris-allones.github.io/RTalks/dbm-special-lecture-2024/sem-samples/cb-sem-2024.html)
+
+:::
+
+
+::: {.column width="50%" .center-text}
+
+![](img/qr-pls-sem.png){fig-align="center" width="45%" height="45%"}
+
+[PLS-SEM](https://chris-allones.github.io/RTalks/dbm-special-lecture-2024/sem-samples/pls-sem-2024.html)
+:::
+
+:::
 
 
 
