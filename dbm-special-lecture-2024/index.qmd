@@ -48,7 +48,7 @@ hbat_data <- haven::read_sav("data/HBAT_SEM_NOMISSING.sav") %>%
 
 ## Outline
 
-### Part I: Relevance and basics of SEM
+### Part I: Fundamentals and applications
 
 - SEM growth in research applications
 
@@ -66,7 +66,7 @@ hbat_data <- haven::read_sav("data/HBAT_SEM_NOMISSING.sav") %>%
 
 - PLS-SEM
 
-# Part I: Relevance and basics of SEM
+# Part I: Fundamentals and applications
 
 ## SEM growth in research applications {.center-text}
 
