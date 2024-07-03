@@ -11,7 +11,7 @@ format:
     code-summary: "code"
     chalkboard: true
     slide-number: true
-    footer: "SEM: fundamentals and applications | link: bit.ly/sem2024-dbm-lecture"
+    footer: "SEM: fundamentals and applications | link: bit.ly/viserdac-demo"
 engine: knitr
 from: markdown+emoji
 editor: visual
