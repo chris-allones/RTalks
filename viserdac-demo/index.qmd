@@ -382,12 +382,28 @@ model <- "F1 =~ x1 + x2 + x3 + x4
 :::
 :::
 
-## Measurement model: CFA model and estimation
+
+## Structural model: estimation
 
 ::: columns
 ::: {.column width="40%"}
 ```{r}
 #| echo: true
+#| class-output: "remark-code"
+
+sem_model <- "SI =~ SI1 + SI2 + SI3 + SI4
+              JS =~ JS1 + JS2 + JS3 + JS4 + JS5
+              AC =~ AC1 + AC2 + AC3 + AC4
+              EP =~ EP1 + EP2 + EP3 + EP4
+              OC =~ OC1 + OC2 + OC3 + OC4
+              EP ~~ AC
+              JS ~ H1*EP + H3*AC
+              OC ~ H2*EP + H4*AC + H5*JS
+              SI ~ H6*JS + H7*OC"
+```
+
+```{r}
+#| echo: false
 #| class-output: "remark-code"
 
 cfa_model <- "SI =~ SI1 + SI2 + SI3 + SI4
@@ -396,19 +412,23 @@ cfa_model <- "SI =~ SI1 + SI2 + SI3 + SI4
               EP =~ EP1 + EP2 + EP3 + EP4
               OC =~ OC1 + OC2 + OC3 + OC4"
 
+cfa_fit <- cfa(cfa_model, data = hbat_data)
 ```
 :::
 
 ::: {.column width="60%"}
 ```{r}
 #| echo: true
-#| class-output: "remark-code"
+#| eval: true
+#| class-output: "remark-code-short"
 
-cfa_fit <- cfa(cfa_model, data = hbat_data)
-summary(cfa_fit)
+sem_fit <- sem(model = sem_model, data = hbat_data)
+summary(sem_fit, standardized = TRUE)
+
 ```
 :::
 :::
+
 
 ## Fit indices
 
@@ -437,162 +457,7 @@ summary(cfa_fit)
 Sample GOF results from W. Shiau & M. Luo (2013). Continuance intention of blog users: The impact of perceived enjoyment, habit, user involvement and blogging time.
 :::
 
-## Fit indices
 
-::: columns
-::: column
-#### Goodness of fit indices
-
--   Goodness-of-fit index (GFI)
-
--   Adjusted goodness-fit-index (AGFI)
-
--   Comparative fit index (CFI)
-
--   Normed fit index (NFI)
-
--   Non-normed fit index (NNF)
-:::
-
-::: column
-```{r}
-#| echo: true
-#| eval: false
-#| class-output: "remark-code"
-
-fitMeasures(cfa_fit,  fit.measures = c("gfi", "agfi", "cfi", "nfi", "nnfi"))
-```
-
-<br>
-
-```{r}
-#| echo: true
-#| class-output: "remark-code"
-
-fitMeasures(cfa_fit,  fit.measures = c("gfi", "agfi", "cfi", "nfi", "nnfi"))
-```
-:::
-:::
-
-## Fit indices
-
-::: columns
-::: column
-#### Badness of fit indices
-
--   Standard root mean squrare residual (SRMR)
-
--   Root mean square error of approximation (RMSEA)
-:::
-
-::: column
-```{r}
-#| echo: true
-#| eval: false
-#| class-output: "remark-code"
-
-fitMeasures(cfa_fit,  fit.measures = c("srmr", "rmsea"))
-```
-
-<br>
-
-```{r}
-#| echo: true
-#| class-output: "remark-code"
-
-fitMeasures(cfa_fit,  fit.measures = c("srmr", "rmsea"))
-```
-:::
-:::
-
-## Reliability and validity test
-
-::: columns
-::: {.column width="40%"}
-#### Reliability test
-
--   Composite reliability
-
-#### Validity test
-
--   Convergent validity
-
--   Discriminant validity
-:::
-
-::: {.column width="60%"}
-![](img/reliability_validity.png){fig-align="center"}
-
-::: aside
-Source: A. Hou, W. Shiau, & R. Shang (2019). The involvement paradox. The role of cognitive absorption in mobile instant messaging user satisfaction.
-:::
-:::
-:::
-
-## Reliability and validity test
-
-::: columns
-::: column
--   Composite reliability: `alpha` \> `0.70`
-
--   Convergent validity: AVE (`avevar`) \> `0.50`
-
--   Discriminant validity: `omega` \> `0.7`
-:::
-
-::: column
-```{r}
-#| echo: true
-#| eval: false
-#| class-output: "remark-code"
-
-library(semTools)
-reliability(cfa_fit) %>% round(3)
-```
-
-<br>
-
-```{r}
-#| echo: true
-#| class-output: "remark-code"
-
-semTools::reliability(cfa_fit) %>% round(3)
-```
-:::
-:::
-
-## Structural model: estimation
-
-::: columns
-::: {.column width="40%"}
-```{r}
-#| echo: true
-#| class-output: "remark-code"
-
-sem_model <- "SI =~ SI1 + SI2 + SI3 + SI4
-              JS =~ JS1 + JS2 + JS3 + JS4 + JS5
-              AC =~ AC1 + AC2 + AC3 + AC4
-              EP =~ EP1 + EP2 + EP3 + EP4
-              OC =~ OC1 + OC2 + OC3 + OC4
-              EP ~~ AC
-              JS ~ H1*EP + H3*AC
-              OC ~ H2*EP + H4*AC + H5*JS
-              SI ~ H6*JS + H7*OC"
-```
-:::
-
-::: {.column width="60%"}
-```{r}
-#| echo: true
-#| eval: true
-#| class-output: "remark-code-short"
-
-sem_fit <- sem(model = sem_model, data = hbat_data)
-summary(sem_fit, standardized = TRUE)
-
-```
-:::
-:::
 
 ## GOF measures between structural and CFA model
 
