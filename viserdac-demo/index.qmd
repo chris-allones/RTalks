@@ -1,0 +1,2003 @@
+---
+title: " `"
+title-slide-attributes:
+  data-background-image: "https://chris-allones.github.io/RTalks/dbm-special-lecture-2024/img/bg_sem_3.jpg"
+  data-background-size: "cover"
+format: 
+  revealjs:
+    theme: [simple, custom.scss]
+    preview-links: true
+    code-fold: false
+    code-summary: "code"
+    chalkboard: true
+    slide-number: true
+    footer: "SEM: fundamentals and applications | link: bit.ly/sem2024-dbm-lecture"
+engine: knitr
+from: markdown+emoji
+editor: visual
+---
+
+```{r}
+#| echo: false
+#| include: false
+knitr::opts_chunk$set(comment = "", collapse = TRUE)
+
+## working directory
+setwd("~/GitHub-repo/RTalks/viserdac-demo")
+
+## Libraries
+library(tidyverse)
+library(readxl)
+library(lavaan)
+library(semPlot)
+library(seminr)
+library(janitor)
+library(haven)
+
+# data management
+data <- haven::read_sav("data/HBAT.sav") |> 
+  select(x6:x18) |>  
+  select(-x15, -x17) |>  # removing variables with below acceptable MSA
+  tibble() |> 
+  clean_names()
+
+hbat_data <- haven::read_sav("data/HBAT_SEM_NOMISSING.sav") %>% 
+  select(JS1:SI4) %>% mutate_all(as.numeric)
+
+```
+
+## Outline
+
+### Part I: Fundamentals and applications
+
+-   SEM growth in research applications
+
+-   Steps in doing SEM
+
+-   Basics of SEM
+
+-   CB-SEM vs. PLS-SEM
+
+### Part II: Data to insights: SEM demo using R
+
+-   Exploratory Factor Analysis (EFA)
+
+-   Confirmatory and CB-SEM
+
+-   PLS-SEM
+
+# Part I: Fundamentals and applications
+
+## SEM growth in research applications {.center-text}
+
+```{r}
+#| echo: false
+#| eval: false
+read_excel("data/sem_articles.xlsx", sheet = 1) |> 
+  mutate(subject_area = fct_reorder(subject_area, count)) |> 
+  ggplot(aes(count, subject_area)) + 
+  geom_col(fill = "#1d3557") +
+  geom_text(aes(label = count), hjust = -0.5, size = 3) +
+  scale_x_continuous(expand = c(0, 0), limits = c(0, 3e4)) +
+  theme_minimal() +
+  theme(plot.margin = margin(rep(20, 4)),
+        plot.title = element_text(face = "bold"),
+        axis.title.x = element_text(margin = margin(t=20))) +
+  labs(title = "SEM related journal articles",
+       subtitle = str_wrap("A total of 83,863 articles covering the period 1978-2023 found in the Scopus database", 70),
+       x = "Number of articles indexed in the Scopus database",
+       y = element_blank())
+
+ggsave("img/sem_subject_area.jpeg", dpi = 300, width = 8, height = 7)
+```
+
+![](img/sem_subject_area.jpeg){fig-align="center" width="80%"}
+
+## SEM growth in research applications {.center-text}
+
+```{r}
+#| echo: false
+#| eval: false
+
+read_excel("data/sem_articles.xlsx", sheet = 2) %>% 
+  filter(year < 2023) %>% 
+  ggplot(aes(year, count)) + 
+  geom_line(linewidth= 1) +
+  geom_text(data = . %>% filter(year > 2010),
+            aes(label = count), hjust = -0.5, size = 3) +
+  scale_x_continuous(expand = c(0, 0), limits = c(1975, 2030), 
+                     breaks = c(seq(1975, 2020, 10), 2022)) +
+  scale_y_continuous(limits = c(0, 15e3), breaks = seq(0, 15e3, 2500)) +
+  theme_minimal() +
+  theme(plot.margin = margin(rep(20, 4)),
+        plot.title = element_text(face = "bold"),
+        axis.title.y = element_text(margin = margin(r=20))) +
+  labs(title = "Growth of SEM related journal articles",
+       subtitle = str_wrap("A total of 83,863 articles covering the period 1978-2023 found in the Scopus database", 75),
+       y = "Number of articles indexed in the Scopus database",
+       x = element_blank())
+
+ggsave("img/sem_time.jpeg", dpi = 300, width = 7, height = 5)
+```
+
+![](img/sem_time.jpeg){fig-align="center"}
+
+## 
+
+![](img/sample_sem_study.png){fig-align="center" width="80%" height="80%"}
+
+::: source-text
+Munim, Z. H., & Noor, T. (2020). Young people's perceived service quality and environmental performance of hybrid electric bus service. Travel Behaviour and Society, 20, 133--143. https://doi.org/10.1016/j.tbs.2020.03.003
+:::
+
+## Steps in doing SEM {.center-text}
+
+<br>
+
+![](img/sem_steps.png){.vertical-align fig-align="center" width="45%"}
+
+## SEM: research goals & essentials {.center-text}
+
+<br>
+
+::: {.panel-tabset .left-text}
+### Common research goals in SEM
+
+-   exploratory analysis
+
+-   measurement assessment and validation
+
+-   model testing and validation
+
+-   investigating direct and indirect effects
+
+    -   mediation analysis
+
+    -   moderation analysis
+
+### SEM essentials to consider
+
+-   Research objectives
+
+-   Theory and conceptual framework
+
+-   Data availability and quality
+
+-   Measurement model
+
+-   Model identification
+
+-   Sample size considerations
+
+-   SEM assumptions
+
+-   Model fit assessment
+:::
+
+##  {background-image="img/sem_steps_def_cons.png" data-background-size="80%" data-background-position="center" data-background-repeat="no-repeat"}
+
+## Defining Constructs
+
+-   Based on literature and preliminary interviews, a study was designed focusing on five key constructs.
+
+    -   **Job satisfaction (JS)** : reactions resulting from an appraisal of one's job situation.
+
+    -   **Organizational commitment (OC)**: extent to which an employees indentifies and feels part of HBAT.
+
+    -   **Staying intention (SI)**: extent to which an employee intends to continue working for HBAT.
+
+    -   **Environmental perceptions (EP)**: beliefs an employee has about day-to-day, physical working conditions.
+
+    -   **Attitudes towards cowrokers (AC)**: attitudes an employee has toward the coworkers he/she interacts with on a regular basis.
+
+## Defining Constructs
+
+::: columns
+::: column
+![](img/scale.png){fig-align="left"}
+:::
+
+::: column
+![](img/scale2.png){fig-align="right"}
+:::
+:::
+
+::: aside
+Source: JF Hair et al. (2019) : Multivariate data analysis
+:::
+
+##  {background-image="img/sem_steps_hypotheses.png" data-background-size="80%" data-background-position="center" data-background-repeat="no-repeat"}
+
+## Hypotheses formulation
+
+-   H1: Environmental perceptions (**EP**) are positively related to job satisfaction (**JS**).
+
+-   H2: Environmental perceptions (**EP**) are positively related to organizational commitment (**OC**).
+
+-   H3: Attitudes toward coworkers (**AC**) are positively related to job satisfaction (**JS**).
+
+-   H4: Attitudes toward coworkers (**AC**) are positively related to organizational commitment (**OC**).
+
+-   H5: Job satisfaction (**JS**) is related positively to organizational commitment (**OC**).
+
+-   H6: Job satisfaction (**JS**) is related positively to staying intentions (**SI**).
+
+-   H7: Organizational commitment (**OC**) is related positively to staying intention (**SI**).
+
+## Hypotheses formulation
+
+![](img/structural_model.png){fig-align="center" width="70%" height="70%"}
+
+::: aside
+Source: JF Hair et al. (2019) : Multivariate data analysis
+:::
+
+##  {background-image="img/sem_steps_data_col_prep.png" data-background-size="80%" data-background-position="center" data-background-repeat="no-repeat"}
+
+## Data collection and preprocessing
+
+<br>
+
+::: columns
+::: {.column width="40%"}
+![](img/scale.png){fig-align="left"}
+:::
+
+::: {.column width="60%"}
+```{r}
+#| echo: false
+#| class-output: "remark-code"
+rmarkdown::paged_table(hbat_data)
+```
+:::
+:::
+
+## Data collection and preprocessing
+
+<br>
+
+::: {.panel-tabset .left-text}
+### Sample size
+
+-   Five cases minimum per estimated parameter ([Bentler and Chou, 1987](https://doi.org/10.1177/0049124187016001004))
+
+-   Monte carlo studies recommend 100 cases minimum and 200 is better for modest models ([Loehlin, 2017](https://www.routledge.com/Latent-Variable-Models-An-Introduction-to-Factor-Path-and-Structural/Loehlin-Beaujean/p/book/9781138916074))
+
+-   Larger or complicated models, models with more latent variables or parameter estimates, require more cases.
+
+### Variable selections
+
+What types of variables can be used in factor analysis?
+
+-   *Primary requirement: a correlation value can be calculated among all variables.*
+-   *e.g., metric variables, scale items, dummy variables to represent nonmetric variables.*
+
+<br>
+
+How many variables or items should be used per factor?
+
+-   *Five or more per factor for scale development.*
+-   *Three or more per factor for factor measurement (based on how degrees of freedom is computed).*
+
+### Conceptual assumptions
+
+-   some uderlying structure does exist in the set of selected variables.
+
+-   correlated variables and subsequent definition of factors do not guarantee relevance
+
+    -   *even if they meet the statistical requirement!*
+
+-   It is the responsibility of the researcher to ensure that observed patterns are conceptually valid and appropriate.
+:::
+
+# 
+
+### Excited to do SEM? {.center-text}
+
+### Hold up! We need to do some exploratory first! {.center-text}
+
+![](img/wait_what.gif){fig-align="center"}
+
+#  {background-image="img/sem_steps_efa.png" data-background-size="80%" data-background-position="center" data-background-repeat="no-repeat"}
+
+## EFA: an overview
+
+-   an exploratory or descriptive technique to determine the appropriate number of common factor.
+
+-   no specifications are made in regards to the number of factors (initially) or the pattern of relationships between factor and indicators.
+
+-   looking for patterns in the data
+
+## 3 main steps in EFA {.center-text}
+
+::: {.panel-tabset .left-text}
+### 1. Assessing data appropriateness {.left-text}
+
+-   Bartlett test
+
+-   Kaiser-Meyer-Olkin test (KMO)
+
+### 2. Deriving factors {.left-text}
+
+-   Kaiser-Guttman criterion
+
+-   Scree test
+
+-   Parallel test
+
+### 3. Factor interpretation {.left-text}
+
+-   Factor extraction
+
+-   Factor rotation
+
+-   Factor interpretation and re-specification
+:::
+
+## 1. Assessing data appropriateness
+
+<br>
+
+::: columns
+::: {.column width="40%"}
+#### Bartlett Test
+
+-   Examines the entire correlation matrix
+-   Test the hypothesis that correlation matrix is an identity matrix.
+-   A significant result signifies data are appropriate for factor analysis.
+:::
+
+::: {.column width="10%"}
+:::
+
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+library(EFAtools)
+BARTLETT(data, N= nrow(data))
+```
+
+<br>
+
+```{r}
+#| echo: true
+#| class-output: "remark-code"
+library(EFAtools)
+BARTLETT(data, N= nrow(data))
+```
+:::
+:::
+
+## 1. Assessing data appropriateness
+
+#### Kaiser-Meyen-Olkin (KMO Test)
+
+-   Measure of sampling adequacy
+-   Indicate the proportion of variance explained by the underlying factor.
+-   Guidelines:
+    -   $\ge 0.90$ - marvelous
+    -   $\ge 0.80$ - meritorious
+    -   $\ge 0.70$ - middling
+    -   $\ge 0.60$ - mediocre
+    -   $\ge 0.50$ - miserable
+    -   $< 0.50$ - unacceptable
+
+## 1. Assessing data appropriateness
+
+#### Kaiser-Meyen-Olkin (KMO Test)
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+
+library(psych)
+KMO(data)
+```
+
+<br>
+
+```{r}
+#| echo: true
+#| class-output: "remark-code"
+
+library(psych)
+KMO(data)
+```
+
+## 1. Assessing data appropriateness
+
+#### Kaiser-Meyen-Olkin (KMO Test)
+
+-   When overall MSA is less than 0.50
+    -   Identify variables with lowest MSA subject for deletion.
+    -   Recalculate MSA
+    -   Repeat unitl overall MSA is 0.50 and above
+-   Deletion of variables with MSA under 0.50 means variable's correlation with <br>other variables are poorly representing the extracted factor.
+
+## 2. Deriving factors
+
+::: columns
+::: {.column width="40%"}
+#### Kaiser-Guttman Criterion
+
+-   Only consider factors whose eigenvalues is greater than 1.
+
+-   Rationale is that factor should account for the variance of at least a single variable if it is to be retained for interpretation.
+:::
+
+::: {.column width="60%"}
+```{r}
+#| echo: true
+#| eval: false
+library(EFAtools)
+KGC(data, eigen_type = "EFA")
+```
+
+![](img/kgc_plot.png){fig-align="center" width="130%"}
+:::
+:::
+
+## 2. Deriving factors
+
+::: columns
+::: {.column width="40%"}
+#### Scree test
+
+-   Identify the optimum number of factors that can be extracted before the amount of unique variance begins to dominate the common variance.
+
+-   Inflection point or the "elbow"
+:::
+
+::: {.column width="60%"}
+```{r}
+#| eval: false
+#| echo: true
+
+library(psych)
+scree(data)
+```
+
+![](img/scree_plot.png){fig-align="center" width="130%"}
+:::
+:::
+
+## 2. Deriving factors
+
+::: columns
+::: {.column width="40%"}
+#### Parallel Test
+
+-   Generates a large number of simulated dataset.
+-   Each simulated dataset is factor analyzed.
+    -   Results is the average eigenvalues across simulation.
+    -   Values are then compared to the eigenvalues extracted from the original dataset.
+    -   All factors with eigenvalues above those average eigenvalues are retained.
+:::
+
+::: {.column width="60%"}
+```{r}
+#| eval: false
+#| echo: true
+
+library(psych)
+fa.parallel(data, fa = "fa")
+```
+
+![](img/parallel_plot.png){fig-align="center" width="130%"}
+:::
+:::
+
+## 3. Factor interpretation {.left-text}
+
+### Factor extraction
+
+::: columns
+::: {.column width="60%"}
+```{r}
+#| echo: true
+#| eval: false
+
+fa_unrotated <- fa(r = data, nfactors = 4, rotate = "none")
+print(fa_unrotated$loadings)
+```
+
+<br>
+
+```{r}
+#| echo: true
+#| class-output: "remark-code"
+
+fa_unrotated <- fa(r = data, nfactors = 4, rotate = "none")
+print(fa_unrotated$loadings)
+```
+:::
+
+::: {.column width="40%"}
+#### Loadings
+
+-   Correlation of each variable and the factor.
+
+-   Indicate the degree of correspondence between variable and factor.
+
+-   $\le \pm 0.10 \approx$ zero
+
+-   $\pm 0.10$ to $\pm 0.40$ meet the minimal level
+
+-   $\ge \pm 0.50$ practically significant
+
+-   $\ge \pm 0.70 \approx$ well-defined structure
+:::
+:::
+
+## 3. Factor interpretation {.left-text}
+
+### Factor rotation
+
+::: columns
+::: column
+#### Why do factor rotation?
+
+-   To simplify the complexity of factor loadings.
+
+-   Distribute the loading more clearly into the factors.
+
+-   Facilitate interpretation.
+:::
+
+::: column
+![](img/factor_rotation.png){fig-align="center" width="90%"}
+:::
+:::
+
+## 3. Factor interpretation {.left-text}
+
+::: columns
+::: column
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+
+fa_rotated <- fa(r = data, nfactors = 4,rotate = "varimax")
+
+par(mfrow = c(2, 1))
+plot(fa_unrotated$loadings[,1],
+     fa_unrotated$loadings[,2],
+     xlab = "Factor 1",
+     ylab = "Factor 2",
+     ylim = c(-1, 1),
+     xlim = c(-1, 1),
+     main = "No rotation",
+     pch = 19,
+     cex = 2,
+     col = "#6c757d") 
+     abline(h=0, v=0)
+     text(fa_unrotated$loadings[,1],
+          fa_unrotated$loadings[,2],
+          labels = rownames(fa_unrotated$loadings),
+          pos = 4, cex = 1)
+
+plot(fa_rotated$loadings[,1],
+     fa_rotated$loadings[,2],
+     xlab = "Factor 1",
+     ylab = "Factor 2",
+     ylim = c(-1, 1),
+     xlim = c(-1, 1),
+     main = "With rotation",
+     pch = 19,
+     cex = 2,
+     col = "#6c757d")
+     abline(h=0, v=0)
+     text(fa_rotated$loadings[,1],
+          fa_rotated$loadings[,2],
+          labels = rownames(fa_unrotated$loadings),
+          pos = 4, cex = 1)
+
+```
+:::
+
+::: column
+```{r}
+#| echo: false
+#| fig-height: 12
+#| fig-align: center
+#| class-output: "remark-code"
+
+fa_rotated <- fa(r = data, nfactors = 4,rotate = "varimax")
+
+par(mfrow = c(2, 1))
+plot(fa_unrotated$loadings[,1],
+     fa_unrotated$loadings[,2],
+     xlab = "Factor 1",
+     ylab = "Factor 2",
+     ylim = c(-1, 1),
+     xlim = c(-1, 1),
+     main = "No rotation",
+     pch = 19,
+     cex = 2,
+     col = "#6c757d") 
+     abline(h=0, v=0)
+     text(fa_unrotated$loadings[,1],
+          fa_unrotated$loadings[,2],
+          labels = rownames(fa_unrotated$loadings),
+          pos = 4, cex = 1)
+
+plot(fa_rotated$loadings[,1],
+     fa_rotated$loadings[,2],
+     xlab = "Factor 1",
+     ylab = "Factor 2",
+     ylim = c(-1, 1),
+     xlim = c(-1, 1),
+     main = "With rotation",
+     pch = 19,
+     cex = 2,
+     col = "#6c757d")
+     abline(h=0, v=0)
+     text(fa_rotated$loadings[,1],
+          fa_rotated$loadings[,2],
+          labels = rownames(fa_unrotated$loadings),
+          pos = 4, cex = 1)
+
+```
+:::
+:::
+
+## 3. Factor interpretation {.left-text}
+
+### Factor rotation
+
+::: columns
+::: column
+#### Orthogonal rotation
+
+-   axes are maintained at 90 degrees
+
+-   orthogonal rotation methods
+
+    -   Varimax - *most commonly used*
+
+    -   Quartimax
+
+    -   Equimax
+
+-   Check-out some of these references
+
+    -   [IBM](https://www.ibm.com/docs/de/spss-statistics/24.0.0?topic=analysis-factor-rotation)
+
+    -   [Factor analysis](http://statweb.stanford.edu/~susan/courses/stats305c/examplesFA.html)
+:::
+
+::: column
+![](img/orthogonal.png){fig-align="center" width="100%"}
+:::
+:::
+
+## 3. Factor interpretation {.left-text}
+
+#### Orthogonal rotation
+
+::: columns
+::: column
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+
+fa_varimax <- fa(r = data, nfactors = 4,rotate = "varimax")
+fa_quartimax <- fa(r = data, nfactors = 4,rotate = "quartimax")
+fa_equamax <- fa(r = data, nfactors = 4,rotate = "equamax")
+
+par(mfrow = c(2, 2))
+
+plot(fa_unrotated$loadings[,1],
+     fa_unrotated$loadings[,2],
+     xlab = "Factor 1",
+     ylab = "Factor 2",
+     ylim = c(-1, 1),
+     xlim = c(-1, 1),
+     main = "No rotation",
+     cex.main = 3,
+     pch = 19,
+     cex = 4,
+     col = "#6c757d") 
+     abline(h=0, v=0)
+     text(fa_unrotated$loadings[,1],
+          fa_unrotated$loadings[,2],
+          labels = rownames(fa_unrotated$loadings),
+          pos = 4, cex = 2)
+     
+plot(fa_varimax$loadings[,1],
+     fa_varimax$loadings[,2],
+     xlab = "Factor 1",
+     ylab = "Factor 2",
+     ylim = c(-1, 1),
+     xlim = c(-1, 1),
+     main = "Varimax",
+     cex.main = 3,
+     pch = 19,
+     cex = 4,
+     col = "#6c757d") 
+     abline(h=0, v=0)
+     text(fa_varimax$loadings[,1],
+          fa_varimax$loadings[,2],
+          labels = rownames(fa_varimax$loadings),
+          pos = 4, cex = 2)
+
+plot(fa_quartimax$loadings[,1],
+     fa_quartimax$loadings[,2],
+     xlab = "Factor 1",
+     ylab = "Factor 2",
+     ylim = c(-1, 1),
+     xlim = c(-1, 1),
+     main = "Quartimax",
+     cex.main = 3,
+     pch = 19,
+     cex = 4,
+     col = "#6c757d") 
+     abline(h=0, v=0)
+     text(fa_quartimax$loadings[,1],
+          fa_quartimax$loadings[,2],
+          labels = rownames(fa_quartimax$loadings),
+          pos = 4, cex = 2)
+     
+plot(fa_equamax$loadings[,1],
+     fa_equamax$loadings[,2],
+     xlab = "Factor 1",
+     ylab = "Factor 2",
+     ylim = c(-1, 1),
+     xlim = c(-1, 1),
+     main = "Equamax",
+     cex.main = 3,
+     pch = 19,
+     cex = 4,
+     col = "#6c757d") 
+     abline(h=0, v=0)
+     text(fa_equamax$loadings[,1],
+          fa_equamax$loadings[,2],
+          labels = rownames(fa_equamax$loadings),
+          pos = 4, cex = 2)
+
+
+
+```
+:::
+
+::: column
+```{r}
+#| echo: false
+#| fig-height: 20
+#| fig-width: 18
+#| fig-align: center
+#| class-output: "remark-code"
+
+fa_varimax <- fa(r = data, nfactors = 4,rotate = "varimax")
+fa_quartimax <- fa(r = data, nfactors = 4,rotate = "quartimax")
+fa_equamax <- fa(r = data, nfactors = 4,rotate = "equamax")
+
+par(mfrow = c(2, 2))
+
+plot(fa_unrotated$loadings[,1],
+     fa_unrotated$loadings[,2],
+     xlab = "Factor 1",
+     ylab = "Factor 2",
+     ylim = c(-1, 1),
+     xlim = c(-1, 1),
+     main = "No rotation",
+     cex.main = 3,
+     pch = 19,
+     cex = 4,
+     col = "#6c757d") 
+     abline(h=0, v=0)
+     text(fa_unrotated$loadings[,1],
+          fa_unrotated$loadings[,2],
+          labels = rownames(fa_unrotated$loadings),
+          pos = 4, cex = 2)
+     
+plot(fa_varimax$loadings[,1],
+     fa_varimax$loadings[,2],
+     xlab = "Factor 1",
+     ylab = "Factor 2",
+     ylim = c(-1, 1),
+     xlim = c(-1, 1),
+     main = "Varimax",
+     cex.main = 3,
+     pch = 19,
+     cex = 4,
+     col = "#6c757d") 
+     abline(h=0, v=0)
+     text(fa_varimax$loadings[,1],
+          fa_varimax$loadings[,2],
+          labels = rownames(fa_varimax$loadings),
+          pos = 4, cex = 2)
+
+plot(fa_quartimax$loadings[,1],
+     fa_quartimax$loadings[,2],
+     xlab = "Factor 1",
+     ylab = "Factor 2",
+     ylim = c(-1, 1),
+     xlim = c(-1, 1),
+     main = "Quartimax",
+     cex.main = 3,
+     pch = 19,
+     cex = 4,
+     col = "#6c757d") 
+     abline(h=0, v=0)
+     text(fa_quartimax$loadings[,1],
+          fa_quartimax$loadings[,2],
+          labels = rownames(fa_quartimax$loadings),
+          pos = 4, cex = 2)
+     
+plot(fa_equamax$loadings[,1],
+     fa_equamax$loadings[,2],
+     xlab = "Factor 1",
+     ylab = "Factor 2",
+     ylim = c(-1, 1),
+     xlim = c(-1, 1),
+     main = "Equamax",
+     cex.main = 3,
+     pch = 19,
+     cex = 4,
+     col = "#6c757d") 
+     abline(h=0, v=0)
+     text(fa_equamax$loadings[,1],
+          fa_equamax$loadings[,2],
+          labels = rownames(fa_equamax$loadings),
+          pos = 4, cex = 2)
+
+
+
+```
+:::
+:::
+
+## 3. Factor interpretation {.left-text}
+
+### Factor rotation
+
+::: columns
+::: column
+#### Oblique rotation rotation
+
+-   allow correlated factors
+
+-   suited to the goal of theoretically meaningful constructs
+
+-   oblique rotation methods
+
+    -   Promax
+
+    -   Oblimin
+:::
+
+::: column
+![](img/oblique.png){fig-align="center" width="90%"}
+:::
+:::
+
+## 3. Factor interpretation {.left-text}
+
+#### Oblique rotation
+
+::: columns
+::: column
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+
+fa_promax <- fa(r = data, nfactors = 4,rotate = "promax")
+fa_oblimin <- fa(r = data, nfactors = 4,rotate = "oblimin")
+
+
+par(mfrow = c(1, 3))
+
+plot(fa_unrotated$loadings[,1],
+     fa_unrotated$loadings[,2],
+     xlab = "Factor 1",
+     ylab = "Factor 2",
+     ylim = c(-1, 1),
+     xlim = c(-1, 1),
+     main = "No rotation",
+     pch = 19,
+     col = "#6c757d") 
+     abline(h=0, v=0)
+     text(fa_unrotated$loadings[,1],
+          fa_unrotated$loadings[,2],
+          labels = rownames(fa_unrotated$loadings),
+          pos = 4, cex = 0.5)
+     
+plot(fa_promax$loadings[,1],
+     fa_promax$loadings[,2],
+     xlab = "Factor 1",
+     ylab = "Factor 2",
+     ylim = c(-1, 1),
+     xlim = c(-1, 1),
+     main = "Promax",
+     pch = 19,
+     col = "#6c757d") 
+     abline(h=0, v=0)
+     text(fa_promax$loadings[,1],
+          fa_promax$loadings[,2],
+          labels = rownames(fa_promax$loadings),
+          pos = 4, cex = 0.5)
+
+plot(fa_oblimin$loadings[,1],
+     fa_oblimin$loadings[,2],
+     xlab = "Factor 1",
+     ylab = "Factor 2",
+     ylim = c(-1, 1),
+     xlim = c(-1, 1),
+     main = "Oblimin",
+     pch = 19,
+     col = "#6c757d") 
+     abline(h=0, v=0)
+     text(fa_oblimin$loadings[,1],
+          fa_oblimin$loadings[,2],
+          labels = rownames(fa_oblimin$loadings),
+          pos = 4, cex = 0.5)
+     
+```
+:::
+
+::: column
+```{r}
+#| echo: false
+#| fig-height: 11.7
+#| fig-align: center
+#| class-output: "remark-code"
+
+fa_promax <- fa(r = data, nfactors = 4,rotate = "promax")
+fa_oblimin <- fa(r = data, nfactors = 4,rotate = "oblimin")
+
+
+par(mfrow = c(3, 1))
+
+plot(fa_unrotated$loadings[,1],
+     fa_unrotated$loadings[,2],
+     xlab = "Factor 1",
+     ylab = "Factor 2",
+     ylim = c(-1, 1),
+     xlim = c(-1, 1),
+     main = "No rotation",
+     cex.main = 2.5,
+     pch = 19,
+     cex = 2,
+     col = "#6c757d") 
+     abline(h=0, v=0)
+     text(fa_unrotated$loadings[,1],
+          fa_unrotated$loadings[,2],
+          labels = rownames(fa_unrotated$loadings),
+          pos = 4, cex = 2)
+     
+plot(fa_promax$loadings[,1],
+     fa_promax$loadings[,2],
+     xlab = "Factor 1",
+     ylab = "Factor 2",
+     ylim = c(-1, 1),
+     xlim = c(-1, 1),
+     main = "Promax",
+     cex.main = 2.5,
+     pch = 19,
+     cex = 2,
+     col = "#6c757d") 
+     abline(h=0, v=0)
+     text(fa_promax$loadings[,1],
+          fa_promax$loadings[,2],
+          labels = rownames(fa_promax$loadings),
+          pos = 4, cex = 2)
+
+plot(fa_oblimin$loadings[,1],
+     fa_oblimin$loadings[,2],
+     xlab = "Factor 1",
+     ylab = "Factor 2",
+     ylim = c(-1, 1),
+     xlim = c(-1, 1),
+     main = "Oblimin",
+     cex.main = 2.5,
+     pch = 19,
+     cex = 2,
+     col = "#6c757d") 
+     abline(h=0, v=0)
+     text(fa_oblimin$loadings[,1],
+          fa_oblimin$loadings[,2],
+          labels = rownames(fa_oblimin$loadings),
+          pos = 4, cex = 2)
+     
+```
+:::
+:::
+
+## 3. Factor interpretation {.left-text}
+
+### Factor interpretation and respecification
+
+::: columns
+::: column
+-   each variable has a high loadings on one factor only
+
+-   each factor has a high loadings for only a subset of the items.
+:::
+
+::: column
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+fa_varimax <- fa(r = data, nfactors = 4, rotate = "varimax")
+print(fa_varimax$loadings, sort = TRUE)
+```
+
+<br>
+
+```{r}
+#| echo: true
+#| eval: true
+#| class-output: "remark-code"
+fa_varimax <- fa(r = data, nfactors = 4, rotate = "varimax")
+print(fa_varimax$loadings, sort = TRUE)
+```
+:::
+:::
+
+## 3. Factor interpretation {.left-text}
+
+### Factor interpretation and respecification
+
+::: columns
+::: column
+-   each variable has a high loadings on one factor only
+
+-   each factor has a high loadings for only a subset of the items.
+:::
+
+::: column
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+fa_varimax <- fa(r = data, nfactors = 4, rotate = "varimax")
+print(fa_varimax$loadings, sort = TRUE, cutoff = 0.4)
+```
+
+<br>
+
+```{r}
+#| echo: true
+#| eval: true
+#| class-output: "remark-code"
+fa_varimax <- fa(r = data, nfactors = 4, rotate = "varimax")
+print(fa_varimax$loadings, sort = TRUE, cutoff = 0.4)
+```
+:::
+:::
+
+## 3. Factor interpretation {.left-text}
+
+### Factor interpretation and respecification
+
+::: columns
+::: column
+What to do with cross-loadings?
+
+Ratio of variance (*JF Hair et al. 2019*)
+
+-   1 to 1.5 - problematic
+-   1.5 to 2.0 - potential cross-loading
+-   2.0 and higher - ignorable
+
+Example:
+
+-   $X_{11}$
+-   `MR1`: 0.525
+-   `MR2`: 0.712
+-   $0.712^2 \div 0.525^2 = 1.8$
+:::
+
+::: column
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+fa_varimax <- fa(r = data, nfactors = 4, rotate = "varimax")
+print(fa_varimax$loadings, sort = TRUE, cutoff = 0.4)
+```
+
+<br>
+
+```{r}
+#| echo: true
+#| eval: true
+#| class-output: "remark-code"
+fa_varimax <- fa(r = data, nfactors = 4, rotate = "varimax")
+print(fa_varimax$loadings, sort = TRUE, cutoff = 0.4)
+```
+:::
+:::
+
+## 3. Factor interpretation {.left-text}
+
+### Factor interpretation and respecification
+
+#### Naming of factors
+
+::: columns
+::: column
+-   **MR1: Postsale customer service**
+
+    -   x9 Complaint resolutions
+
+    -   x16 Order & Billing
+
+    -   x18 Delivery speed
+
+-   **MR2: Marketing**
+
+    -   x7 E-Commerce
+
+    -   x10 Advertising
+
+    -   x12 Salesforce image
+:::
+
+::: column
+-   **MR3: Technical support**
+
+    -   x8 Technical support
+
+    -   x14 Warranty and claims
+
+-   **MR4: Product value**
+
+    -   x6 Product quality
+
+    -   x11 Product line
+
+    -   x13 Competitive pricing
+:::
+:::
+
+------------------------------------------------------------------------
+
+## 3. Factor interpretation {.left-text}
+
+### Factor interpretation and respecification
+
+#### Extracting factor scores
+
+::: columns
+::: column
+-   **MR1: Postsale customer service**
+
+-   **MR2: Marketing**
+
+-   **MR3: Technical support**
+
+-   **MR4: Product value**
+:::
+
+::: column
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+fa_varimax$scores %>% round(4) %>% data.frame() %>% tibble()
+```
+
+<br>
+
+```{r}
+#| echo: true
+#| eval: true
+#| class-output: "remark-code"
+fa_varimax$scores %>% round(4) %>% data.frame() %>% tibble()
+```
+:::
+:::
+
+##  {background-image="img/sem_steps_model_specs.png" data-background-size="80%" data-background-position="center" data-background-repeat="no-repeat"}
+
+## Basics of SEM
+
+::: columns
+::: column
+#### Measurement model
+
+-   measurement part of a a full SEM model
+
+-   confirmatory factor analysis
+:::
+
+::: column
+![](img/measurement_part_2.jpg){fig-align="center"}
+:::
+:::
+
+## Basics of SEM
+
+::: columns
+::: column
+#### Measurement model
+
+-   measurement part of a a full SEM model
+
+-   confirmatory factor analysis
+
+#### Structural model
+
+-   relationship between constructs
+
+-   full sem model is combination of measurement and structural component
+:::
+
+::: column
+![](img/structural_part_2.jpg){fig-align="center"}
+:::
+:::
+
+## Basic SEM conventions
+
+<br>
+
+![](img/sem_convention_2.jpg){fig-align="center" width="90%" height="90%"}
+
+## Developing overall measurement model
+
+::: columns
+::: column
+-   Measurement theory model
+
+-   Confirmatory factor analysis (CFA)
+
+-   Direction of the relationship between factors is not yet defined.
+
+-   Focus on confirming the specified model with empirical model (using empirical data), hence confirmatory.
+:::
+
+::: column
+![](img/hbat_measurement.png){fig-align="right" width="95%" height="95%"}
+:::
+:::
+
+::: aside
+Source: JF Hair et al. (2019): Multivariate data analysis
+:::
+
+## CFA model to structural model {.center-text}
+
+![](img/cfa_sem.png){fig-align="center" width="70%" height="70%"}
+
+## Defining structural model {.center-text}
+
+![](img/structural_model.png){fig-align="center" width="80%" height="80%"}
+
+##  {background-image="img/sem_steps_estimation.png" data-background-size="80%" data-background-position="center" data-background-repeat="no-repeat"}
+
+## Approaches in SEM {.center-text}
+
+<br>
+
+::: columns
+::: column
+### Covariance-based SEM (CB-SEM)
+
+-   based on covariance
+-   theory testing and confirmation
+:::
+
+::: column
+### Partial least-square SEM (PLS-SEM)
+
+-   variance based (partial least-square)
+-   prediction and theory development
+:::
+:::
+
+<br>
+
+::: center-text
+*"Choice of the method originates from the goal of research. If the existing theory needs to be tested and confirmed, CB-SEM is the chosen one. Nevertheless, for theory development as well as prediction purposes, PLS-SEM is better."* - [Dash and Paul (2021)](https://doi.org/10.1016/j.techfore.2021.121092)
+
+<br>
+
+*"... both methods are complementary, not competitive"* - [Hair (2017)](https://www.inderscienceonline.com/doi/epdf/10.1504/IJMDA.2017.087624)
+:::
+
+## CB-SEM or PLS-SEM {.center-text}
+
+![](img/cb_pls.png){fig-align="center" width="50%" height="50%"}
+
+::: source-text
+H., Hair Jr, F., J., Matthews, L.M., Matthews, R.L., Sarstedt, M., 2017. PLS-SEM or CBSEM: updated guidelines on which method to use. Int. J. Multivar. Data Anal. 1 (2), 107--123. https://doi.org/10.1504/IJMDA.2017.087624.
+:::
+
+# CB-SEM with Lavaan R package
+
+## What is Lavaan?
+
+::: columns
+::: {.column width="40%"}
+-   *"developed to provide useRs, researchers, and teachers a free open-source, but commercial quality"*, Yves Rosseel (2012)
+
+-   Check-out this [lavaan tutorial](https://lavaan.ugent.be/tutorial/index.html)
+:::
+
+::: {.column width="60%"}
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+install.packages("lavaan")
+library(lavaan)
+example(cfa)
+```
+
+```{r}
+#| echo: true
+#| class-output: "remark-code"
+library(lavaan)
+example(cfa)
+```
+:::
+:::
+
+## Major operators of lavaan syntax
+
+<br>
+
+![](img/lavaan_syntax.jpg){fig-align="center" width="90%" height="90%"}
+
+## Major operators of lavaan syntax
+
+::: columns
+::: column
+#### Defining a reflective latent variable
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+model <- "F1 =~ x1 + x2 + x3 + x4"
+```
+
+<br>
+
+![](img/sample_syntax1.png){fig-align="center" width="45%" height="45%"}
+:::
+
+::: column
+#### Estimate factor covariance
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+model <- "F1 =~ x1 + x2 + x3 + x4
+          F2 =~ x5 + X6 + x6 + x8
+          F1 ~~ F2"
+```
+
+<br>
+
+![](img/sample_syntax2.png){fig-align="center" width="90%" height="90%"}
+:::
+:::
+
+## Major operators of lavaan syntax
+
+::: columns
+::: column
+#### Estimate regression
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+model <- "F1 =~ x1 + x2 + x3 + x4
+          F2 =~ x5 + X6 + x7 + x8
+          F3 =~ x9 + X10 + x11 + x12
+          F1 ~~ F2
+          F3 ~ F1 + F2"
+```
+:::
+
+::: column
+![](img/sample_syntax3.png){fig-align="center" width="80%" height="80%"}
+:::
+:::
+
+## Major operators of lavaan syntax
+
+::: columns
+::: column
+#### Insert a comment in the syntax
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+model <- "F1 =~ x1 + x2 + x3 + x4
+          F2 =~ x5 + X6 + x7 + x8
+          F3 =~ x9 + X10 + x11 + x12
+          
+          # covariance
+          F1 ~~ F2
+          
+          # F3 is regressed on F1 and F2
+          F3 ~ F1 + F2"
+```
+:::
+
+::: column
+![](img/sample_syntax3.png){fig-align="center" width="80%" height="80%"}
+:::
+:::
+
+## Major operators of lavaan syntax
+
+::: columns
+::: column
+#### Label a parameter
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+model <- "F1 =~ x1 + x2 + x3 + x4
+          F2 =~ x5 + X6 + x7 + x8
+          F3 =~ x9 + X10 + x11 + x12
+          
+          # covariance
+          F1 ~~ F2
+          
+          # F3 is regressed on F1 and F2
+          F3 ~ b1*F1 + b2*F2"
+```
+:::
+
+::: column
+![](img/sample_syntax4.png){fig-align="center" width="80%" height="80%"}
+:::
+:::
+
+## Major operators of lavaan syntax
+
+::: columns
+::: column
+#### Create a new parameter
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+model <- "F1 =~ x1 + x2 + x3 + x4
+          F2 =~ x5 + X6 + x7 + x8
+          F3 =~ x9 + X10 + x11 + x12
+          
+          # regression
+          F3 ~ b1*F1 + b2*F2
+          F2 ~ b3*F1
+          # F1 indirect effect
+          ie := b3*b2
+          # F1 total effect
+          te := b3*b2 + b1"
+```
+:::
+
+::: column
+![](img/sample_syntax5.png){fig-align="center" width="80%" height="80%"}
+:::
+:::
+
+## Measurement model: CFA model and estimation
+
+::: columns
+::: {.column width="40%"}
+```{r}
+#| echo: true
+#| class-output: "remark-code"
+
+cfa_model <- "SI =~ SI1 + SI2 + SI3 + SI4
+              JS =~ JS1 + JS2 + JS3 + JS4 + JS5
+              AC =~ AC1 + AC2 + AC3 + AC4
+              EP =~ EP1 + EP2 + EP3 + EP4
+              OC =~ OC1 + OC2 + OC3 + OC4"
+
+```
+:::
+
+::: {.column width="60%"}
+```{r}
+#| echo: true
+#| class-output: "remark-code"
+
+cfa_fit <- cfa(cfa_model, data = hbat_data)
+summary(cfa_fit)
+```
+:::
+:::
+
+## Fit indices
+
+::: columns
+::: {.column width="40%"}
+#### Goodness of fit indices
+
+-   Goodness-of-fit index (GFI)
+-   Adjusted goodness-fit-index (AGFI)
+-   Comparative fit index (CFI)
+-   Normed fit index (NFI)
+-   Non-normed fit index (NNF)
+
+#### Badness of fit indices
+
+-   Standard root mean square of the residuals (SRMR)
+-   Root mean square error of approximation (RMSEA)
+:::
+
+::: {.column width="60%"}
+![](img/sample_gof.png)
+:::
+:::
+
+::: aside
+Sample GOF results from W. Shiau & M. Luo (2013). Continuance intention of blog users: The impact of perceived enjoyment, habit, user involvement and blogging time.
+:::
+
+## Fit indices
+
+::: columns
+::: column
+#### Goodness of fit indices
+
+-   Goodness-of-fit index (GFI)
+
+-   Adjusted goodness-fit-index (AGFI)
+
+-   Comparative fit index (CFI)
+
+-   Normed fit index (NFI)
+
+-   Non-normed fit index (NNF)
+:::
+
+::: column
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+
+fitMeasures(cfa_fit,  fit.measures = c("gfi", "agfi", "cfi", "nfi", "nnfi"))
+```
+
+<br>
+
+```{r}
+#| echo: true
+#| class-output: "remark-code"
+
+fitMeasures(cfa_fit,  fit.measures = c("gfi", "agfi", "cfi", "nfi", "nnfi"))
+```
+:::
+:::
+
+## Fit indices
+
+::: columns
+::: column
+#### Badness of fit indices
+
+-   Standard root mean squrare residual (SRMR)
+
+-   Root mean square error of approximation (RMSEA)
+:::
+
+::: column
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+
+fitMeasures(cfa_fit,  fit.measures = c("srmr", "rmsea"))
+```
+
+<br>
+
+```{r}
+#| echo: true
+#| class-output: "remark-code"
+
+fitMeasures(cfa_fit,  fit.measures = c("srmr", "rmsea"))
+```
+:::
+:::
+
+## Reliability and validity test
+
+::: columns
+::: {.column width="40%"}
+#### Reliability test
+
+-   Composite reliability
+
+#### Validity test
+
+-   Convergent validity
+
+-   Discriminant validity
+:::
+
+::: {.column width="60%"}
+![](img/reliability_validity.png){fig-align="center"}
+
+::: aside
+Source: A. Hou, W. Shiau, & R. Shang (2019). The involvement paradox. The role of cognitive absorption in mobile instant messaging user satisfaction.
+:::
+:::
+:::
+
+## Reliability and validity test
+
+::: columns
+::: column
+-   Composite reliability: `alpha` \> `0.70`
+
+-   Convergent validity: AVE (`avevar`) \> `0.50`
+
+-   Discriminant validity: `omega` \> `0.7`
+:::
+
+::: column
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+
+library(semTools)
+reliability(cfa_fit) %>% round(3)
+```
+
+<br>
+
+```{r}
+#| echo: true
+#| class-output: "remark-code"
+
+semTools::reliability(cfa_fit) %>% round(3)
+```
+:::
+:::
+
+## Structural model: estimation
+
+::: columns
+::: {.column width="40%"}
+```{r}
+#| echo: true
+#| class-output: "remark-code"
+
+sem_model <- "SI =~ SI1 + SI2 + SI3 + SI4
+              JS =~ JS1 + JS2 + JS3 + JS4 + JS5
+              AC =~ AC1 + AC2 + AC3 + AC4
+              EP =~ EP1 + EP2 + EP3 + EP4
+              OC =~ OC1 + OC2 + OC3 + OC4
+              EP ~~ AC
+              JS ~ H1*EP + H3*AC
+              OC ~ H2*EP + H4*AC + H5*JS
+              SI ~ H6*JS + H7*OC"
+```
+:::
+
+::: {.column width="60%"}
+```{r}
+#| echo: true
+#| eval: true
+#| class-output: "remark-code-short"
+
+sem_fit <- sem(model = sem_model, data = hbat_data)
+summary(sem_fit, standardized = TRUE)
+
+```
+:::
+:::
+
+## GOF measures between structural and CFA model
+
+::: columns
+::: {.column width="40%"}
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+
+gof_indices <- c('chisq', 'df','pvalue', "gfi", 
+                 'rmsea', 'rmr', 'srmr', 'nfi', 
+                 'nnfi', 'cfi', 'agfi')
+fitmeasures(sem_fit, fit.measures = gof_indices)
+fitmeasures(cfa_fit, fit.measures = gof_indices)
+```
+
+<br>
+
+```{r}
+#| echo: true
+#| class-output: "remark-code"
+
+gof_indices <- c('chisq', 'df','pvalue', "gfi", 
+                 'rmsea', 'rmr', 'srmr', 'nfi', 
+                 'nnfi', 'cfi', 'agfi')
+fitmeasures(sem_fit, fit.measures = gof_indices)
+fitmeasures(cfa_fit, fit.measures = gof_indices)
+```
+:::
+
+::: {.column width="60%"}
+![](img/fit_indices.png){fig-align="right"}
+:::
+:::
+
+# PLS-SEM with SEMinR package
+
+## 
+
+::: columns
+::: {.column width="60%"}
+![](img/seminr_0.png){fig-align="left" width="40%" height="40%"}
+
+-   *"SEMinR brings a friendly syntax to creating and estimating SEM. It uses its own PLS-SEM engine and integrates with the Lavaan package for CB-SEM/CFA estimation.* - Soumya Ray & Nicholas Danks (2020)
+
+-   Check-out this [SEMinR vignette](https://cran.r-project.org/web/packages/seminr/vignettes/SEMinR.html)
+
+-   Download the [PLS-SEM book using R](https://link.springer.com/content/pdf/10.1007/978-3-030-80519-7.pdf)
+:::
+
+::: {.column width="40%"}
+![](img/seminr_00.png){fig-align="center" width="70%" height="70%"}
+:::
+:::
+
+## What is SEMinR?
+
+::: columns
+::: {.column width="60%"}
+#### Three main steps in using SEMinR
+
+1.  Describe measurement model for each constructs and its items
+
+2.  Describe the structural model of causal relationships between constructs
+
+3.  Estimate the model using PLS, CB-SEM, or CFA
+:::
+
+::: {.column width="40%"}
+:::
+:::
+
+## Major operators of SEMinR syntax
+
+::: columns
+::: column
+#### 1. Describe measurement model for each constructs and its items
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+
+model <- constructs(
+  composite(construct_name = "F1", item_names = multi_items("x", 1:4)))
+
+plot(model)
+```
+
+<br>
+
+![](img/seminr_1.png){fig-align="center" width="45%" height="45%"}
+:::
+
+::: column
+![](img/sample_syntax1.png){fig-align="center" width="45%" height="45%"}
+:::
+:::
+
+## Major operators of SEMinR syntax
+
+::: columns
+::: column
+#### 2. Describe the structural model of causal relationships between constructs
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+
+## specifying measurement model
+mm <- constructs(
+  composite(construct_name = "F1", item_names = multi_items("x", 1:4)),
+  composite("F2", multi_items("x", 5:8)),
+  composite("F3", multi_items("x", 9:12)))
+
+## specifying structural model
+sm <- relationships(
+  paths(from = "F1", to = "F2"),
+  paths(from = c("F1", "F2"), to = "F3"))
+
+plot(sm)
+
+```
+
+<br>
+
+![](img/seminr_2.png){fig-align="center" width="45%" height="45%"}
+:::
+
+::: column
+![](img/sample_syntax5.png){fig-align="center" width="80%" height="80%"}
+:::
+:::
+
+## Major operators of SEMinR syntax
+
+::: columns
+::: column
+#### 3. Estimate the model
+
+```{r}
+#| echo: false
+#| eval: false
+#| class-output: "remark-code"
+
+# Data
+hbat_data <- read_sav("data/HBAT_SEM_NOMISSING.sav") %>% 
+ clean_names() %>% 
+ select(js1:si4) %>%
+ mutate_all(as.numeric) %>% 
+ rename("x1" = "ac1",
+        "x2" = "ac2",
+        "x3" = "ac3",
+        "x4" = "ac4",
+        "x5" = "ep1",
+        "x6" = "ep2",
+        "x7" = "ep3",
+        "x8" = "ep4",
+        "x9" = "js1",
+        "x10" = "js2",
+        "x11" = "js3",
+        "x12" = "js4"
+        )
+
+## specifying measurement model
+mm <- constructs(
+  composite(construct_name = "F1", item_names = multi_items("x", 1:4)),
+  composite("F2", multi_items("x", 5:8)),
+  composite("F3", multi_items("x", 9:12)))
+
+## specifying structural model
+sm <- relationships(
+  paths(from = "F1", to = "F2"),
+  paths(from = c("F1", "F2"), to = "F3"))
+
+
+
+```
+
+```{r}
+#| echo: true
+#| eval: false
+#| class-output: "remark-code"
+
+## specifying measurement model
+pls_sem_estimate <- 
+  estimate_pls(data = my_data,
+             measurement_model = mm,
+             structural_model = sm)
+
+## plotting pls-sem model
+plot(pls_sem_estimate)
+
+```
+
+![](img/seminr_3.png){fig-align="center" width="90%" height="90%"}
+:::
+
+::: column
+![](img/sample_syntax5.png){fig-align="center" width="80%" height="80%"}
+:::
+:::
+
+## Estimating measurement model
+
+```{r}
+#| echo: true
+#| eval: true
+#| class-output: "remark-code"
+
+## specifying measurement model
+mm <- constructs(
+  composite(construct_name = "F1", item_names = multi_items("x", 1:4)),
+  composite("F2", multi_items("x", 5:8)),
+  composite("F3", multi_items("x", 9:12)))
+
+plot(mm)
+```
+
+## Estimating structural model
+
+```{r}
+#| echo: false
+#| eval: true
+#| class-output: "remark-code"
+
+# Data
+hbat_data <- read_sav("data/HBAT_SEM_NOMISSING.sav") %>% 
+ clean_names() %>% 
+ select(js1:si4) %>%
+ mutate_all(as.numeric) %>% 
+ rename("x1" = "ac1",
+        "x2" = "ac2",
+        "x3" = "ac3",
+        "x4" = "ac4",
+        "x5" = "ep1",
+        "x6" = "ep2",
+        "x7" = "ep3",
+        "x8" = "ep4",
+        "x9" = "js1",
+        "x10" = "js2",
+        "x11" = "js3",
+        "x12" = "js4"
+        )
+
+```
+
+```{r}
+#| echo: true
+#| eval: true
+#| class-output: "remark-code"
+
+## specifying structural model
+sm <- relationships(
+  paths(from = "F1", to = "F2"),
+  paths(from = c("F1", "F2"), to = "F3"))
+
+plot(sm)
+
+```
+
+## Estimating the pls-sem model
+
+```{r}
+#| echo: true
+#| eval: true
+#| class-output: "remark-code"
+
+## estimate pls-sem model
+pls_sem_estimate <- 
+  estimate_pls(data = hbat_data |> as.data.frame(),
+             measurement_model = mm,
+             structural_model = sm)
+
+plot(pls_sem_estimate)
+
+```
+
+## Well done! {.center-text}
+
+![](img/proud_of_you.gif)
+
+## Sample analysis {.center-text}
+
+::: columns
+::: {.column .center-text width="50%"}
+![](img/qr-cb-sem.png){fig-align="center" width="45%" height="45%"}
+
+[CB-SEM](https://chris-allones.github.io/RTalks/dbm-special-lecture-2024/sem-samples/cb-sem-2024.html)
+:::
+
+::: {.column .center-text width="50%"}
+![](img/qr-pls-sem.png){fig-align="center" width="45%" height="45%"}
+
+[PLS-SEM](https://chris-allones.github.io/RTalks/dbm-special-lecture-2024/sem-samples/pls-sem-2024.html)
+:::
+:::
